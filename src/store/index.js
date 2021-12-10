@@ -1,11 +1,22 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import Vue from 'vue';
+import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+	state: {
+		people: {
+			1: {
+				name: 'Markus Gasleiter',
+				avatarUrl: 'https://i.pravatar.cc/300',
+			},
+			2: {
+				name: 'Frank Susmann',
+				avatarUrl: 'https://i.pravatar.cc/200',
+			},
+		},
+	},
+	mutations: {},
+	actions: {},
+	modules: {},
 });
