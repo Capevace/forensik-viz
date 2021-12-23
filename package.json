@@ -16,6 +16,8 @@
     "leaflet": "^1.7.1",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
+    "uuid": "^3.4.0",
+    "v-viewer": "^1.6.4",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vue-timeline-component": "^0.1.5",

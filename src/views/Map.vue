@@ -1,64 +1,68 @@
 <template>
 	<div class="map fixed w-full h-screen">
-		<Map>
+		<Map :locations="currentLocations">
 			<template v-slot:control>
 				<EventControl
 					:events="events"
-					:selection="selectedEventId"
+					:selectedEvent="selectedEvent"
 					@select="selectEvent"
 					@next="next"
+					@previous="previous"
 				/>
 			</template>
 			<template v-slot:chat>
-				<Chat />
+				<ChatWindow
+					v-if="currentChats"
+					class="shadow-lg"
+					:chats="currentChats"
+				/>
 			</template>
 		</Map>
 	</div>
 </template>
 <script>
 import Map from '@/components/map/Map';
-import EventControl from '@/components/map/EventControl';
-import Chat from '@/components/chat/Chat';
+import EventControl from '@/components/events/EventControl';
+import ChatWindow from '@/components/chat/ChatWindow';
 
 export default {
 	components: {
 		Map,
 		EventControl,
-		Chat,
+		ChatWindow,
 	},
 	data() {
 		return {
-			selectedEventId: '1',
+			selectedEventId: null,
 		};
+	},
+	mounted() {
+		this.selectedEventId = this.$store.state.presentation.events[0].id;
 	},
 	computed: {
 		events() {
-			return [
-				{
-					id: '1',
-					group: 0,
-					content: 'event 1',
-					start: new Date(2020, 1, 1),
-					end: new Date(2020, 1, 4),
-				},
-				{
-					id: '2',
-					group: 0,
-					content: 'event 2',
-					start: new Date(2020, 1, 4),
-					end: new Date(2020, 1, 5),
-				},
-				{
-					id: '3',
-					group: 0,
-					content: 'event 3',
-					start: new Date(2020, 1, 5),
-					end: new Date(2020, 1, 10),
-				},
-			].map((event) => ({
-				...event,
-				active: event.id === this.selectedEventId,
-			}));
+			return this.$store.state.presentation.events;
+		},
+		selectedEvent() {
+			if (!this.selectedEventId) return null;
+
+			return this.events.find(
+				(event) => event.id === this.selectedEventId
+			);
+		},
+		currentChats() {
+			if (!this.selectedEvent) {
+				return null;
+			}
+
+			return this.selectedEvent.chats;
+		},
+		currentLocations() {
+			if (!this.selectedEvent) {
+				return [];
+			}
+
+			return this.selectedEvent.locations;
 		},
 	},
 	methods: {
@@ -66,7 +70,26 @@ export default {
 			this.selectedEventId = eventId;
 		},
 		next() {
-			this.selectedEventId = '2';
+			let index = this.events.findIndex(
+				(e) => e.id === this.selectedEventId
+			);
+
+			if (index === -1 || ++index >= this.events.length) {
+				return;
+			}
+
+			this.selectedEventId = this.events[index].id;
+		},
+		previous() {
+			let index = this.events.findIndex(
+				(e) => e.id === this.selectedEventId
+			);
+
+			if (index === -1 || --index < 0) {
+				return;
+			}
+
+			this.selectedEventId = this.events[index].id;
 		},
 	},
 };

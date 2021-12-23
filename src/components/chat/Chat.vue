@@ -1,47 +1,42 @@
 <template>
-	<div class="flex flex-col gap-5 w-full bg-yellow-100 rounded-lg p-2">
-		<div
+	<div class="flex flex-col gap-5 overflow-y-scroll">
+		<div class="text-center text-xs font-medium text-gray-900 opacity-40">
+			{{ firstDate.toLocaleString() }}
+		</div>
+		<Bubble
 			v-for="message in messages"
 			:key="message.id"
-			:class="`w-full flex justify-${
-				message.sender === sender ? 'end' : 'start'
-			}`"
-		>
-			<Bubble :right="message.sender === sender" :message="message" />
-		</div>
+			:message="message"
+			:right="message.sender === senderId"
+			:color="`${color}-200`"
+		/>
 	</div>
 </template>
 <script type="text/javascript">
 import Bubble from './Bubble';
+
 export default {
 	props: {
-		sender: {
+		messages: {
+			type: Array,
+			required: true,
+		},
+		senderId: {
 			type: String,
-			default: '1',
+			required: true,
+		},
+		color: {
+			type: String,
+			default: 'green',
+		},
+	},
+	computed: {
+		firstDate() {
+			return this.messages[0].date;
 		},
 	},
 	components: {
 		Bubble,
-	},
-	computed: {
-		messages() {
-			return [
-				{
-					id: '1',
-					date: new Date(),
-					type: 'text',
-					text: 'Hello',
-					sender: '1',
-				},
-				{
-					id: '2',
-					date: new Date(),
-					type: 'text',
-					text: 'Hello2',
-					sender: '2',
-				},
-			];
-		},
 	},
 };
 </script>
