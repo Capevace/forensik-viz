@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 
 module.exports = {
+	outputDir: 'docs',
 	configureWebpack: {
 		resolve: {
 			// Use our versions of Node modules.
