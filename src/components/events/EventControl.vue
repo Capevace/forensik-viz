@@ -5,12 +5,12 @@
 		<div class="flex flex-col" v-if="selectedEvent">
 			<h1 class="text-lg font-bold">{{ selectedEvent.title }}</h1>
 			<h2 class="text-base font-medium text-gray-500">
-				{{ selectedEvent.start.toLocaleString() }}
+				{{ new Date(selectedEvent.start).toLocaleString() }}
 				<span class="text-gray-400">–</span>
 				{{
 					isSameDay(selectedEvent.start, selectedEvent.end)
-						? selectedEvent.end.toLocaleTimeString()
-						: selectedEvent.end.toLocaleString()
+						? new Date(selectedEvent.end).toLocaleTimeString()
+						: new Date(selectedEvent.end).toLocaleString()
 				}}
 			</h2>
 		</div>
@@ -67,10 +67,7 @@ export default {
 			return this.selectedEvent ? this.selectedEvent.id : null;
 		},
 		timelineEvents() {
-			return this.events.map((event) => ({
-				...event,
-				content: event.title,
-			}));
+			return  this.$store.getters['setup/eventList'];
 		},
 		options: () => ({
 			editable: false,
@@ -85,15 +82,26 @@ export default {
 	methods: {
 		onEventSelect({ items }) {
 			this.$emit('select', items[0]);
+			this.$refs.timeline.focus(items[0]);
 		},
 
 		isSameDay(date1, date2) {
 			return (
-				date1.toISOString().slice(0, 10) ===
-				date2.toISOString().slice(0, 10)
+				new Date(date1).toISOString().slice(0, 10) ===
+				new Date(date2).toISOString().slice(0, 10)
 			);
 		},
 	},
+	watch: {
+		selectedEvent() {
+			if (this.selectedEvent) {
+				requestAnimationFrame(() => {
+					this.$refs.timeline.setSelection(this.selectedEvent.id);
+					this.$refs.timeline.focus(this.selectedEvent.id);
+				});
+			}
+		}
+	}
 };
 </script>
 <style type="text/css">

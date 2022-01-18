@@ -18,16 +18,21 @@ export async function initFS() {
 
 	// fs.mount('/import', memory);
 
-	await writeFile('/test.txt', 'Hello World!');
+	fs.mount(
+		'/assets',
+		new BrowserFS.FileSystem.InMemory()
+	);
+	await mkdir('/assets/Media');
+	await writeFile('/assets/Media/test.txt', 'Hello World!');
 
 	window.fs = fs;
 	window.BrowserFS = BrowserFS;
 }
 
-export async function mountZipFile(zipFile) {
+export async function mountZipFile(zipFile, basePath = '/import') {
 	return new Promise((resolve, reject) => {
-		if (fs.existsSync('/import')) {
-			fs.umount('/import');
+		if (fs.existsSync(basePath)) {
+			fs.umount(basePath);
 		}
 
 		const reader = new FileReader();
@@ -35,7 +40,7 @@ export async function mountZipFile(zipFile) {
 			const arrayBuffer = e.target.result;
 
 			fs.mount(
-				'/import',
+				basePath,
 				new BrowserFS.FileSystem.ZipFS(Buffer.from(arrayBuffer))
 			);
 
@@ -73,6 +78,35 @@ export async function readFile(file, encoding = 'utf8', flag = new FileFlag('r')
 export async function writeFile(fname, content) {
 	return new Promise((resolve, reject) => {
 		fs.writeFile(fname, content, 'utf8', new FileFlag('w+'), 0, (e) => {
+			if (e) {
+				reject(e);
+			} else {
+				resolve();
+			}
+		});
+	});
+}
+
+export async function ensureDirectory(fname) {
+	let paths = fname.split('/');
+	paths = paths.slice(1, paths.length - 1);
+
+	console.log('Paths', paths);
+
+	let dir = '';
+	for (const path of paths) {
+		dir += '/' + path;
+
+		console.log('Ensure Path', dir, paths);
+
+		if (!fs.existsSync(dir))
+			fs.mkdirSync(dir);
+	}
+}
+
+export async function mkdir(fname) {
+	return new Promise((resolve, reject) => {
+		fs.mkdir(fname, 0, (e) => {
 			if (e) {
 				reject(e);
 			} else {

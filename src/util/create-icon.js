@@ -3,9 +3,14 @@ import markerShadow from '@/assets/marker-shadow.png';
 import { icon } from 'leaflet';
 
 export default function createIcon(location, people) {
-	return location.person
+	let person;
+	if (location.person) {
+		person = people[location.person];
+	}
+
+	return person
 		? icon({
-				iconUrl: people[location.person].avatarUrl,
+				iconUrl: person.avatarUrl || `https://avatars.dicebear.com/api/bottts/${encodeURIComponent(person.name)}.svg`,
 				iconSize: [32, 32],
 				iconAnchor: [16, 16],
 				tooltipAnchor: [16, 0],

@@ -1,9 +1,11 @@
 <template>
 	<section class="max-w-4xl mx-auto mb-10">
-		<pre class="text-xs">{{ JSON.stringify(events, null, 2) }}</pre>
+		<!-- <pre class="text-xs">{{ JSON.stringify(timelineEvents, null, 2) }}</pre> -->
 
 		<h2 class="text-2xl font-medium mb-3 flex justify-between items-center">
-			<span>Events ({{ events.length }})</span>
+			<button class="font-medium" @click="next">
+				Events ({{ timelineEvents.length }})
+			</button>
 
 			<button
 				class="block bg-blue-100 text-base font-regular rounded-md h-full px-2 py-2"
@@ -33,22 +35,27 @@
 		</div>
 
 		<article v-if="selectedEvent">
-			<h3 class="text-lg font-medium mb-3">
-				Event: {{ selectedEvent.title }}
-			</h3>
-			<MetaEditor v-model="selectedEvent" />
+			<div class="flex w-full justify-between items-center">
+				<h3 class="text-lg font-medium mb-3">
+					Event: {{ selectedEvent.title }}
+				</h3>
+				<button class="hover:bg-red-300 px-2 py-1 rounded-md" @click="deleteEvent">Event löschen</button>
+			</div>
+			<MetaEditor v-model="selectedEvent"  />
 
 			<h4 class="text-lg font-medium mb-3">Chats</h4>
 			<ChatSelector
-				v-model="selectedEvent.chats"
+				v-model="selectedEvent"
 				:chats="Object.values(chats)"
 				:filter-start="selectedEvent.start"
 				:filter-end="selectedEvent.end"
+			
 			/>
 
 			<h4 class="text-lg font-medium mb-3">Locations</h4>
 			<LocationSelector
-				v-model="selectedEvent.locations"
+				v-model="selectedEvent"
+			
 				:locations="Object.values(locations)"
 			/>
 		</article>
@@ -69,48 +76,88 @@ export default {
 		LocationSelector,
 	},
 	data() {
+		
 		return {
-			events: [
-				{
-					id: randomId(),
-					title: 'Frank und Markus klären Arbeitszeiten',
-					start: new Date(),
-					end: new Date(Date.now() + 1000 * 60 * 60),
-					chats: [],
-					locations: [],
-				},
-			],
+			// events: {
+			// 	[event.id]: event
+			// },
 			selectedEvent: null,
 		};
 	},
-	methods: {
-		addEvent() {
-			this.selectedEvent =
-				this.events[
-					this.events.push({
-						id: randomId(),
-						title: 'Frank und Markus klären Arbeitszeiten',
-						start: new Date(),
-						end: new Date(Date.now() + 1000 * 60 * 60),
-						chats: [],
-						locations: []
-					}) - 1
-				];
-		},
+	watch: {
+		selectedEvent: {
+			// This will let Vue know to look inside the array
+			deep: true,
 
-		selectEvent({ items }) {
-			if (items.length > 0) {
-				const index = this.events.findIndex(
-					({ id }) => id === items[0]
-				);
-				this.selectedEvent = this.events[index];
+		      // We have to move our method to a handler field
+		    handler() {
+		    	if (!this.selectedEvent)
+		    		return;
+
+				// this.events[this.selectedEvent.id] = this.selectedEvent;
+				this.$store.commit('setup/updateEvent', this.selectedEvent);
+				this.$refs.timeline.focus(this.selectedEvent.id);
 			}
 		},
+
+		// events() {
+		// 	const index = this.events.findIndex(event => event.id === this.selectedEvent.id);
+		// 	this.events[index] = this.selectedEvent;
+		// 	this.updateEvents();
+		// },
+	},
+	methods: {
+		addEvent() {
+			const event = {
+				id: randomId(),
+				title: 'Unbenanntes Event',
+				start: new Date(),
+				end: new Date(Date.now() + 1000 * 60 * 60),
+				chats: [],
+				locations: []
+			};
+
+			// Vue.set(this.events, event.id, event);
+			this.$store.commit('setup/updateEvent', event);
+			this.selectedEvent = event;
+		},
+
+		deleteEvent() {
+			this.$store.commit('setup/deleteEvent', this.selectedEvent.id);
+			this.selectedEvent = null;
+		},
+
+
+		selectEvent({ items }) {
+			console.log(items);
+			if (items.length > 0) {
+				this.selectedEvent = this.events[items[0]];
+			}
+		},
+
+		next() {
+			if (!this.selectedEvent) {
+				return this.selectEvent({ items: [this.timelineEvents[0].id] });
+			}
+			
+			let index = this.timelineEvents.findIndex(
+				(e) => e.id === this.selectedEvent.id
+			);
+
+			if (index === -1 || ++index >= this.timelineEvents.length) {
+				this.selectEvent({ items: [this.timelineEvents[0].id] });
+			} else {
+				this.selectEvent({ items: [this.timelineEvents[index].id] });
+			}
+		}
 	},
 
 	computed: {
+		events() {
+			return this.$store.state.setup.events;
+		},
 		timelineEvents() {
-			return this.events.map(event => ({ ...event, content: event.title }))
+			return Object.values(this.events).map(event => ({ ...event, content: event.title }))
 		},
 		chats() {
 			return this.$store.state.setup.chats || {

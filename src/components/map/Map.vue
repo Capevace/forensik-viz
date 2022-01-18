@@ -17,13 +17,20 @@
 		>
 			<slot name="control" />
 		</LControl>
+		<LControl
+			:position="'topright'"
+			class="w-full max-w-xl"
+			style="min-width: 10vw"
+		>
+			<slot name="load" />
+		</LControl>
 
 		<LMarker
 			v-for="location in mappedLocations"
 			:key="location.id"
 			name="lolol"
 			:lat-lng="location.position"
-			:icon="createIcon(location)"
+			:icon="icon(location)"
 			@click="alert(location)"
 		>
 			<LTooltip :content="location.description" />
@@ -73,16 +80,8 @@ export default {
 	},
 	computed: {
 		mappedLocations() {
-			return this.locations.map((location) =>
-				!location.person
-					? location
-					: {
-							...location,
-							person: this.$store.state.presentation.people[
-								location.person
-							],
-					  }
-			);
+			return this.locations
+			.map((location) => this.$store.state.setup.locations[location]);
 		},
 	},
 	data() {
@@ -100,15 +99,18 @@ export default {
 		},
 		recalculateBounds() {
 			if (this.locations.length === 0) return;
-
-			const bounds = this.locations.map((location) => [
+			const bounds = this.mappedLocations.map((location) => [
 				location.position.lat,
 				location.position.lng,
+							console.log(location)
+
 			]);
 
 			this.$refs.map.fitBounds(bounds, { padding: [200, 200] });
 		},
-		createIcon
+		icon(location) {
+			return createIcon(location, this.$store.state.setup.people);
+		}
 	},
 	watch: {
 		locations() {

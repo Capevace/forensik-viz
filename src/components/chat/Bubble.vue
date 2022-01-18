@@ -9,9 +9,9 @@
 				this.right ? 'flex-row-reverse' : ''
 			}`"
 		>
-			<img class="h-6 w-6 rounded-full" :src="sender.avatarUrl" />
+			<img class="h-6 w-6 rounded-full" :src="sender.avatarUrl || `https://avatars.dicebear.com/api/bottts/${encodeURIComponent(sender.name)}.svg`" />
 			<div :class="classes">
-				<button v-if="message.mediaSrc" class="block mb-2">
+				<button v-if="message.mediaSrc" class="block mb-2 w-full">
 					<FSImg :src="message.mediaSrc" :mime="message.mimeType" @click="onImageClick"/>
 				</button>
 				<p

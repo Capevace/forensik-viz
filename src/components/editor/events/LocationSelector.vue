@@ -47,14 +47,14 @@
 				v-for="location in locations"
 				:key="location.id"
 				class="text-left text-sm font-medium px-3 flex gap-2 py-2 rounded-md hover:shadow bg-purple-200 hover:bg-purple-300 transition text-purple-900 w-full"
-				:class="{ 'bg-purple-300': viewedLocation && viewedLocation.id === location.id, 'opacity-60': !value.includes(location.id) }"
+				:class="{ 'bg-purple-300': viewedLocation && viewedLocation.id === location.id, 'opacity-60': !value.locations.includes(location.id) }"
 				@click="viewLocation(location)"
 			>
 				<input
 					type="checkbox"
 					name=""
 					@change="selectLocation($event, location)"
-					:checked="value.includes(location.id)"
+					:checked="value.locations.includes(location.id)"
 				/>
 
 				<div class="flex-1">
@@ -113,8 +113,8 @@ import createIcon from '@/util/create-icon';
 export default {
 	props: {
 		value: {
-			type: Array,
-			default: () => [],
+			type: Object,
+			required: true
 		},
 		locations: {
 			type: Array,
@@ -127,6 +127,11 @@ export default {
 				},
 			],
 		},
+	},
+	watch: {
+		value() {
+			this.$emit('change');
+		}
 	},
 	data(vm) {
 		return {
@@ -145,7 +150,7 @@ export default {
 	},
 	computed: {
 		selectedLocations() {
-			return this.value;
+			return this.value.locations;
 		},
 		allPeople() {
 			return Object.values(this.$store.state.setup.people);
@@ -167,10 +172,11 @@ export default {
 			}
 
 			this.$emit('value', locations);
+			this.$emit('change');
 		},
 
 		addLocation() {
-			this.$store.commit('setup/newLocation', this.newLocation);
+			this.$store.commit('setup/updateLocation', this.newLocation);
 			this.selectLocation({ target: { checked: true }}, this.newLocation);
 			this.newLocation = {
 				id: uuid(),
@@ -190,7 +196,7 @@ export default {
 		},
 
 		removeLocation(location) {
-			this.$store.commit('setup/removeLocation', location);
+			this.$store.commit('setup/deleteLocation', location);
 
 			let locations = this.selectedLocations;
 

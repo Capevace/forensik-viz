@@ -81,6 +81,7 @@ export default {
 	watch: {
 		event() {
 			this.$emit('value', this.event);
+			this.$emit('change');
 		},
 		startDate() {
 			this.event.start = new Date(this.startDate);

@@ -1,4 +1,7 @@
+/* eslint-disable no-async-promise-executor */
+
 import uuid from 'uuid/v4';
+import { mountZipFile, readFile, writeFile, ensureDirectory } from '@/fs';
 // import initSqlJs from 'sql.js';
 
 // const initSqlJs = require('sql.js');
@@ -17,7 +20,7 @@ export async function getSQL() {
 	return sql;
 }
 
-export async function addPeopleMeta(buffer, { chats, people }) {
+export async function addPeopleMeta(buffer, { chats, people, files }) {
 	const SQL = await getSQL();
 	const db = new SQL.Database(buffer);
 
@@ -41,6 +44,7 @@ export async function addPeopleMeta(buffer, { chats, people }) {
 	return {
 		chats,
 		people,
+		files
 	};
 }
 
@@ -51,6 +55,8 @@ export async function parseMsgStore(buffer) {
 	let people = {};
 	let messages = [];
 	let chats = {};
+	let files = {};
+	let filePromises = [];
 
 	db.each(
 		`SELECT
@@ -86,6 +92,24 @@ export async function parseMsgStore(buffer) {
 				mimeType: row.media_mime_type
 			};
 
+			if (message.mediaSrc) {
+				filePromises.push((async () => {
+					try {
+						const file = await readFile(message.mediaSrc.replace('Media/', '/import/Export/files/media/0/WhatsApp/Media/'), null);
+						const blob = new Blob([file.buffer], { type: message.mimeType || 'image/jpeg' });
+						files[message.mediaSrc] = URL.createObjectURL(blob);
+
+						// Move to /assets/Media
+						const path = message.mediaSrc.replace('Media/', '/assets/Media/');
+						console.log(path);
+						await ensureDirectory(path);
+						await writeFile(path, file, null);
+					} catch (e) {
+						console.error('could not fetch file', message.mediaSrc, e);
+					}
+				})());
+			}
+
 			if (message.text || message.mediaSrc) {
 				messages.push(message);
 			}
@@ -107,10 +131,47 @@ export async function parseMsgStore(buffer) {
 		}
 	}
 
-	
+	await Promise.allSettled(filePromises);
 
 	return {
 		chats,
 		people,
+		files
 	};
+}
+
+export async function loadVizFile(file) {
+	await mountZipFile(file, '/load');
+	let vizJson = JSON.parse(await readFile('/load/Viz.json'));
+
+	console.log(vizJson);
+
+	vizJson.files = {};
+
+	for (const chat of Object.values(vizJson.chats)) {
+		for (const message of chat.messages) {
+			try {
+				message.date = new Date(message.date);
+				console.info(message.mediaSrc)
+				if (message.mediaSrc) {
+					const file = await readFile(`/load/${message.mediaSrc}`, null);
+					const blob = new Blob([file.buffer], { type: message.mimeType || 'image/jpeg' });
+					vizJson.files[message.mediaSrc] = URL.createObjectURL(blob);
+
+					// Move to /assets/Media
+					await ensureDirectory(`/assets/${message.mediaSrc}`);
+					await writeFile(`/assets/${message.mediaSrc}`, file, null);
+				}
+			} catch (e) {
+				console.error('could not fetch file', message.mediaSrc, e);
+			}
+		}
+	}
+
+	for (const event of Object.values(vizJson.events)) {
+		event.start = new Date(event.start);
+		event.end = new Date(event.end);
+	}
+
+	return vizJson;
 }

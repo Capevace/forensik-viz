@@ -45,11 +45,13 @@
 		</table>
 
 		<button
-			class="block bg-blue-100 rounded-md h-full px-2 py-2 self-end mb-20"
+			class="block bg-blue-100 rounded-md h-full px-2 py-2 self-end mb-10"
 			@click="loadData"
 		>
-			Laden
+			Daten auslesen
 		</button>
+
+		<strong v-if="importMessage" class="block mb-10">{{ importMessage }}</strong>
 
 		<h4 class="text-xl font-medium text-gray-700 mb-1" v-if="activeImport">Chats:</h4>
 		<table class="mb-3 text-gray-600 text-left" v-if="activeImport">
@@ -145,7 +147,8 @@ export default {
 			rootDirs: getDirs('/'),
 			dirs: getDirs('/'),
 			counter: 0,
-			activeImport: null
+			activeImport: null,
+			importMessage: null
 		};
 	},
 	methods: {
@@ -173,20 +176,25 @@ export default {
 				}
 			}));
 
+			this.importMessage = null;
+
 			const msgStoreData = await parseMsgStore(
 				msgStore
 			);
 
-			console.log('msgstore', msgStoreData)
-
 			if (mrMessages) {
-				const { chats, people } = await addPeopleMeta(mrMessages, msgStoreData);
-				this.activeImport = { chats, people };
+				const dataWithMeta = await addPeopleMeta(mrMessages, msgStoreData);
+				this.activeImport = dataWithMeta;
 				// this.$store.commit('setup/update', { chats, people });
 			} else {
-				this.activeImport = { chats: msgStoreData.chats, people: msgStoreData.people };
+				this.activeImport = msgStoreData;
 				// this.$store.commit('setup/update', { chats: msgStoreData.chats, people: msgStoreData.people });
 			}
+
+			const chatsCount = Object.values(this.activeImport.chats).length;
+			const peopleCount = Object.values(this.activeImport.people).length;
+
+			this.importMessage = `Es wurden ${chatsCount} Chats und ${peopleCount} Personen gefunden.`;
 		},
 
 		async importData() {
@@ -194,24 +202,35 @@ export default {
 				return;
 
 			let chats = {};
-			
+			let peopleCount = 0;
+
 			for (const chat of Object.values(this.activeImport.chats)) {
-				console.log(chat, this.activeImport.people);
 				if (chat.enabled) {
 					chats[chat.id] = chat;
 
 					const sender = this.activeImport.people[chat.sender] || this.$store.state.setup.people[chat.sender];
 					const receiver = this.activeImport.people[chat.receiver] || this.$store.state.setup.people[chat.receiver];
 					
-					if (sender)
-						this.$store.commit('setup/setPerson', sender);
+					if (sender) {
+						this.$store.commit('setup/updatePerson', sender);
+						peopleCount++;
+					}
 
-					if (receiver)
-						this.$store.commit('setup/setPerson', receiver);
+					if (receiver) {
+						this.$store.commit('setup/updatePerson', receiver);
+						peopleCount++;
+					}
 				}
 			}
 
-			this.$store.commit('setup/setChats', chats);
+			const chatsCount = Object.values(chats).length;
+
+			this.importMessage = `Es wurden ${chatsCount} Chats und ${peopleCount} Personen importiert.`;
+
+			this.$store.commit('setup/addChats', chats);
+			this.$store.commit('setup/addFiles', this.activeImport.files);
+
+			this.activeImport = null;
 		}
 	},
 	computed: {

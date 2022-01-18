@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import presentation from './presentation';
+import map from './map';
 import setup from './setup';
 
 
@@ -23,7 +23,7 @@ export default new Vuex.Store({
 	mutations: {},
 	actions: {},
 	modules: {
-		presentation,
+		map,
 		setup
 	},
 });

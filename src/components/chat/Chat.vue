@@ -1,10 +1,10 @@
 <template>
-	<div class="flex flex-col gap-5 overflow-y-scroll">
+	<div class="flex flex-col gap-3 overflow-y-scroll pb-5">
 		<div class="text-center text-xs font-medium text-gray-900 opacity-40">
 			{{ safeFirstDate.toLocaleString() }}
 		</div>
 		<Bubble
-			v-for="message in messages"
+			v-for="message in rebasedMessages"
 			:key="message.id"
 			:message="message"
 			:right="message.isSender"
@@ -36,12 +36,27 @@ export default {
 		},
 		firstDate: {
 			type: Date
+		},
+		basePath: {
+			type: String,
+			default: '/import/Export/files/media/0/WhatsApp/Media/'
 		}
 	},
 	computed: {
 		safeFirstDate() {
 			return this.messages[0] ? this.messages[0].date : this.firstDate || new Date();
 		},
+		rebasedMessages() {
+			return this.messages.map(message => {
+				if (!message.mediaSrc)
+					return message;
+
+				return {
+					...message,
+					// mediaSrc: message.mediaSrc.replace('Media/', this.basePath)
+				};
+			})
+		}
 	},
 	components: {
 		Bubble,

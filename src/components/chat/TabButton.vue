@@ -28,7 +28,7 @@ export default {
 		classes() {
 			return `bg-${this.color}-300 text-${
 				this.color
-			}-900 flex-1 py-2 flex items-center justify-between px-3 disabled:opacity-50 disabled:cursor-not-allowed font-medium ${
+			}-900 flex-1 py-2 flex gap-2 items-center justify-between px-3 disabled:opacity-50 disabled:cursor-not-allowed font-medium ${
 				this.active ? '' : 'opacity-70 hover:opacity-90'
 			}`;
 		},

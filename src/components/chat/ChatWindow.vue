@@ -23,13 +23,13 @@
 				<div class="flex items-center gap-2">
 					<img
 						class="h-4 w-4 rounded-full"
-						:src="receiver.avatarUrl"
+						:src="receiver.avatarUrl || `https://avatars.dicebear.com/api/bottts/${encodeURIComponent(receiver.name)}.svg`"
 					/>
 					{{ receiver.name }}
 				</div>
 				<div class="flex items-center gap-2">
 					{{ sender.name }}
-					<img class="h-4 w-4 rounded-full" :src="sender.avatarUrl" />
+					<img class="h-4 w-4 rounded-full" :src="sender.avatarUrl || `https://avatars.dicebear.com/api/bottts/${encodeURIComponent(sender.name)}.svg`" />
 				</div>
 			</div>
 			<Chat
@@ -44,25 +44,33 @@
 						: { 'max-height': '70vh' }
 				"
 				:sender="sender"
-				:messages="selectedChat.messages"
+				:receiver="receiver"
+				:messages="messages"
 				:color="selectedColor"
 			/>
 		</template>
 		<nav class="w-full flex justify-around">
 			<TabButton
-				v-for="chat in chats"
+				v-for="chat in chatList"
 				:key="chat.id"
 				:color="chatColor(chat.type)"
-				:count="chat.messages.length"
+				:count="filterMessagesForEvent(chat.messages, selectedEvent).length"
 				:active="selectedChat.id === chat.id"
 				@click="selectChat(chat)"
+				:style="`max-width: ${100/chatList.length}%`"
 			>
-				{{ chatName(chat.type) }}
+				<div class="flex flex-col text-left flex-shrink-1 truncate overflow-ellipsis overflow-hidden">
+					<div class="truncate">{{ toPerson(chat.receiver).name }}</div>
+					<div :class="`text-xs text-${selectedColor}-600`">
+						{{ chatName(chat.type) }}
+					</div>
+				</div>
 			</TabButton>
 		</nav>
 	</div>
 </template>
 <script type="text/javascript">
+import filterMessagesForEvent from '@/util/filter-messages-for-event';
 import TabButton from './TabButton';
 import Chat from './Chat';
 
@@ -80,25 +88,32 @@ export default {
 		};
 	},
 	beforeMount() {
-		this.selectedChat = this.chats[0];
+		this.selectedChat = this.chatList[0];
 	},
 	computed: {
+		chatList() {
+			return this.chats.map(chatId => this.$store.state.setup.chats[chatId]);
+		},
+		selectedEvent() {
+			return this.$store.state.setup.events[this.$store.state.map.selectedEventId];
+		},
 		messages() {
 			if (!this.selectedChat) return null;
 
-			return this.selectedChat.messages;
+			const messages = filterMessagesForEvent(
+				this.selectedChat.messages, 
+				this.selectedEvent
+			);
+
+			return messages;
 		},
 		sender() {
-			return this.$store.state.presentation.people[
-				this.selectedChat.sender
-			] || this.$store.state.setup.people[
+			return this.$store.state.setup.people[
 				this.selectedChat.sender
 			];
 		},
 		receiver() {
-			return this.$store.state.presentation.people[
-				this.selectedChat.receiver
-			] || this.$store.state.setup.people[
+			return this.$store.state.setup.people[
 				this.selectedChat.receiver
 			];
 		},
@@ -113,6 +128,10 @@ export default {
 		TabButton,
 	},
 	methods: {
+		filterMessagesForEvent,
+		toPerson(id) {
+			return this.$store.state.setup.people[id] || this.$store.state.setup.people[id];
+		},
 		selectChat(chat) {
 			this.selectedChat = chat;
 		},
@@ -145,8 +164,8 @@ export default {
 			if (!this.selectedChat) return;
 
 			this.selectedChat =
-				this.chats.find((chat) => chat.id === this.selectedChat.id) ||
-				this.chats[0];
+				this.chatList.find((chat) => chat.id === this.selectedChat.id) ||
+				this.chatList[0];
 		},
 	},
 };

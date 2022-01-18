@@ -1,5 +1,22 @@
 <template>
-	<div class="map fixed w-full h-screen">
+	<div class="map fixed w-full h-screen flex flex-col">
+		<Header small locked>
+			<template v-slot:actions>
+				<form class="flex gap-2 px-2 items-center" @submit.prevent="loadFile">
+					<input type="file" ref="loadFile">
+
+					<button
+						class="py-1 px-4 rounded-md text-gray-700 bg-gray-200 hover:bg-blue-200 hover:text-blue-900"
+						type="submit" 
+					>
+						Laden
+					</button>
+
+					<a href="#" class="block py-1 px-4 rounded-md text-gray-700 bg-gray-200 hover:bg-blue-200 hover:text-blue-900" @click.prevent="edit">Bearbeiten ➝</a>
+				</form>
+			</template>
+		</Header>
+
 		<Map :locations="currentLocations">
 			<template v-slot:control>
 				<EventControl
@@ -17,38 +34,47 @@
 					:chats="currentChats"
 				/>
 			</template>
+
+			<template v-slot:load>
+				
+			</template>
 		</Map>
 	</div>
 </template>
 <script>
+import Header from '@/components/layout/Header';
 import Map from '@/components/map/Map';
 import EventControl from '@/components/events/EventControl';
 import ChatWindow from '@/components/chat/ChatWindow';
 
 export default {
 	components: {
+		Header,
 		Map,
 		EventControl,
 		ChatWindow,
 	},
 	data() {
 		return {
-			selectedEventId: null,
 		};
 	},
 	mounted() {
-		this.selectedEventId = this.$store.state.presentation.events[0].id;
+		this.selectEvent(this.events.length > 0 ? this.events[0].id : null);
 	},
 	computed: {
+		selectedEventId() {
+			return this.$store.state.map.selectedEventId;
+		},
+		eventsObj() {
+			return this.$store.state.setup.events;
+		},
 		events() {
-			return this.$store.state.presentation.events;
+			return this.$store.getters['setup/eventList'];
 		},
 		selectedEvent() {
 			if (!this.selectedEventId) return null;
 
-			return this.events.find(
-				(event) => event.id === this.selectedEventId
-			);
+			return this.eventsObj[this.selectedEventId];
 		},
 		currentChats() {
 			if (!this.selectedEvent) {
@@ -66,8 +92,14 @@ export default {
 		},
 	},
 	methods: {
+		loadFile() {
+			this.$store.dispatch('setup/loadFile', this.$refs.loadFile.files[0]);
+		},
+		edit() {
+			this.$router.push('/');
+		},
 		selectEvent(eventId) {
-			this.selectedEventId = eventId;
+			this.$store.commit('map/selectEvent', eventId);
 		},
 		next() {
 			let index = this.events.findIndex(
@@ -78,7 +110,7 @@ export default {
 				return;
 			}
 
-			this.selectedEventId = this.events[index].id;
+			this.selectEvent(this.events[index].id);
 		},
 		previous() {
 			let index = this.events.findIndex(
@@ -89,8 +121,13 @@ export default {
 				return;
 			}
 
-			this.selectedEventId = this.events[index].id;
+			this.selectEvent(this.events[index].id);
 		},
 	},
+	watch: {
+		eventsObj() {
+			this.selectEvent(this.events.length > 0 ? this.events[0].id : null);
+		}
+	}
 };
 </script>
