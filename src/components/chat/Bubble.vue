@@ -11,15 +11,15 @@
 		>
 			<img class="h-6 w-6 rounded-full" :src="sender.avatarUrl" />
 			<div :class="classes">
+				<button v-if="message.mediaSrc" class="block mb-2">
+					<FSImg :src="message.mediaSrc" :mime="message.mimeType" @click="onImageClick"/>
+				</button>
 				<p
-					v-if="message.type === 'text'"
-					:class="`block mb-1 text-gray-900`"
+					v-if="message.text"
+					:class="`block text-gray-900 mb-2`"
 				>
 					{{ message.text }}
 				</p>
-				<button v-else-if="message.type === 'image'" class="block mb-2">
-					<img @click="onImageClick" :src="message.mediaSrc" />
-				</button>
 				<span
 					:class="`block text-xs text-gray-900 opacity-60 ${
 						right ? 'text-right' : ''
@@ -32,6 +32,7 @@
 	</div>
 </template>
 <script type="text/javascript">
+import FSImg from '@/components/chat/FSImg';
 // const content = {
 // 	type: 'text' || 'image',
 // 	text: '',
@@ -43,6 +44,16 @@ export default {
 			type: Object,
 			required: true,
 		},
+		sender: {
+			type: Object,
+			default: () => ({
+				id: '1ed7504b-35bd-41b7-b8d7-38149b8a027c',
+				name: 'Unbekannt',
+				avatarUrl:
+					'https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/00/00bb8a893a2e125c3fce471364154f950a8db60d.jpg',
+				color: 'purple',
+			}),
+		},
 		right: {
 			type: Boolean,
 			default: false,
@@ -53,9 +64,6 @@ export default {
 		},
 	},
 	computed: {
-		sender() {
-			return this.$store.state.presentation.people[this.message.sender];
-		},
 		classes() {
 			return {
 				'block px-3 py-2 rounded-lg text-left shadow': true,
@@ -75,6 +83,8 @@ export default {
 			});
 		},
 	},
-	components: {},
+	components: {
+		FSImg
+	},
 };
 </script>

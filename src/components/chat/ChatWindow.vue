@@ -43,7 +43,7 @@
 						  }
 						: { 'max-height': '70vh' }
 				"
-				:sender-id="selectedChat.sender"
+				:sender="sender"
 				:messages="selectedChat.messages"
 				:color="selectedColor"
 			/>
@@ -91,10 +91,14 @@ export default {
 		sender() {
 			return this.$store.state.presentation.people[
 				this.selectedChat.sender
+			] || this.$store.state.setup.people[
+				this.selectedChat.sender
 			];
 		},
 		receiver() {
 			return this.$store.state.presentation.people[
+				this.selectedChat.receiver
+			] || this.$store.state.setup.people[
 				this.selectedChat.receiver
 			];
 		},

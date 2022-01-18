@@ -1,13 +1,14 @@
 <template>
 	<div class="flex flex-col gap-5 overflow-y-scroll">
 		<div class="text-center text-xs font-medium text-gray-900 opacity-40">
-			{{ firstDate.toLocaleString() }}
+			{{ safeFirstDate.toLocaleString() }}
 		</div>
 		<Bubble
 			v-for="message in messages"
 			:key="message.id"
 			:message="message"
-			:right="message.sender === senderId"
+			:right="message.isSender"
+			:sender="message.isSender ? sender : receiver"
 			:color="`${color}-200`"
 		/>
 	</div>
@@ -21,22 +22,33 @@ export default {
 			type: Array,
 			required: true,
 		},
-		senderId: {
-			type: String,
+		sender: {
+			type: Object,
+			required: true,
+		},
+		receiver: {
+			type: Object,
 			required: true,
 		},
 		color: {
 			type: String,
 			default: 'green',
 		},
+		firstDate: {
+			type: Date
+		}
 	},
 	computed: {
-		firstDate() {
-			return this.messages[0].date;
+		safeFirstDate() {
+			return this.messages[0] ? this.messages[0].date : this.firstDate || new Date();
 		},
 	},
 	components: {
 		Bubble,
 	},
+
+	methods: {
+		
+	}
 };
 </script>

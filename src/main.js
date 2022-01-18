@@ -8,12 +8,20 @@ import './assets/tailwind.css';
 import 'viewerjs/dist/viewer.css';
 import VueViewer from 'v-viewer';
 
-Vue.use(VueViewer);
+import { initFS } from './fs';
 
-Vue.config.productionTip = false;
+async function main() {
+	await initFS();
 
-new Vue({
-	router,
-	store,
-	render: (h) => h(App),
-}).$mount('#app');
+	Vue.use(VueViewer);
+
+	Vue.config.productionTip = false;
+
+	new Vue({
+		router,
+		store,
+		render: (h) => h(App),
+	}).$mount('#app');
+}
+
+main().catch((e) => console.error('GLOBAL CATCH:', e));

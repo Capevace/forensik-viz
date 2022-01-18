@@ -40,9 +40,7 @@
 
 <script>
 import 'leaflet/dist/leaflet.css';
-import markerIcon from '@/assets/marker-icon.png';
-import markerShadow from '@/assets/marker-shadow.png';
-import { icon, latLng } from 'leaflet';
+import { latLng } from 'leaflet';
 import {
 	LMap,
 	LTileLayer,
@@ -51,6 +49,8 @@ import {
 	LTooltip,
 	LIcon,
 } from 'vue2-leaflet';
+
+import createIcon from '@/util/create-icon';
 
 export default {
 	props: {
@@ -108,24 +108,7 @@ export default {
 
 			this.$refs.map.fitBounds(bounds, { padding: [200, 200] });
 		},
-		createIcon(location) {
-			return location.person
-				? icon({
-						iconUrl: location.person.avatarUrl,
-						iconAnchor: [16, 16],
-						tooltipAnchor: [16, 0],
-						className: `rounded-full shadow-lg border-2 border-gray-500`,
-				  })
-				: icon({
-						iconUrl: markerIcon,
-						shadowUrl: markerShadow,
-						iconSize: [25, 41],
-						iconAnchor: [12, 41],
-						popupAnchor: [1, -34],
-						tooltipAnchor: [16, -28],
-						shadowSize: [41, 41],
-				  });
-		},
+		createIcon
 	},
 	watch: {
 		locations() {
