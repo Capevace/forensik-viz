@@ -85,12 +85,7 @@ export default {
 		},
 
 		async preview() {
-			this.compiling = true;
-			
-			await this.$store.dispatch('setup/preview');
-
-			this.compiling = false;
-			this.$router.push('/map');	
+			this.$router.push('/');	
 		}
 	}
 };

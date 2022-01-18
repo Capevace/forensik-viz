@@ -5,8 +5,8 @@
 			<button 
 				v-for="chat in chats"
 				:key="chat.id"
-				class="text-left flex gap-3 text-sm font-medium px-3 py-2 rounded-md hover:shadow bg-green-200 hover:bg-green-300 transition text-green-900 w-full"
-				:class="{ 'bg-green-300': viewedChat && viewedChat.id === chat.id, 'opacity-60': !selectedChats.includes(chat.id) }"
+				class="text-left flex gap-3 text-sm border-2 border-transparent font-medium px-3 py-2 rounded-md hover:shadow bg-green-200 hover:bg-green-300 transition text-green-900 w-full"
+				:class="{ 'bg-green-300 border-green-400': viewedChat && viewedChat.id === chat.id, 'opacity-60': !selectedChats.includes(chat.id) }"
 				@click="viewChat(chat)"
 			>
 				<input type="checkbox" name="" :checked="selectedChats.includes(chat.id)" @change="selectChat($event, chat)">

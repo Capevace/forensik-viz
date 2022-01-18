@@ -12,7 +12,9 @@
 						Laden
 					</button>
 
-					<a href="#" class="block py-1 px-4 rounded-md text-gray-700 bg-gray-200 hover:bg-blue-200 hover:text-blue-900" @click.prevent="edit">Bearbeiten ➝</a>
+					<a href="#" class="block py-1 px-4 rounded-md text-gray-700 bg-gray-200 hover:bg-blue-200 hover:text-blue-900" @click.prevent="edit">
+						Bearbeiten ➝
+					</a>
 				</form>
 			</template>
 		</Header>
@@ -96,7 +98,7 @@ export default {
 			this.$store.dispatch('setup/loadFile', this.$refs.loadFile.files[0]);
 		},
 		edit() {
-			this.$router.push('/');
+			this.$router.push('/editor');
 		},
 		selectEvent(eventId) {
 			this.$store.commit('map/selectEvent', eventId);
