@@ -12,7 +12,6 @@
 		<LControl
 			:position="'bottomleft'"
 			class="w-full max-w-xl p-5"
-			style="min-width: 40vw"
 			:disableScrollPropagation="true"
 		>
 			<slot name="control" />
@@ -81,8 +80,10 @@ export default {
 	},
 	computed: {
 		mappedLocations() {
+			console.log(this.locations, this.$store.state.setup.locations);
 			return this.locations
-			.map((location) => this.$store.state.setup.locations[location]);
+				.map((location) => this.$store.state.setup.locations[location])
+				.filter(location => !!location);
 		},
 	},
 	data() {
@@ -104,9 +105,7 @@ export default {
 			if (this.locations.length === 0) return;
 			const bounds = this.mappedLocations.map((location) => [
 				location.position.lat,
-				location.position.lng,
-							console.log(location)
-
+				location.position.lng
 			]);
 
 			this.$refs.map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });

@@ -1,6 +1,7 @@
 <template>
 	<div
 		class="bg-gray-200 rounded-lg px-3 py-3 flex flex-col gap-3 w-full max-w-md shadow-md"
+		style="min-width: 500px;"
 	>
 		<div class="flex flex-col" v-if="selectedEvent">
 			<h1 class="text-lg font-bold">{{ selectedEvent.title }}</h1>

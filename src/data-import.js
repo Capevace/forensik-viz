@@ -112,7 +112,7 @@ export async function parseMsgStore(buffer) {
 								const filename = pathParts[pathParts.length - 1];
 
 								const location = {
-									id: uuid(),
+									id: `location-${message.mediaSrc}`,
 									position,
 									// date: new Date('2021-10-01 15:50:00'),
 									// person: personA.id,
