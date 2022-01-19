@@ -2,6 +2,7 @@
 
 import uuid from 'uuid/v4';
 import { mountZipFile, readFile, writeFile, ensureDirectory } from '@/fs';
+import { getExifData } from '@/exif';
 // import initSqlJs from 'sql.js';
 
 // const initSqlJs = require('sql.js');
@@ -20,7 +21,7 @@ export async function getSQL() {
 	return sql;
 }
 
-export async function addPeopleMeta(buffer, { chats, people, files }) {
+export async function addPeopleMeta(buffer, state) {
 	const SQL = await getSQL();
 	const db = new SQL.Database(buffer);
 
@@ -33,19 +34,15 @@ export async function addPeopleMeta(buffer, { chats, people, files }) {
 				name: row.ContactAlias,
 			};
 
-			people[chattedPerson.id] = {
+			state.people[chattedPerson.id] = {
 				id: row.Contact,
-				...(people[chattedPerson.id] || {}),
+				...(state.people[chattedPerson.id] || {}),
 				name: row.ContactAlias || row.Contact
 			};
 		}
 	);
 
-	return {
-		chats,
-		people,
-		files
-	};
+	return state;
 }
 
 export async function parseMsgStore(buffer) {
@@ -56,6 +53,8 @@ export async function parseMsgStore(buffer) {
 	let messages = [];
 	let chats = {};
 	let files = {};
+	let exif = {};
+	let locations = {};
 	let filePromises = [];
 
 	db.each(
@@ -70,7 +69,7 @@ export async function parseMsgStore(buffer) {
 			let chattedPerson = {
 				id: row.key_remote_jid,
 				name: row.key_remote_jid,
-				avatarUrl: 'https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/00/00bb8a893a2e125c3fce471364154f950a8db60d.jpg',
+				avatarUrl: '',
 				color: 'green'
 			};
 
@@ -101,9 +100,30 @@ export async function parseMsgStore(buffer) {
 
 						// Move to /assets/Media
 						const path = message.mediaSrc.replace('Media/', '/assets/Media/');
-						console.log(path);
+
 						await ensureDirectory(path);
 						await writeFile(path, file, null);
+
+						if ((message.mimeType || 'image/jpeg') === 'image/jpeg') {
+							const { tags, position } = getExifData(await blob.arrayBuffer());
+
+							if (position) {
+								const pathParts = message.mediaSrc.split('/');
+								const filename = pathParts[pathParts.length - 1];
+
+								const location = {
+									id: uuid(),
+									position,
+									// date: new Date('2021-10-01 15:50:00'),
+									// person: personA.id,
+									description: filename,
+									mediaSrc: message.mediaSrc
+								};
+								locations[location.id] = location;
+							}
+
+							exif[message.mediaSrc] = tags;
+						}
 					} catch (e) {
 						console.error('could not fetch file', message.mediaSrc, e);
 					}
@@ -136,7 +156,9 @@ export async function parseMsgStore(buffer) {
 	return {
 		chats,
 		people,
-		files
+		files,
+		locations,
+		exif
 	};
 }
 
@@ -147,6 +169,7 @@ export async function loadVizFile(file) {
 	console.log(vizJson);
 
 	vizJson.files = {};
+	vizJson.exif = vizJson.exif || {};
 
 	for (const chat of Object.values(vizJson.chats)) {
 		for (const message of chat.messages) {
@@ -161,6 +184,27 @@ export async function loadVizFile(file) {
 					// Move to /assets/Media
 					await ensureDirectory(`/assets/${message.mediaSrc}`);
 					await writeFile(`/assets/${message.mediaSrc}`, file, null);
+
+					if ((message.mimeType || 'image/jpeg') === 'image/jpeg') {
+						const { tags, position } = getExifData(await blob.arrayBuffer());
+
+						if (position) {
+							const pathParts = message.mediaSrc.split('/');
+							const filename = pathParts[pathParts.length - 1];
+
+							const location = {
+								id: `location-${message.mediaSrc}`,
+								position,
+								// date: new Date('2021-10-01 15:50:00'),
+								// person: personA.id,
+								description: filename,
+								mediaSrc: message.mediaSrc
+							};
+							vizJson.locations[location.id] = location || vizJson.locations[location.id];
+						}
+
+						vizJson.exif[message.mediaSrc] = tags || vizJson.exif[message.mediaSrc];
+					}
 				}
 			} catch (e) {
 				console.error('could not fetch file', message.mediaSrc, e);

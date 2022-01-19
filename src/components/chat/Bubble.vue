@@ -12,7 +12,7 @@
 			<img class="h-6 w-6 rounded-full" :src="sender.avatarUrl || `https://avatars.dicebear.com/api/bottts/${encodeURIComponent(sender.name)}.svg`" />
 			<div :class="classes">
 				<button v-if="message.mediaSrc" class="block mb-2 w-full">
-					<FSImg :src="message.mediaSrc" :mime="message.mimeType" @click="onImageClick"/>
+					<FSImg :src="message.mediaSrc" :mime="message.mimeType" @click="onImageClick(message)"/>
 				</button>
 				<p
 					v-if="message.text"
@@ -33,6 +33,7 @@
 </template>
 <script type="text/javascript">
 import FSImg from '@/components/chat/FSImg';
+import inspectImage from '@/util/inspect-image';
 // const content = {
 // 	type: 'text' || 'image',
 // 	text: '',
@@ -73,14 +74,8 @@ export default {
 		},
 	},
 	methods: {
-		onImageClick(e) {
-			this.$viewerApi({
-				images: [e.target.src],
-				options: {
-					toolbar: false,
-					navbar: false,
-				},
-			});
+		onImageClick(message) {
+			inspectImage(this.$viewerApi, this.$store.state.setup, message.mediaSrc);
 		},
 	},
 	components: {

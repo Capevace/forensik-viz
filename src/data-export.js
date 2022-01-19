@@ -14,18 +14,16 @@ console.log(zip);
 
 // }
 
-export async function exportAsZip(projectName, people, chats, locations, events, files) {
-	console.log(people, chats, locations, events, files);
-
+export async function exportAsZip(state) {
 	const inputBlob = new Blob(
-		[JSON.stringify({ projectName, people, chats, locations, events }, null, 2)],
+		[JSON.stringify({ ...state, files: undefined }, null, 2)],
 		{ type: 'application/json' }
 	);
 	const blobWriter = new zip.BlobWriter('application/zip');
 	const zipWriter = new zip.ZipWriter(blobWriter);
 	await zipWriter.add('Viz.json', new zip.BlobReader(inputBlob));
 
-	for (const chat of Object.values(chats)) {
+	for (const chat of Object.values(state.chats)) {
 		console.log(chat);
 
 		for (const message of chat.messages) {

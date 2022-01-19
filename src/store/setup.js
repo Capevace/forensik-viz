@@ -198,7 +198,8 @@ export default {
 		events: {
 			// [event.id]: event
 		},
-		files: {}
+		files: {},
+		exif: {}
 	}),
 	getters: {
 		eventList(state) {
@@ -227,6 +228,7 @@ export default {
 			state.locations = viz.locations || {};
 			state.events = viz.events || {};
 			state.files = viz.files || {};
+			state.exif = viz.exif || {};
 		},
 
 		setProjectName(state, name) {
@@ -267,6 +269,13 @@ export default {
 		/*
 		 * Locations
 		 */
+		addLocations(state, locations) {
+			state.locations = {
+				...state.locations,
+				...locations
+			};
+		},
+
 		updateLocation(state, location) {
 			Vue.set(state.locations, location.id, location);
 		},
@@ -276,7 +285,10 @@ export default {
 		},
 
 		setLocationPerson(state, { location, person }) {
-			state.locations[location.id].person = person;
+			Vue.set(state.locations, location.id, {
+				...state.locations[location.id],
+				person
+			});
 		},
 
 		/*
@@ -295,10 +307,20 @@ export default {
 		deletePerson(state, id) {
 			Vue.delete(state.people, id);
 		},
+
+		/*
+		 * EXIF
+		 */
+		addExif(state, exif) {
+			state.exif = {
+				...state.exif,
+				...exif
+			};
+		},
 	},
 	actions: {
 		async exportAsFile(context) {
-			const blob = await exportAsZip(context.state.projectName, context.state.people, context.state.chats, context.state.locations, context.state.events, context.state.files);
+			const blob = await exportAsZip(context.state);
 			const data = window.URL.createObjectURL(blob);
 
 
@@ -323,6 +345,10 @@ export default {
 		},
 
 		async loadFile(context, file) {
+			context.commit('setViz', await loadVizFile(file));
+		},
+
+		async parseExif(context, file) {
 			context.commit('setViz', await loadVizFile(file));
 		}
 	},

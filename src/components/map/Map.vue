@@ -31,7 +31,7 @@
 			name="lolol"
 			:lat-lng="location.position"
 			:icon="icon(location)"
-			@click="alert(location)"
+			@click="markerClicked(location)"
 		>
 			<LTooltip :content="location.description" />
 		</LMarker>
@@ -58,6 +58,7 @@ import {
 } from 'vue2-leaflet';
 
 import createIcon from '@/util/create-icon';
+import inspectImage from '@/util/inspect-image';
 
 export default {
 	props: {
@@ -94,8 +95,10 @@ export default {
 		};
 	},
 	methods: {
-		showAlert() {
-			alert('Click!');
+		markerClicked(location) {
+			if (location.mediaSrc) {
+				inspectImage(this.$viewerApi, this.$store.state.setup, location.mediaSrc);
+			}
 		},
 		recalculateBounds() {
 			if (this.locations.length === 0) return;
@@ -109,7 +112,7 @@ export default {
 			this.$refs.map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
 		},
 		icon(location) {
-			return createIcon(location, this.$store.state.setup.people);
+			return createIcon(location, this.$store.state.setup);
 		}
 	},
 	watch: {

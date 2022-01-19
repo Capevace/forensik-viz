@@ -11,7 +11,7 @@
 		<form class="flex flex-col gap-2">
 			<div class="mb-3">
 				<img
-					:src="internalPerson.avatarUrl || `https://avatars.dicebear.com/api/big-ears-neutral/${encodeURIComponent(internalPerson.name)}.svg`"
+					:src="internalPerson.avatarUrl || `https://avatars.dicebear.com/api/bottts/${encodeURIComponent(internalPerson.name)}.svg`"
 					class="mx-auto rounded-full w-16 h-16 mb-2"
 				/>
 				<input
@@ -20,7 +20,7 @@
 					@change="fileChanged($event, internalPerson)"
 					class="mb-2"
 				/>
-				<input type="text" v-model="internalPerson.avatarUrl" class="w-full" :placeholder="`https://avatars.dicebear.com/api/big-ears-neutral/${encodeURIComponent(internalPerson.name)}.svg`">
+				<input type="text" v-model="internalPerson.avatarUrl" class="w-full" :placeholder="`https://avatars.dicebear.com/api/bottts/${encodeURIComponent(internalPerson.name)}.svg`">
 			</div>
 
 			<div>

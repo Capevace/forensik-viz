@@ -91,13 +91,9 @@ export async function ensureDirectory(fname) {
 	let paths = fname.split('/');
 	paths = paths.slice(1, paths.length - 1);
 
-	console.log('Paths', paths);
-
 	let dir = '';
 	for (const path of paths) {
 		dir += '/' + path;
-
-		console.log('Ensure Path', dir, paths);
 
 		if (!fs.existsSync(dir))
 			fs.mkdirSync(dir);

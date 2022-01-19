@@ -83,7 +83,7 @@
 			</button>
 		</div>
 		<div class="w-1/2">
-			<LMap v-if="viewedLocation" style="height: 300px" :zoom="15" :center="viewedLocation.position" class="rounded-md shadow-md">
+			<LMap v-if="viewedLocation" style="height: 300px" :zoom="15" :center="viewedLocation.position" class="rounded-md shadow-md mb-10">
 				<LTileLayer
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 					:attribution="null"
@@ -93,6 +93,11 @@
 					:icon="icon(viewedLocation)"
 				/>
 			</LMap>
+			<img 
+				v-if="viewedLocation.mediaSrc"
+				class="rounded cursor-pointer"
+				:src="$store.state.setup.files[viewedLocation.mediaSrc]" 
+				@click="previewImage(viewedLocation.mediaSrc)">
 		</div>
 	</div>
 </template>
@@ -108,6 +113,8 @@ import {
 	// LIcon,
 } from 'vue2-leaflet';
 import createIcon from '@/util/create-icon';
+import inspectImage from '@/util/inspect-image';
+
 
 
 export default {
@@ -158,7 +165,7 @@ export default {
 	},
 	methods: {
 		icon(location) {
-			return createIcon(location, this.$store.state.setup.people);
+			return createIcon(location, this.$store.state.setup);
 		},
 		selectLocation($event, location) {
 			let locations = this.selectedLocations;
@@ -211,6 +218,10 @@ export default {
 		changePerson($event, location) {
 			console.log('lol')
 			this.$store.commit('setup/setLocationPerson', { location, person: $event.target.value });
+		},
+
+		previewImage(mediaSrc) {
+			inspectImage(this.$viewerApi, this.$store.state.setup, mediaSrc);
 		}
 	},
 	components: {

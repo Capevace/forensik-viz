@@ -229,6 +229,8 @@ export default {
 
 			this.$store.commit('setup/addChats', chats);
 			this.$store.commit('setup/addFiles', this.activeImport.files);
+			this.$store.commit('setup/addExif', this.activeImport.exif);
+			this.$store.commit('setup/addLocations', this.activeImport.locations);
 
 			this.activeImport = null;
 		}
