@@ -3,11 +3,13 @@
 		<Header small locked>
 			<template v-slot:actions>
 				<form class="flex gap-2 px-2 items-center" @submit.prevent="loadFile">
-					<input type="file" ref="loadFile">
+					<input type="file" ref="vizFile" @change="onVizFileChanged">
 
 					<button
-						class="py-1 px-4 rounded-md text-gray-700 bg-gray-200 hover:bg-blue-200 hover:text-blue-900"
+						class="py-1 px-4 rounded-md text-gray-700 bg-gray-200 hover:text-blue-900 disabled:opacity-50 disabled:cursor-default"
+						:class="{ 'hover:bg-blue-200': visFileSelected }"
 						type="submit" 
+						:disabled="!visFileSelected"
 					>
 						Laden
 					</button>
@@ -58,6 +60,7 @@ export default {
 	},
 	data() {
 		return {
+			visFileSelected: false
 		};
 	},
 	mounted() {
@@ -94,8 +97,11 @@ export default {
 		},
 	},
 	methods: {
+		onVizFileChanged() {
+			this.visFileSelected = this.$refs.vizFile.files.length > 0;
+		},
 		loadFile() {
-			this.$store.dispatch('setup/loadFile', this.$refs.loadFile.files[0]);
+			this.$store.dispatch('setup/loadFile', this.$refs.vizFile.files[0]);
 		},
 		edit() {
 			this.$router.push('/editor');

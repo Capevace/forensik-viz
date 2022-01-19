@@ -86,8 +86,8 @@ export default {
 	},
 	data() {
 		return {
-			zoom: 13,
-			center: latLng(52.923, 10.405),
+			zoom: 6,
+			center: latLng(51.38619, 10.56072),
 			url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			attribution:
 				'&copy; <a href="https://mateffy.me">Lukas Mateffy</a> & <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -106,7 +106,7 @@ export default {
 
 			]);
 
-			this.$refs.map.fitBounds(bounds, { padding: [200, 200] });
+			this.$refs.map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
 		},
 		icon(location) {
 			return createIcon(location, this.$store.state.setup.people);
