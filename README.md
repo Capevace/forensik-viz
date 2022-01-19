@@ -42,4 +42,4 @@ npm run build
 ```
 
 Das JavaScript wird nun gebundelt und ist dann im Ordner `docs/` zum hochladen verfügbar (inkl. `index.html` und CSS).
-Im `docs/` Ordner, damit es dann mit GitHub Pages als "Dokumentation" gehostet werden kann.
+Im `docs/` Ordner, damit es dann mit GitHub Pages als "Dokumentation" gehostet werden kann. 

@@ -3,7 +3,7 @@
 		<!-- <pre class="text-xs">{{ JSON.stringify(timelineEvents, null, 2) }}</pre> -->
 
 		<h2 class="text-2xl font-medium mb-3 flex justify-between items-center">
-			<button class="font-medium" @click="next">
+			<button class="font-medium" @click="selectNextEvent">
 				Events ({{ timelineEvents.length }})
 			</button>
 
@@ -46,17 +46,16 @@
 			<h4 class="text-lg font-medium mb-3">Chats</h4>
 			<ChatSelector
 				v-model="selectedEvent"
-				:chats="Object.values(chats)"
+				:chats="chats"
 				:filter-start="selectedEvent.start"
 				:filter-end="selectedEvent.end"
-			
 			/>
 
 			<h4 class="text-lg font-medium mb-3">Locations</h4>
 			<LocationSelector
 				v-model="selectedEvent"
 			
-				:locations="Object.values(locations)"
+				:locations="locations"
 			/>
 		</article>
 	</section>
@@ -78,33 +77,20 @@ export default {
 	data() {
 		
 		return {
-			// events: {
-			// 	[event.id]: event
-			// },
 			selectedEvent: null,
 		};
 	},
 	watch: {
 		selectedEvent: {
-			// This will let Vue know to look inside the array
 			deep: true,
-
-		      // We have to move our method to a handler field
 		    handler() {
 		    	if (!this.selectedEvent)
 		    		return;
 
-				// this.events[this.selectedEvent.id] = this.selectedEvent;
 				this.$store.commit('setup/updateEvent', this.selectedEvent);
 				this.$refs.timeline.focus(this.selectedEvent.id);
 			}
 		},
-
-		// events() {
-		// 	const index = this.events.findIndex(event => event.id === this.selectedEvent.id);
-		// 	this.events[index] = this.selectedEvent;
-		// 	this.updateEvents();
-		// },
 	},
 	methods: {
 		addEvent() {
@@ -117,7 +103,6 @@ export default {
 				locations: []
 			};
 
-			// Vue.set(this.events, event.id, event);
 			this.$store.commit('setup/updateEvent', event);
 			this.selectedEvent = event;
 		},
@@ -135,11 +120,12 @@ export default {
 			}
 		},
 
-		next() {
+
+		selectNextEvent() {
 			if (!this.selectedEvent) {
 				return this.selectEvent({ items: [this.timelineEvents[0].id] });
 			}
-			
+
 			let index = this.timelineEvents.findIndex(
 				(e) => e.id === this.selectedEvent.id
 			);
@@ -156,53 +142,17 @@ export default {
 		events() {
 			return this.$store.state.setup.events;
 		},
+
 		timelineEvents() {
 			return Object.values(this.events).map(event => ({ ...event, content: event.title }))
 		},
+
 		chats() {
-			return this.$store.state.setup.chats || {
-				'whatsapp-1': {
-					id: 'whatsapp-1',
-					type: 'whatsapp',
-					receiver: '601cff75-9252-4086-998b-8938209ed879',
-					sender: '1ed7504b-35bd-41b7-b8d7-38149b8a027c',
-					messages: [
-						{
-							id: randomId(),
-							date: new Date(),
-							sender: '601cff75-9252-4086-998b-8938209ed879',
-							type: 'text',
-							text: 'Ey yo kannst du heute noch die Schicht übernehmen?',
-						},
-						{
-							id: randomId(),
-							date: new Date(Date.now() + 1000 * 60),
-							sender: '1ed7504b-35bd-41b7-b8d7-38149b8a027c',
-							type: 'image',
-							mediaSrc:
-								'https://image.spreadshirtmedia.net/image-server/v1/mp/products/T1459A839PA4459PT28D129372714FS7416/views/1,width=378,height=378,appearanceId=839,backgroundColor=F2F2F2/mittelfinger-fuck-you-sticker.jpg',
-						},
-					],
-				},
-			};
+			return Object.values(this.$store.state.setup.chats) || [];
 		},
 
 		locations() {
-			return this.$store.state.setup.locations || {
-				a: {
-					id: 'a',
-					position: { lat: 53.228093, lng: 10.373144 },
-					date: new Date('2021-10-01 15:50:00'),
-					person: 'aaa',
-					description: `Haus`,
-				},
-				b: {
-					id: 'b',
-					position: { lat: 53.232634, lng: 10.393671 },
-					date: new Date('2021-10-01 16:22:00'),
-					description: `Arbeit`,
-				},
-			};
+			return Object.values(this.$store.state.setup.locations) || [];
 		}
 	}
 };

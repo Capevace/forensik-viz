@@ -4,22 +4,10 @@ import Vuex from 'vuex';
 import map from './map';
 import setup from './setup';
 
-
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-	state: {
-		people: {
-			1: {
-				name: 'Markus Gasleiter',
-				avatarUrl: 'https://i.pravatar.cc/300',
-			},
-			2: {
-				name: 'Frank Susmann',
-				avatarUrl: 'https://i.pravatar.cc/200',
-			},
-		},
-	},
+	state: {},
 	mutations: {},
 	actions: {},
 	modules: {
