@@ -7,7 +7,9 @@
 		Visualisierung für Forensik-Projekt an der <a href="https://leuphana.de">Leuphana Universität Lüneburg</a>
 	</p>
 	<p>
-		<a href="https://forensik.mateffy.me" target="_blank">Demo</a>
+		<a href="https://forensik.mateffy.me" target="_blank">Demo</a> 
+		&nbsp; | &nbsp;
+		<a href="https://github.com/Capevace/forensik-viz/raw/main/examples/Fall%20Gasleiter.viz">Beispiel .viz-Datei herunterladen</a>
 	</p>
 </div>
 

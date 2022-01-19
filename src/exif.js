@@ -1,8 +1,6 @@
 import ExifReader from 'exifreader';
 import md5 from '@/md5';
 
-console.log(md5);
-
 export function getExifData(file) {
 	let exifData = ExifReader.load(file);
 
