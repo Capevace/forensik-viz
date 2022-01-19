@@ -24,6 +24,7 @@
     "v-viewer": "^1.6.4",
     "vue": "^2.6.11",
     "vue-datetime": "^1.0.0-beta.14",
+    "vue-meta": "^2.4.0",
     "vue-router": "^3.2.0",
     "vue-timeline-component": "^0.1.5",
     "vue-visjs": "^0.6.0",

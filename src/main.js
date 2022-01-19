@@ -7,6 +7,7 @@ import './assets/tailwind.css';
 
 import 'viewerjs/dist/viewer.css';
 import VueViewer from 'v-viewer';
+import VueMeta from 'vue-meta'
 
 import { initFS } from './fs';
 
@@ -14,6 +15,7 @@ async function main() {
 	await initFS();
 
 	Vue.use(VueViewer);
+	Vue.use(VueMeta);
 
 	Vue.config.productionTip = false;
 
