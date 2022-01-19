@@ -1,5 +1,5 @@
 <template>
-	<section class="max-w-4xl mx-auto mb-10">
+	<section class="max-w-4xl mx-auto mb-10 text-gray-800">
 		<!-- <pre class="text-xs">{{ JSON.stringify(timelineEvents, null, 2) }}</pre> -->
 
 		<h2 class="text-2xl font-medium mb-3 flex justify-between items-center">
@@ -8,7 +8,7 @@
 			</button>
 
 			<button
-				class="block bg-blue-100 text-base font-regular rounded-md h-full px-2 py-2"
+				class="block bg-blue-100 hover:bg-blue-200 text-base font-regular rounded-md h-full px-2 py-2"
 				@click="addEvent"
 			>
 				Event hinzufügen
@@ -35,11 +35,15 @@
 		</div>
 
 		<article v-if="selectedEvent">
+			{{ selectedEvent }}
 			<div class="flex w-full justify-between items-center">
 				<h3 class="text-lg font-medium mb-3">
 					Event: {{ selectedEvent.title }}
 				</h3>
-				<button class="hover:bg-red-300 px-2 py-1 rounded-md" @click="deleteEvent">Event löschen</button>
+				<div class="flex items-center gap-2">
+					<button class="hover:bg-blue-200 px-2 py-1 rounded-md" @click="duplicateEvent">Event duplizieren</button>
+					<button class="hover:bg-red-200 px-2 py-1 rounded-md" @click="deleteEvent">Event löschen</button>
+				</div>
 			</div>
 			<MetaEditor v-model="selectedEvent"  />
 
@@ -53,8 +57,7 @@
 
 			<h4 class="text-lg font-medium mb-3">Locations</h4>
 			<LocationSelector
-				v-model="selectedEvent"
-			
+				:event="selectedEvent"
 				:locations="locations"
 			/>
 		</article>
@@ -112,9 +115,12 @@ export default {
 			this.selectedEvent = null;
 		},
 
+		duplicateEvent() {
+			this.$store.commit('setup/duplicateEvent', this.selectedEvent.id);
+		},
+
 
 		selectEvent({ items }) {
-			console.log(items);
 			if (items.length > 0) {
 				this.selectedEvent = this.events[items[0]];
 			}

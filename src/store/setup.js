@@ -1,4 +1,4 @@
-// import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from 'uuid';
 import Vue from 'vue';
 
 import { loadVizFile } from '@/data-import';
@@ -246,6 +246,30 @@ export default {
 			Vue.delete(state.events, eventId);
 		},
 
+		duplicateEvent(state, eventId) {
+			const oldEvent = state.events[eventId];
+			let event = {
+				...oldEvent,
+				locations: [...oldEvent.locations],
+				chats: [...oldEvent.chats],
+				id: uuid()
+			};
+
+			Vue.set(state.events, event.id, event);
+		},
+
+		toggleEventLocation(state, { event, location }) {
+			event = state.events[event.id];
+
+			if (!event.locations.includes(location.id)) {
+				event.locations.push(location.id);
+			} else {
+				const index = event.locations.indexOf(location.id);
+
+				if (index !== -1) event.locations.splice(index, 1);
+			}
+		},
+
 		/*
 		 * Chats
 		 */
@@ -282,6 +306,16 @@ export default {
 
 		deleteLocation(state, location) {
 			Vue.delete(state.locations, location.id);
+
+			for (const eventId of Object.keys(state.events)) {
+				const event = state.events[eventId];
+				let locations = event.locations;
+
+				const index = locations.indexOf(location.id);
+				if (index !== -1) locations.splice(index, 1);
+
+				state.events[eventId].locations = locations;
+			}
 		},
 
 		setLocationPerson(state, { location, person }) {

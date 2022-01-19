@@ -47,24 +47,23 @@
 				v-for="location in locations"
 				:key="location.id"
 				class="text-left text-sm font-medium px-3 flex gap-2 py-2 rounded-md hover:shadow bg-purple-200 hover:bg-purple-300 transition text-purple-900 w-full"
-				:class="{ 'bg-purple-300': viewedLocation && viewedLocation.id === location.id, 'opacity-60': !value.locations.includes(location.id) }"
+				:class="{ 'bg-purple-300': viewedLocation && viewedLocation.id === location.id, 'opacity-60': !event.locations.includes(location.id) }"
 				@click="viewLocation(location)"
 			>
 				<input
 					type="checkbox"
 					name=""
 					@change="selectLocation($event, location)"
-					:checked="value.locations.includes(location.id)"
+					:checked="event.locations.includes(location.id)"
 				/>
 
 				<div class="flex-1">
-					<button
-						
-						class="flex-1 text-left mb-1"
+					<div
+						class="flex-1 text-left mb-1 flex justify-between items-center"
 					>
-						{{ location.description }}
-
-					</button>
+						<span>{{ location.description }}</span>
+						<span v-if="location.mediaSrc">🌅</span>
+					</div>
 
 					<select @change="changePerson($event, location)" class="w-full">
 						<option value="" :selected="location.person === null">–</option>
@@ -79,7 +78,7 @@
 					</select>
 				</div>
 
-				<button @click="removeLocation(location)" class="font-mono">X</button>
+				<button v-if="!location.mediaSrc" @click="removeLocation(location)" class="font-mono disabled:opacity-20" :disabled="event.locations.includes(location.id)">X</button>
 			</button>
 		</div>
 		<div class="w-1/2">
@@ -119,7 +118,7 @@ import inspectImage from '@/util/inspect-image';
 
 export default {
 	props: {
-		value: {
+		event: {
 			type: Object,
 			required: true
 		},
@@ -134,11 +133,6 @@ export default {
 				},
 			],
 		},
-	},
-	watch: {
-		value() {
-			this.$emit('change');
-		}
 	},
 	data(vm) {
 		return {
@@ -157,7 +151,7 @@ export default {
 	},
 	computed: {
 		selectedLocations() {
-			return this.value.locations;
+			return this.event.locations;
 		},
 		allPeople() {
 			return Object.values(this.$store.state.setup.people);
@@ -167,24 +161,14 @@ export default {
 		icon(location) {
 			return createIcon(location, this.$store.state.setup);
 		},
+
 		selectLocation($event, location) {
-			let locations = this.selectedLocations;
-
-			if ($event.target.checked) {
-				locations.push(location.id);
-			} else {
-				const index = locations.indexOf(location.id);
-
-				if (index !== -1) locations.splice(index, 1);
-			}
-
-			this.$emit('value', locations);
-			this.$emit('change');
+			this.$store.commit('setup/toggleEventLocation', { event: this.event, location });
 		},
 
 		addLocation() {
 			this.$store.commit('setup/updateLocation', this.newLocation);
-			this.selectLocation({ target: { checked: true }}, this.newLocation);
+			this.selectLocation({}, this.newLocation);
 			this.newLocation = {
 				id: uuid(),
 				position: { lat: 53.228093, lng: 10.373144 },
@@ -205,18 +189,10 @@ export default {
 		removeLocation(location) {
 			this.$store.commit('setup/deleteLocation', location);
 
-			let locations = this.selectedLocations;
-
-			const index = locations.indexOf(location.id);
-			if (index !== -1) locations.splice(index, 1);
-
-			this.$emit('value', locations);
-
 			this.$forceUpdate();
 		},
 
 		changePerson($event, location) {
-			console.log('lol')
 			this.$store.commit('setup/setLocationPerson', { location, person: $event.target.value });
 		},
 
