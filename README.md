@@ -7,7 +7,7 @@
 		Visualisierung für Forensik-Projekt an der <a href="https://leuphana.de">Leuphana Universität Lüneburg</a>
 	</p>
 	<p>
-		<a href="https://forensik.mateffy.me">Demo</a>
+		<a href="https://forensik.mateffy.me" target="_blank">Demo</a>
 	</p>
 </div>
 
