@@ -11,7 +11,7 @@
 					name="description" 
 					id="description" 
 					class="focus:ring-purple-500 focus:border-purple-500 block flex-1 py-2 px-4 sm:text-sm border-gray-300 rounded-md" 
-					placeholder="Description"
+					placeholder="Beschreibung"
 					v-model="newLocation.description"
 					required
 				/>
@@ -21,7 +21,7 @@
 					name="lat" 
 					id="lat" 
 					class="focus:ring-purple-500 focus:border-purple-500 block flex-1 py-2 px-4 sm:text-sm border-gray-300 rounded-md" 
-					placeholder="Latitude"
+					placeholder="Latitude (53.228093)"
 					v-model="newLocation.position.lat"
 					required
 				/>
@@ -31,7 +31,7 @@
 					name="long" 
 					id="long" 
 					class="focus:ring-purple-500 focus:border-purple-500 block flex-1 py-2 px-4 sm:text-sm border-gray-300 rounded-md" 
-					placeholder="Longitude"
+					placeholder="Longitude (11.238493)"
 					v-model="newLocation.position.lng"
 					required
 				/>
@@ -126,10 +126,10 @@ export default {
 			type: Array,
 			default: () => [
 				{
-					id: 'aaa',
-					position: { lat: 53.228909, lng: 10.401397 },
+					id: uuid(),
+					position: { lat: '', lng: '' },
 					date: new Date(),
-					description: `Kiosk`,
+					description: ``,
 				},
 			],
 		},
@@ -171,7 +171,7 @@ export default {
 			this.selectLocation({}, this.newLocation);
 			this.newLocation = {
 				id: uuid(),
-				position: { lat: 53.228093, lng: 10.373144 },
+				position: { lat: '' , lng: '' },
 				// date: new Date('2021-10-01 15:50:00'),
 				// person: personA.id,
 				description: ``,

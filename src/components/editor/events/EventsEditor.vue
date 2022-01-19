@@ -35,7 +35,6 @@
 		</div>
 
 		<article v-if="selectedEvent">
-			{{ selectedEvent }}
 			<div class="flex w-full justify-between items-center">
 				<h3 class="text-lg font-medium mb-3">
 					Event: {{ selectedEvent.title }}
