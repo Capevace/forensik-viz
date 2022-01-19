@@ -13,14 +13,14 @@ export function getExifData(file) {
 	if ('GPSLatitude' in exifData && 'GPSLongitude' in exifData) {
 		position = {
 			lat: parseFloat(exifData['GPSLatitude'].description),
-			lng: parseFloat(exifData['GPSLongitude'].description)
+			lng: parseFloat(exifData['GPSLongitude'].description),
 		};
 	}
 
 	if (!position && 'Latitude' in exifData && 'Longitude' in exifData) {
 		position = {
 			lat: parseFloat(exifData['Latitude'].value),
-			lng: parseFloat(exifData['Longitude'].value)
+			lng: parseFloat(exifData['Longitude'].value),
 		};
 	}
 
@@ -28,7 +28,7 @@ export function getExifData(file) {
 
 	for (const tagName of Object.keys(exifData)) {
 		const tag = exifData[tagName];
-		
+
 		if (!tag.description || tag.description === '') {
 			continue;
 		}

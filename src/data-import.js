@@ -14,7 +14,8 @@ export async function getSQL() {
 		sql = await window.initSqlJs({
 			// Required to load the wasm binary asynchronously. Of course, you can host it wherever you want
 			// You can omit locateFile completely when running in node
-			locateFile: (file) => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/${file}`,
+			locateFile: (file) =>
+				`https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/${file}`,
 		});
 	}
 
@@ -37,7 +38,7 @@ export async function addPeopleMeta(buffer, state) {
 			state.people[chattedPerson.id] = {
 				id: row.Contact,
 				...(state.people[chattedPerson.id] || {}),
-				name: row.ContactAlias || row.Contact
+				name: row.ContactAlias || row.Contact,
 			};
 		}
 	);
@@ -70,7 +71,7 @@ export async function parseMsgStore(buffer) {
 				id: row.key_remote_jid,
 				name: row.key_remote_jid,
 				avatarUrl: '',
-				color: 'green'
+				color: 'green',
 			};
 
 			if (!people[chattedPerson.id]) {
@@ -88,46 +89,70 @@ export async function parseMsgStore(buffer) {
 				isSender: row.key_from_me === 1,
 				text: row.data || row.media_caption,
 				mediaSrc: row.file_path,
-				mimeType: row.media_mime_type
+				mimeType: row.media_mime_type,
 			};
 
 			if (message.mediaSrc) {
-				filePromises.push((async () => {
-					try {
-						const file = await readFile(message.mediaSrc.replace('Media/', '/import/Export/files/media/0/WhatsApp/Media/'), null);
-						const blob = new Blob([file.buffer], { type: message.mimeType || 'image/jpeg' });
-						files[message.mediaSrc] = URL.createObjectURL(blob);
+				filePromises.push(
+					(async () => {
+						try {
+							const file = await readFile(
+								message.mediaSrc.replace(
+									'Media/',
+									'/import/Export/files/media/0/WhatsApp/Media/'
+								),
+								null
+							);
+							const blob = new Blob([file.buffer], {
+								type: message.mimeType || 'image/jpeg',
+							});
+							files[message.mediaSrc] = URL.createObjectURL(blob);
 
-						// Move to /assets/Media
-						const path = message.mediaSrc.replace('Media/', '/assets/Media/');
+							// Move to /assets/Media
+							const path = message.mediaSrc.replace(
+								'Media/',
+								'/assets/Media/'
+							);
 
-						await ensureDirectory(path);
-						await writeFile(path, file, null);
+							await ensureDirectory(path);
+							await writeFile(path, file, null);
 
-						if ((message.mimeType || 'image/jpeg') === 'image/jpeg') {
-							const { tags, position } = getExifData(await blob.arrayBuffer());
+							if (
+								(message.mimeType || 'image/jpeg') ===
+								'image/jpeg'
+							) {
+								const { tags, position } = getExifData(
+									await blob.arrayBuffer()
+								);
 
-							if (position) {
-								const pathParts = message.mediaSrc.split('/');
-								const filename = pathParts[pathParts.length - 1];
+								if (position) {
+									const pathParts =
+										message.mediaSrc.split('/');
+									const filename =
+										pathParts[pathParts.length - 1];
 
-								const location = {
-									id: `location-${message.mediaSrc}`,
-									position,
-									// date: new Date('2021-10-01 15:50:00'),
-									// person: personA.id,
-									description: filename,
-									mediaSrc: message.mediaSrc
-								};
-								locations[location.id] = location;
+									const location = {
+										id: `location-${message.mediaSrc}`,
+										position,
+										// date: new Date('2021-10-01 15:50:00'),
+										// person: personA.id,
+										description: filename,
+										mediaSrc: message.mediaSrc,
+									};
+									locations[location.id] = location;
+								}
+
+								exif[message.mediaSrc] = tags;
 							}
-
-							exif[message.mediaSrc] = tags;
+						} catch (e) {
+							console.error(
+								'could not fetch file',
+								message.mediaSrc,
+								e
+							);
 						}
-					} catch (e) {
-						console.error('could not fetch file', message.mediaSrc, e);
-					}
-				})());
+					})()
+				);
 			}
 
 			if (message.text || message.mediaSrc) {
@@ -146,7 +171,7 @@ export async function parseMsgStore(buffer) {
 				type: 'whatsapp',
 				receiver: message.chatId,
 				sender: null,
-				messages: [ message ]
+				messages: [message],
 			};
 		}
 	}
@@ -158,7 +183,7 @@ export async function parseMsgStore(buffer) {
 		people,
 		files,
 		locations,
-		exif
+		exif,
 	};
 }
 
@@ -175,10 +200,15 @@ export async function loadVizFile(file) {
 		for (const message of chat.messages) {
 			try {
 				message.date = new Date(message.date);
-				console.info(message.mediaSrc)
+				console.info(message.mediaSrc);
 				if (message.mediaSrc) {
-					const file = await readFile(`/load/${message.mediaSrc}`, null);
-					const blob = new Blob([file.buffer], { type: message.mimeType || 'image/jpeg' });
+					const file = await readFile(
+						`/load/${message.mediaSrc}`,
+						null
+					);
+					const blob = new Blob([file.buffer], {
+						type: message.mimeType || 'image/jpeg',
+					});
 					vizJson.files[message.mediaSrc] = URL.createObjectURL(blob);
 
 					// Move to /assets/Media
@@ -186,7 +216,9 @@ export async function loadVizFile(file) {
 					await writeFile(`/assets/${message.mediaSrc}`, file, null);
 
 					if ((message.mimeType || 'image/jpeg') === 'image/jpeg') {
-						const { tags, position } = getExifData(await blob.arrayBuffer());
+						const { tags, position } = getExifData(
+							await blob.arrayBuffer()
+						);
 
 						if (position) {
 							const pathParts = message.mediaSrc.split('/');
@@ -198,12 +230,14 @@ export async function loadVizFile(file) {
 								// date: new Date('2021-10-01 15:50:00'),
 								// person: personA.id,
 								description: filename,
-								mediaSrc: message.mediaSrc
+								mediaSrc: message.mediaSrc,
 							};
-							vizJson.locations[location.id] = location || vizJson.locations[location.id];
+							vizJson.locations[location.id] =
+								location || vizJson.locations[location.id];
 						}
 
-						vizJson.exif[message.mediaSrc] = tags || vizJson.exif[message.mediaSrc];
+						vizJson.exif[message.mediaSrc] =
+							tags || vizJson.exif[message.mediaSrc];
 					}
 				}
 			} catch (e) {

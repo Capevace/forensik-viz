@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="bg-gray-200 rounded-lg px-3 py-3 flex flex-col gap-3 w-full max-w-md shadow-md"
-		style="min-width: 500px;"
+		style="min-width: 500px"
 	>
 		<div class="flex flex-col" v-if="selectedEvent">
 			<h1 class="text-lg font-bold">{{ selectedEvent.title }}</h1>
@@ -68,7 +68,7 @@ export default {
 			return this.selectedEvent ? this.selectedEvent.id : null;
 		},
 		timelineEvents() {
-			return  this.$store.getters['setup/eventList'];
+			return this.$store.getters['setup/eventList'];
 		},
 		options: () => ({
 			editable: false,
@@ -101,8 +101,8 @@ export default {
 					this.$refs.timeline.focus(this.selectedEvent.id);
 				});
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 <style type="text/css">

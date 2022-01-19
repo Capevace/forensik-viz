@@ -7,7 +7,7 @@ import './assets/tailwind.css';
 
 import 'viewerjs/dist/viewer.css';
 import VueViewer from 'v-viewer';
-import VueMeta from 'vue-meta'
+import VueMeta from 'vue-meta';
 
 import { initFS } from './fs';
 

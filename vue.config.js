@@ -18,10 +18,12 @@ module.exports = {
 		// See: https://github.com/jvilk/BrowserFS/issues/201
 		module: {
 			noParse: /browserfs\.js/,
-			rules: [{
-				test: /\.wasm$/,
-				type: 'javascript/auto',
-			}]
+			rules: [
+				{
+					test: /\.wasm$/,
+					type: 'javascript/auto',
+				},
+			],
 		},
 		plugins: [
 			// Expose BrowserFS, process, and Buffer globals.

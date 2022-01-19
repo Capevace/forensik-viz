@@ -1,6 +1,10 @@
 <template>
 	<header
-		:class="{ 'bg-blue-600 text-blue-100 font-bold flex items-center justify-between': true, 'h-12 px-3': !small, 'h-8 text-xs': small }"
+		:class="{
+			'bg-blue-600 text-blue-100 font-bold flex items-center justify-between': true,
+			'h-12 px-3': !small,
+			'h-8 text-xs': small,
+		}"
 	>
 		<h1 class="flex-1">
 			<input
@@ -32,18 +36,18 @@ export default {
 		},
 		locked: {
 			type: Boolean,
-			default: () => false
-		}
+			default: () => false,
+		},
 	},
 	computed: {
 		projectName() {
 			return this.$store.state.setup.projectName;
-		}
+		},
 	},
 	methods: {
 		changedProjectName(e) {
 			this.$store.commit('setup/setProjectName', e.target.value);
-		}
-	}
+		},
+	},
 };
 </script>

@@ -40,11 +40,21 @@
 					Event: {{ selectedEvent.title }}
 				</h3>
 				<div class="flex items-center gap-2">
-					<button class="hover:bg-blue-200 px-2 py-1 rounded-md" @click="duplicateEvent">Event duplizieren</button>
-					<button class="hover:bg-red-200 px-2 py-1 rounded-md" @click="deleteEvent">Event löschen</button>
+					<button
+						class="hover:bg-blue-200 px-2 py-1 rounded-md"
+						@click="duplicateEvent"
+					>
+						Event duplizieren
+					</button>
+					<button
+						class="hover:bg-red-200 px-2 py-1 rounded-md"
+						@click="deleteEvent"
+					>
+						Event löschen
+					</button>
 				</div>
 			</div>
-			<MetaEditor v-model="selectedEvent"  />
+			<MetaEditor v-model="selectedEvent" />
 
 			<h4 class="text-lg font-medium mb-3">Chats</h4>
 			<ChatSelector
@@ -55,10 +65,7 @@
 			/>
 
 			<h4 class="text-lg font-medium mb-3">Locations</h4>
-			<LocationSelector
-				:event="selectedEvent"
-				:locations="locations"
-			/>
+			<LocationSelector :event="selectedEvent" :locations="locations" />
 		</article>
 	</section>
 </template>
@@ -77,7 +84,6 @@ export default {
 		LocationSelector,
 	},
 	data() {
-		
 		return {
 			selectedEvent: null,
 		};
@@ -85,13 +91,12 @@ export default {
 	watch: {
 		selectedEvent: {
 			deep: true,
-		    handler() {
-		    	if (!this.selectedEvent)
-		    		return;
+			handler() {
+				if (!this.selectedEvent) return;
 
 				this.$store.commit('setup/updateEvent', this.selectedEvent);
 				this.$refs.timeline.focus(this.selectedEvent.id);
-			}
+			},
 		},
 	},
 	methods: {
@@ -102,7 +107,7 @@ export default {
 				start: new Date(),
 				end: new Date(Date.now() + 1000 * 60 * 60),
 				chats: [],
-				locations: []
+				locations: [],
 			};
 
 			this.$store.commit('setup/updateEvent', event);
@@ -118,13 +123,11 @@ export default {
 			this.$store.commit('setup/duplicateEvent', this.selectedEvent.id);
 		},
 
-
 		selectEvent({ items }) {
 			if (items.length > 0) {
 				this.selectedEvent = this.events[items[0]];
 			}
 		},
-
 
 		selectNextEvent() {
 			if (!this.selectedEvent) {
@@ -140,7 +143,7 @@ export default {
 			} else {
 				this.selectEvent({ items: [this.timelineEvents[index].id] });
 			}
-		}
+		},
 	},
 
 	computed: {
@@ -149,7 +152,10 @@ export default {
 		},
 
 		timelineEvents() {
-			return Object.values(this.events).map(event => ({ ...event, content: event.title }))
+			return Object.values(this.events).map((event) => ({
+				...event,
+				content: event.title,
+			}));
 		},
 
 		chats() {
@@ -158,8 +164,8 @@ export default {
 
 		locations() {
 			return Object.values(this.$store.state.setup.locations) || [];
-		}
-	}
+		},
+	},
 };
 </script>
 <style type="text/css">

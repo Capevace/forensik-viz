@@ -21,7 +21,11 @@ export default function createIcon(location, state) {
 
 	return person
 		? icon({
-				iconUrl: person.avatarUrl || `https://avatars.dicebear.com/api/bottts/${encodeURIComponent(person.name)}.svg`,
+				iconUrl:
+					person.avatarUrl ||
+					`https://avatars.dicebear.com/api/bottts/${encodeURIComponent(
+						person.name
+					)}.svg`,
 				iconSize: [32, 32],
 				iconAnchor: [16, 16],
 				tooltipAnchor: [16, 0],

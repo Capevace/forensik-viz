@@ -34,27 +34,13 @@
 		>
 			<LTooltip :content="location.description" />
 		</LMarker>
-
-		<LIcon :icon-anchor="[16, 16]">
-			<!-- <img
-				class="rounded-full shadow"
-				:src="location.person ? location.person.avatarUrl : null"
-			/> -->
-		</LIcon>
 	</LMap>
 </template>
 
 <script>
 import 'leaflet/dist/leaflet.css';
 import { latLng } from 'leaflet';
-import {
-	LMap,
-	LTileLayer,
-	LControl,
-	LMarker,
-	LTooltip,
-	LIcon,
-} from 'vue2-leaflet';
+import { LMap, LTileLayer, LControl, LMarker, LTooltip } from 'vue2-leaflet';
 
 import createIcon from '@/util/create-icon';
 import inspectImage from '@/util/inspect-image';
@@ -73,7 +59,6 @@ export default {
 		LControl,
 		LMarker,
 		LTooltip,
-		LIcon,
 	},
 	mounted() {
 		this.recalculateBounds();
@@ -83,7 +68,7 @@ export default {
 			console.log(this.locations, this.$store.state.setup.locations);
 			return this.locations
 				.map((location) => this.$store.state.setup.locations[location])
-				.filter(location => !!location);
+				.filter((location) => !!location);
 		},
 	},
 	data() {
@@ -98,21 +83,28 @@ export default {
 	methods: {
 		markerClicked(location) {
 			if (location.mediaSrc) {
-				inspectImage(this.$viewerApi, this.$store.state.setup, location.mediaSrc);
+				inspectImage(
+					this.$viewerApi,
+					this.$store.state.setup,
+					location.mediaSrc
+				);
 			}
 		},
 		recalculateBounds() {
 			if (this.locations.length === 0) return;
 			const bounds = this.mappedLocations.map((location) => [
 				location.position.lat,
-				location.position.lng
+				location.position.lng,
 			]);
 
-			this.$refs.map.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
+			this.$refs.map.fitBounds(bounds, {
+				padding: [50, 50],
+				maxZoom: 14,
+			});
 		},
 		icon(location) {
 			return createIcon(location, this.$store.state.setup);
-		}
+		},
 	},
 	watch: {
 		locations() {

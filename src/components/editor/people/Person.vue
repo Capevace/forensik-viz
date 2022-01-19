@@ -1,7 +1,5 @@
 <template>
-	<article
-		class="max-w-xs px-3 py-3 bg-white rounded-md shadow-md"
-	>
+	<article class="max-w-xs px-3 py-3 bg-white rounded-md shadow-md">
 		<button
 			class="p-0 font-mono font-bold text-xs text-gray-400"
 			@click="deletePerson(internalPerson.id)"
@@ -11,7 +9,12 @@
 		<form class="flex flex-col gap-2">
 			<div class="mb-3">
 				<img
-					:src="internalPerson.avatarUrl || `https://avatars.dicebear.com/api/bottts/${encodeURIComponent(internalPerson.name)}.svg`"
+					:src="
+						internalPerson.avatarUrl ||
+						`https://avatars.dicebear.com/api/bottts/${encodeURIComponent(
+							internalPerson.name
+						)}.svg`
+					"
 					class="mx-auto rounded-full w-16 h-16 mb-2"
 				/>
 				<input
@@ -20,7 +23,14 @@
 					@change="fileChanged($event, internalPerson)"
 					class="mb-2"
 				/>
-				<input type="text" v-model="internalPerson.avatarUrl" class="w-full" :placeholder="`https://avatars.dicebear.com/api/bottts/${encodeURIComponent(internalPerson.name)}.svg`">
+				<input
+					type="text"
+					v-model="internalPerson.avatarUrl"
+					class="w-full"
+					:placeholder="`https://avatars.dicebear.com/api/bottts/${encodeURIComponent(
+						internalPerson.name
+					)}.svg`"
+				/>
 			</div>
 
 			<div>
@@ -97,18 +107,18 @@ export default {
 	props: {
 		person: {
 			type: Object,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data(vm) {
 		return {
-			internalPerson: vm.person
+			internalPerson: vm.person,
 		};
 	},
 	watch: {
 		internalPerson() {
 			this.$store.commit('updatePerson', this.internalPerson);
-		}
+		},
 	},
 	methods: {
 		deletePerson(id) {
@@ -119,6 +129,6 @@ export default {
 			const file = event.target.files[0];
 			person.avatarUrl = await toBase64(file);
 		},
-	}
+	},
 };
 </script>

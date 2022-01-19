@@ -2,10 +2,14 @@
 	<div class="">
 		<Header>
 			<template v-slot:nav>
-				<div class="flex justify-between bg-gray-200 rounded-md shadow-sm flex-1 max-w-2xl self-center">
+				<div
+					class="flex justify-between bg-gray-200 rounded-md shadow-sm flex-1 max-w-2xl self-center"
+				>
 					<button
 						class="flex-1 py-1 text-gray-700 px-10 rounded-l-md"
-						:class="{ 'bg-blue-200 text-blue-900': tab === 'import' }"
+						:class="{
+							'bg-blue-200 text-blue-900': tab === 'import',
+						}"
 						@click="tab = 'import'"
 					>
 						Importieren
@@ -13,15 +17,19 @@
 
 					<button
 						class="flex-1 py-1 text-gray-700 px-10"
-						:class="{ 'bg-blue-200 text-blue-900': tab === 'people' }"
+						:class="{
+							'bg-blue-200 text-blue-900': tab === 'people',
+						}"
 						@click="tab = 'people'"
 					>
 						Personen
 					</button>
-					
+
 					<button
 						class="flex-1 py-1 rounded-r-md text-gray-700 px-14"
-						:class="{ 'bg-blue-200 text-blue-900': tab === 'events' }"
+						:class="{
+							'bg-blue-200 text-blue-900': tab === 'events',
+						}"
 						@click="tab = 'events'"
 					>
 						Events
@@ -72,7 +80,7 @@ export default {
 	data() {
 		return {
 			tab: 'import',
-			compiling: false
+			compiling: false,
 		};
 	},
 	methods: {
@@ -85,8 +93,8 @@ export default {
 		},
 
 		async preview() {
-			this.$router.push('/');	
-		}
-	}
+			this.$router.push('/');
+		},
+	},
 };
 </script>

@@ -199,26 +199,28 @@ export default {
 			// [event.id]: event
 		},
 		files: {},
-		exif: {}
+		exif: {},
 	}),
 	getters: {
 		eventList(state) {
-			return Object.values(state.events).sort((a, b) => {
-				const aStart = a.start;
-				const bStart = b.start;
+			return Object.values(state.events)
+				.sort((a, b) => {
+					const aStart = a.start;
+					const bStart = b.start;
 
-				if (aStart < bStart) {
-					return -1;
-				} else if (aStart > bStart) {
-					return 1;
-				} else {
-					return 0;
-				}
-			}).map((event) => ({
-				...event,
-				content: event.title,
-			}));
-		}
+					if (aStart < bStart) {
+						return -1;
+					} else if (aStart > bStart) {
+						return 1;
+					} else {
+						return 0;
+					}
+				})
+				.map((event) => ({
+					...event,
+					content: event.title,
+				}));
+		},
 	},
 	mutations: {
 		setViz(state, viz) {
@@ -252,7 +254,7 @@ export default {
 				...oldEvent,
 				locations: [...oldEvent.locations],
 				chats: [...oldEvent.chats],
-				id: uuid()
+				id: uuid(),
 			};
 
 			Vue.set(state.events, event.id, event);
@@ -276,7 +278,7 @@ export default {
 		addChats(state, chats) {
 			state.chats = {
 				...state.chats,
-				...chats
+				...chats,
 			};
 		},
 
@@ -286,7 +288,7 @@ export default {
 		addFiles(state, files = {}) {
 			state.files = {
 				...state.files,
-				...files
+				...files,
 			};
 		},
 
@@ -296,7 +298,7 @@ export default {
 		addLocations(state, locations) {
 			state.locations = {
 				...state.locations,
-				...locations
+				...locations,
 			};
 		},
 
@@ -321,7 +323,7 @@ export default {
 		setLocationPerson(state, { location, person }) {
 			Vue.set(state.locations, location.id, {
 				...state.locations[location.id],
-				person
+				person,
 			});
 		},
 
@@ -330,9 +332,9 @@ export default {
 		 */
 		updatePerson(state, person) {
 			Vue.set(
-				state.people, 
-				person.id, 
-				(person.id in state.people)
+				state.people,
+				person.id,
+				person.id in state.people
 					? { ...state.people[person.id], ...person }
 					: person
 			);
@@ -348,7 +350,7 @@ export default {
 		addExif(state, exif) {
 			state.exif = {
 				...state.exif,
-				...exif
+				...exif,
 			};
 		},
 	},
@@ -356,7 +358,6 @@ export default {
 		async exportAsFile(context) {
 			const blob = await exportAsZip(context.state);
 			const data = window.URL.createObjectURL(blob);
-
 
 			const link = document.createElement('a');
 			link.href = data;
@@ -384,6 +385,6 @@ export default {
 
 		async parseExif(context, file) {
 			context.commit('setViz', await loadVizFile(file));
-		}
+		},
 	},
 };

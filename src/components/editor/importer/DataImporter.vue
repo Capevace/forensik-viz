@@ -51,9 +51,13 @@
 			Daten auslesen
 		</button>
 
-		<strong v-if="importMessage" class="block mb-10">{{ importMessage }}</strong>
+		<strong v-if="importMessage" class="block mb-10">{{
+			importMessage
+		}}</strong>
 
-		<h4 class="text-xl font-medium text-gray-700 mb-1" v-if="activeImport">Chats:</h4>
+		<h4 class="text-xl font-medium text-gray-700 mb-1" v-if="activeImport">
+			Chats:
+		</h4>
 		<table class="mb-3 text-gray-600 text-left" v-if="activeImport">
 			<thead>
 				<th>Typ:</th>
@@ -62,12 +66,20 @@
 				<th>Importieren:</th>
 			</thead>
 			<tbody class="font-mono">
-				<tr v-for="chat in activeImport.chats" :key="chat.id" :class="{ 'opacity-60': !chat.enabled }">
+				<tr
+					v-for="chat in activeImport.chats"
+					:key="chat.id"
+					:class="{ 'opacity-60': !chat.enabled }"
+				>
 					<td>
 						{{ chat.type === 'whatsapp' ? 'WhatsApp' : chat.type }}
 					</td>
-					<td >
-						<select v-model="chat.receiver" @change="$forceUpdate()" class="w-3/4">
+					<td>
+						<select
+							v-model="chat.receiver"
+							@change="$forceUpdate()"
+							class="w-3/4"
+						>
 							<option
 								v-for="person in allPeople"
 								:key="person.id"
@@ -85,7 +97,11 @@
 						</select>
 					</td>
 					<td>
-						<select v-model="chat.sender" @change="$forceUpdate()" class="w-3/4">
+						<select
+							v-model="chat.sender"
+							@change="$forceUpdate()"
+							class="w-3/4"
+						>
 							<option
 								v-for="person in allPeople"
 								:key="person.id"
@@ -103,7 +119,7 @@
 						</select>
 					</td>
 					<td>
-						<input type="checkbox" v-model="chat.enabled">
+						<input type="checkbox" v-model="chat.enabled" />
 					</td>
 				</tr>
 			</tbody>
@@ -148,7 +164,7 @@ export default {
 			dirs: getDirs('/'),
 			counter: 0,
 			activeImport: null,
-			importMessage: null
+			importMessage: null,
 		};
 	},
 	methods: {
@@ -165,25 +181,34 @@ export default {
 			let msgStore = null;
 			let mrMessages = null;
 
-			await Promise.all(this.parsedDirs.map(async (dir) => {
-				switch (dir.type) {
-					case 'wa-msgstore':
-						msgStore = await readFile(`/import${this.rootPath}/${dir.dir}`, null);
-						break;
-					case 'mr-messages':
-						mrMessages = await readFile(`/import${this.rootPath}/${dir.dir}`, null);
-						break;
-				}
-			}));
+			await Promise.all(
+				this.parsedDirs.map(async (dir) => {
+					switch (dir.type) {
+						case 'wa-msgstore':
+							msgStore = await readFile(
+								`/import${this.rootPath}/${dir.dir}`,
+								null
+							);
+							break;
+						case 'mr-messages':
+							mrMessages = await readFile(
+								`/import${this.rootPath}/${dir.dir}`,
+								null
+							);
+							break;
+					}
+				})
+			);
 
 			this.importMessage = null;
 
-			const msgStoreData = await parseMsgStore(
-				msgStore
-			);
+			const msgStoreData = await parseMsgStore(msgStore);
 
 			if (mrMessages) {
-				const dataWithMeta = await addPeopleMeta(mrMessages, msgStoreData);
+				const dataWithMeta = await addPeopleMeta(
+					mrMessages,
+					msgStoreData
+				);
 				this.activeImport = dataWithMeta;
 				// this.$store.commit('setup/update', { chats, people });
 			} else {
@@ -198,8 +223,7 @@ export default {
 		},
 
 		async importData() {
-			if (!this.activeImport)
-				return;
+			if (!this.activeImport) return;
 
 			let chats = {};
 			let peopleCount = 0;
@@ -208,9 +232,13 @@ export default {
 				if (chat.enabled) {
 					chats[chat.id] = chat;
 
-					const sender = this.activeImport.people[chat.sender] || this.$store.state.setup.people[chat.sender];
-					const receiver = this.activeImport.people[chat.receiver] || this.$store.state.setup.people[chat.receiver];
-					
+					const sender =
+						this.activeImport.people[chat.sender] ||
+						this.$store.state.setup.people[chat.sender];
+					const receiver =
+						this.activeImport.people[chat.receiver] ||
+						this.$store.state.setup.people[chat.receiver];
+
 					if (sender) {
 						this.$store.commit('setup/updatePerson', sender);
 						peopleCount++;
@@ -230,10 +258,13 @@ export default {
 			this.$store.commit('setup/addChats', chats);
 			this.$store.commit('setup/addFiles', this.activeImport.files);
 			this.$store.commit('setup/addExif', this.activeImport.exif);
-			this.$store.commit('setup/addLocations', this.activeImport.locations);
+			this.$store.commit(
+				'setup/addLocations',
+				this.activeImport.locations
+			);
 
 			this.activeImport = null;
-		}
+		},
 	},
 	computed: {
 		importActive() {
@@ -269,8 +300,10 @@ export default {
 		},
 
 		allPeople() {
-			return Object.values(this.$store.state.setup.people).filter(person => !!person);
-		}
+			return Object.values(this.$store.state.setup.people).filter(
+				(person) => !!person
+			);
+		},
 	},
 	watch: {
 		rootPath(newPath) {

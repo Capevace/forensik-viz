@@ -1,18 +1,15 @@
 <template>
 	<div class="mb-10">
 		<div>
-			<label
-				for="title"
-				class="block text-sm font-medium text-gray-700"
-			>
+			<label for="title" class="block text-sm font-medium text-gray-700">
 				Titel
 			</label>
 			<div class="mt-1 relative rounded-md shadow-sm mb-3">
 				<input
-					type="text" 
-					name="title" 
-					id="title" 
-					class="focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 px-4 sm:text-sm border-gray-300 rounded-md" 
+					type="text"
+					name="title"
+					id="title"
+					class="focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 px-4 sm:text-sm border-gray-300 rounded-md"
 					placeholder="Zeuge betritt Geschäft"
 					v-model="event.title"
 				/>
@@ -27,8 +24,8 @@
 						Start-Zeit
 					</label>
 					<div class="mt-1 relative rounded-md shadow-sm flex mb-3">
-						<Datetime 
-							v-model="startDate" 
+						<Datetime
+							v-model="startDate"
 							:phrases="{ ok: 'OK', cancel: 'Abbrechen' }"
 							:auto="true"
 							type="datetime"
@@ -44,7 +41,7 @@
 						Ende-Zeit
 					</label>
 					<div class="mt-1 relative rounded-md shadow-sm flex mb-3">
-						<Datetime 
+						<Datetime
 							v-model="endDate"
 							:min-datetime="startDate"
 							:phrases="{ ok: 'OK', cancel: 'Abbrechen' }"
@@ -65,19 +62,17 @@ export default {
 	props: {
 		value: {
 			type: Object,
-			required: true
-		}
+			required: true,
+		},
 	},
 	data(vm) {
 		return {
 			event: vm.value,
 			startDate: vm.value.start.toISOString(),
-			endDate: vm.value.end.toISOString()
-		}
+			endDate: vm.value.end.toISOString(),
+		};
 	},
-	methods: {
-		
-	},
+	methods: {},
 	watch: {
 		event() {
 			this.$emit('value', this.event);
@@ -88,7 +83,9 @@ export default {
 
 			// When start is after end, set end to start + 1h
 			if (this.startDate > this.endDate) {
-				this.event.end = new Date(this.event.start.getTime() + 1000 * 60 * 60).toISOString();
+				this.event.end = new Date(
+					this.event.start.getTime() + 1000 * 60 * 60
+				).toISOString();
 			}
 		},
 		endDate() {
@@ -98,10 +95,10 @@ export default {
 			this.event = this.value;
 			this.startDate = this.event.start.toISOString();
 			this.endDate = this.event.end.toISOString();
-		}
+		},
 	},
 	components: {
-		Datetime
-	}
-}
+		Datetime,
+	},
+};
 </script>

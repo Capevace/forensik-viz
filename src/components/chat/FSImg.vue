@@ -1,8 +1,13 @@
 <template>
 	<div>
-		<img @click="$emit('click', $event)" :src="url" v-if="isImage" class="w-full" />
+		<img
+			@click="$emit('click', $event)"
+			:src="url"
+			v-if="isImage"
+			class="w-full"
+		/>
 		<video v-else controls loop class="w-full">
-			<source :src="url" :type="mime">
+			<source :src="url" :type="mime" />
 		</video>
 	</div>
 </template>
@@ -21,16 +26,16 @@ export default {
 	props: {
 		src: {
 			type: String,
-			required: true
+			required: true,
 		},
 		mime: {
 			type: String,
-			default: 'image/jpeg'
-		}
+			default: 'image/jpeg',
+		},
 	},
 	data() {
 		return {
-			dataUri: ''
+			dataUri: '',
 		};
 	},
 	created() {
@@ -47,7 +52,7 @@ export default {
 		},
 		isImage() {
 			return (this.mime || 'image/jpeg').indexOf('video') === -1;
-		}
-	}
+		},
+	},
 };
 </script>

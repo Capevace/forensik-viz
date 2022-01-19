@@ -9,15 +9,24 @@
 				this.right ? 'flex-row-reverse' : ''
 			}`"
 		>
-			<img class="h-6 w-6 rounded-full" :src="sender.avatarUrl || `https://avatars.dicebear.com/api/bottts/${encodeURIComponent(sender.name)}.svg`" />
+			<img
+				class="h-6 w-6 rounded-full"
+				:src="
+					sender.avatarUrl ||
+					`https://avatars.dicebear.com/api/bottts/${encodeURIComponent(
+						sender.name
+					)}.svg`
+				"
+			/>
 			<div :class="classes">
 				<button v-if="message.mediaSrc" class="block mb-2 w-full">
-					<FSImg :src="message.mediaSrc" :mime="message.mimeType" @click="onImageClick(message)"/>
+					<FSImg
+						:src="message.mediaSrc"
+						:mime="message.mimeType"
+						@click="onImageClick(message)"
+					/>
 				</button>
-				<p
-					v-if="message.text"
-					:class="`block text-gray-900 mb-2`"
-				>
+				<p v-if="message.text" :class="`block text-gray-900 mb-2`">
 					{{ message.text }}
 				</p>
 				<span
@@ -75,11 +84,15 @@ export default {
 	},
 	methods: {
 		onImageClick(message) {
-			inspectImage(this.$viewerApi, this.$store.state.setup, message.mediaSrc);
+			inspectImage(
+				this.$viewerApi,
+				this.$store.state.setup,
+				message.mediaSrc
+			);
 		},
 	},
 	components: {
-		FSImg
+		FSImg,
 	},
 };
 </script>

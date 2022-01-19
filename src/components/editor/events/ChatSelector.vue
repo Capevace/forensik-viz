@@ -2,14 +2,23 @@
 	<div class="flex gap-10 mb-10">
 		<div class="w-1/2 flex flex-col gap-2">
 			<h2 v-if="chats.length === 0">Keine Chats importiert</h2>
-			<button 
+			<button
 				v-for="chat in chats"
 				:key="chat.id"
 				class="text-left flex gap-3 text-sm border-2 border-transparent font-medium px-3 py-2 rounded-md hover:shadow bg-green-200 hover:bg-green-300 transition text-green-900 w-full"
-				:class="{ 'bg-green-300 border-green-400': viewedChat && viewedChat.id === chat.id, 'opacity-60': !selectedChats.includes(chat.id) }"
+				:class="{
+					'bg-green-300 border-green-400':
+						viewedChat && viewedChat.id === chat.id,
+					'opacity-60': !selectedChats.includes(chat.id),
+				}"
 				@click="viewChat(chat)"
 			>
-				<input type="checkbox" name="" :checked="selectedChats.includes(chat.id)" @change="selectChat($event, chat)">
+				<input
+					type="checkbox"
+					name=""
+					:checked="selectedChats.includes(chat.id)"
+					@change="selectChat($event, chat)"
+				/>
 				<div>
 					<h4>{{ toSender(chat.receiver).name }}</h4>
 					<h5 class="text-sm text-green-700">{{ chat.type }}</h5>
@@ -17,13 +26,19 @@
 			</button>
 		</div>
 		<div class="w-1/2">
-			<Chat 
+			<Chat
 				v-if="viewedChat"
 				:sender="toSender(viewedChat.sender)"
 				:receiver="toSender(viewedChat.receiver)"
 				:firstDate="filterStart"
-				:messages="viewedChat.messages.filter(message => message.date >= filterStart && message.date <= filterEnd)"
-				style="max-height: 800px;"
+				:messages="
+					viewedChat.messages.filter(
+						(message) =>
+							message.date >= filterStart &&
+							message.date <= filterEnd
+					)
+				"
+				style="max-height: 800px"
 			/>
 			<!--  -->
 		</div>
@@ -36,32 +51,32 @@ export default {
 	props: {
 		value: {
 			type: Object,
-			default: () => {}
+			default: () => {},
 		},
 		chats: {
 			type: Array,
-			default: () => []
+			default: () => [],
 		},
 
 		filterStart: {
 			type: Date,
-			default: () => new Date()
+			default: () => new Date(),
 		},
 
 		filterEnd: {
 			type: Date,
-			default: () => new Date()
-		}
+			default: () => new Date(),
+		},
 	},
 	data(vm) {
 		return {
-			viewedChat: vm.chats && vm.chats.length > 0 ? vm.chats[0] : null
+			viewedChat: vm.chats && vm.chats.length > 0 ? vm.chats[0] : null,
 		};
 	},
 	computed: {
 		selectedChats() {
 			return this.value.chats;
-		}
+		},
 	},
 	methods: {
 		toSender(senderId) {
@@ -75,8 +90,7 @@ export default {
 			} else {
 				const index = chats.indexOf(chat.id);
 
-				if (index !== -1)
-					chats.splice(index, 1);
+				if (index !== -1) chats.splice(index, 1);
 			}
 
 			this.$emit('value', chats);
@@ -85,10 +99,10 @@ export default {
 
 		viewChat(chat) {
 			this.viewedChat = chat;
-		}
+		},
 	},
 	components: {
-		Chat
-	}
+		Chat,
+	},
 };
 </script>

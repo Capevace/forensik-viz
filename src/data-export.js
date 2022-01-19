@@ -8,7 +8,7 @@ console.log(zip);
 // zip.configure({
 // 	// useWebWorkers: false,
 // });
-// 
+//
 
 // async function addFileRecursive(zipWriter, file, blob) {
 
@@ -28,12 +28,20 @@ export async function exportAsZip(state) {
 
 		for (const message of chat.messages) {
 			console.log(message);
-			
+
 			if (message.mediaSrc) {
 				try {
-					const file = await readFile(message.mediaSrc.replace('Media/', '/assets/Media/'), null);
-					const blob = new Blob([file.buffer], { type: 'image/jpeg' });
-					await zipWriter.add(message.mediaSrc, new zip.BlobReader(blob));
+					const file = await readFile(
+						message.mediaSrc.replace('Media/', '/assets/Media/'),
+						null
+					);
+					const blob = new Blob([file.buffer], {
+						type: 'image/jpeg',
+					});
+					await zipWriter.add(
+						message.mediaSrc,
+						new zip.BlobReader(blob)
+					);
 				} catch (e) {
 					console.error('could not add file', e);
 				}

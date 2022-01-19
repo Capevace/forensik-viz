@@ -8,13 +8,12 @@
 export default {
 	namespaced: true,
 	state: () => ({
-		selectedEventId: null
+		selectedEventId: null,
 	}),
 	mutations: {
 		selectEvent(state, id) {
 			state.selectedEventId = id;
-		}
+		},
 	},
-	actions: {
-	}
+	actions: {},
 };

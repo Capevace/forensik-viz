@@ -35,35 +35,34 @@ export default {
 			default: 'green',
 		},
 		firstDate: {
-			type: Date
+			type: Date,
 		},
 		basePath: {
 			type: String,
-			default: '/import/Export/files/media/0/WhatsApp/Media/'
-		}
+			default: '/import/Export/files/media/0/WhatsApp/Media/',
+		},
 	},
 	computed: {
 		safeFirstDate() {
-			return this.messages[0] ? this.messages[0].date : this.firstDate || new Date();
+			return this.messages[0]
+				? this.messages[0].date
+				: this.firstDate || new Date();
 		},
 		rebasedMessages() {
-			return this.messages.map(message => {
-				if (!message.mediaSrc)
-					return message;
+			return this.messages.map((message) => {
+				if (!message.mediaSrc) return message;
 
 				return {
 					...message,
 					// mediaSrc: message.mediaSrc.replace('Media/', this.basePath)
 				};
-			})
-		}
+			});
+		},
 	},
 	components: {
 		Bubble,
 	},
 
-	methods: {
-		
-	}
+	methods: {},
 };
 </script>

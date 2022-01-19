@@ -49,28 +49,21 @@ export function getExampleData() {
 					description: `Kiosk von ${personA.name}`,
 				},
 			],
-			chats: [
-				
-				
-			],
+			chats: [],
 		},
 		{
 			id: uuid(),
 			title: 'Tatzeitpunkt',
 			start: new Date('2021-10-04 15:45:00'),
 			end: new Date('2021-10-05 18:45:00'),
-			locations: [
-				
-			],
+			locations: [],
 			chats: [
 				{
 					id: uuid(),
 					type: 'whatsapp',
 					receiver: personB.id,
 					sender: personA.id,
-					messages: [
-						
-					],
+					messages: [],
 				},
 			],
 		},

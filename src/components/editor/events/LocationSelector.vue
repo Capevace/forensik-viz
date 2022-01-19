@@ -7,37 +7,40 @@
 			>
 				<h4>Ort hinzufügen</h4>
 				<input
-					type="text" 
-					name="description" 
-					id="description" 
-					class="focus:ring-purple-500 focus:border-purple-500 block flex-1 py-2 px-4 sm:text-sm border-gray-300 rounded-md" 
+					type="text"
+					name="description"
+					id="description"
+					class="focus:ring-purple-500 focus:border-purple-500 block flex-1 py-2 px-4 sm:text-sm border-gray-300 rounded-md"
 					placeholder="Beschreibung"
 					v-model="newLocation.description"
 					required
 				/>
 
 				<input
-					type="text" 
-					name="lat" 
-					id="lat" 
-					class="focus:ring-purple-500 focus:border-purple-500 block flex-1 py-2 px-4 sm:text-sm border-gray-300 rounded-md" 
+					type="text"
+					name="lat"
+					id="lat"
+					class="focus:ring-purple-500 focus:border-purple-500 block flex-1 py-2 px-4 sm:text-sm border-gray-300 rounded-md"
 					placeholder="Latitude (53.228093)"
 					v-model="newLocation.position.lat"
 					required
 				/>
 
 				<input
-					type="text" 
-					name="long" 
-					id="long" 
-					class="focus:ring-purple-500 focus:border-purple-500 block flex-1 py-2 px-4 sm:text-sm border-gray-300 rounded-md" 
+					type="text"
+					name="long"
+					id="long"
+					class="focus:ring-purple-500 focus:border-purple-500 block flex-1 py-2 px-4 sm:text-sm border-gray-300 rounded-md"
 					placeholder="Longitude (11.238493)"
 					v-model="newLocation.position.lng"
 					required
 				/>
 
 				<div class="flex-1 flex justify-end">
-					<button class="hover:bg-purple-300 px-2 py-1 rounded-md" type="submit">
+					<button
+						class="hover:bg-purple-300 px-2 py-1 rounded-md"
+						type="submit"
+					>
 						Hinzufügen
 					</button>
 				</div>
@@ -47,7 +50,11 @@
 				v-for="location in locations"
 				:key="location.id"
 				class="text-left text-sm font-medium px-3 flex gap-2 py-2 rounded-md hover:shadow bg-purple-200 hover:bg-purple-300 transition text-purple-900 w-full"
-				:class="{ 'bg-purple-300': viewedLocation && viewedLocation.id === location.id, 'opacity-60': !event.locations.includes(location.id) }"
+				:class="{
+					'bg-purple-300':
+						viewedLocation && viewedLocation.id === location.id,
+					'opacity-60': !event.locations.includes(location.id),
+				}"
 				@click="viewLocation(location)"
 			>
 				<input
@@ -65,8 +72,13 @@
 						<span v-if="location.mediaSrc">🌅</span>
 					</div>
 
-					<select @change="changePerson($event, location)" class="w-full">
-						<option value="" :selected="location.person === null">–</option>
+					<select
+						@change="changePerson($event, location)"
+						class="w-full"
+					>
+						<option value="" :selected="location.person === null">
+							–
+						</option>
 						<option
 							v-for="person in allPeople"
 							:key="person.id"
@@ -78,25 +90,39 @@
 					</select>
 				</div>
 
-				<button v-if="!location.mediaSrc" @click="removeLocation(location)" class="font-mono disabled:opacity-20" :disabled="event.locations.includes(location.id)">X</button>
+				<button
+					v-if="!location.mediaSrc"
+					@click="removeLocation(location)"
+					class="font-mono disabled:opacity-20"
+					:disabled="event.locations.includes(location.id)"
+				>
+					X
+				</button>
 			</button>
 		</div>
 		<div class="w-1/2">
-			<LMap v-if="viewedLocation" style="height: 300px" :zoom="15" :center="viewedLocation.position" class="rounded-md shadow-md mb-10">
+			<LMap
+				v-if="viewedLocation"
+				style="height: 300px"
+				:zoom="15"
+				:center="viewedLocation.position"
+				class="rounded-md shadow-md mb-10"
+			>
 				<LTileLayer
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 					:attribution="null"
 				/>
-				<LMarker 
-					:lat-lng="viewedLocation.position" 
+				<LMarker
+					:lat-lng="viewedLocation.position"
 					:icon="icon(viewedLocation)"
 				/>
 			</LMap>
-			<img 
+			<img
 				v-if="viewedLocation.mediaSrc"
 				class="rounded cursor-pointer"
-				:src="$store.state.setup.files[viewedLocation.mediaSrc]" 
-				@click="previewImage(viewedLocation.mediaSrc)">
+				:src="$store.state.setup.files[viewedLocation.mediaSrc]"
+				@click="previewImage(viewedLocation.mediaSrc)"
+			/>
 		</div>
 	</div>
 </template>
@@ -114,13 +140,11 @@ import {
 import createIcon from '@/util/create-icon';
 import inspectImage from '@/util/inspect-image';
 
-
-
 export default {
 	props: {
 		event: {
 			type: Object,
-			required: true
+			required: true,
 		},
 		locations: {
 			type: Array,
@@ -155,7 +179,7 @@ export default {
 		},
 		allPeople() {
 			return Object.values(this.$store.state.setup.people);
-		}
+		},
 	},
 	methods: {
 		icon(location) {
@@ -163,7 +187,10 @@ export default {
 		},
 
 		selectLocation($event, location) {
-			this.$store.commit('setup/toggleEventLocation', { event: this.event, location });
+			this.$store.commit('setup/toggleEventLocation', {
+				event: this.event,
+				location,
+			});
 		},
 
 		addLocation() {
@@ -171,7 +198,7 @@ export default {
 			this.selectLocation({}, this.newLocation);
 			this.newLocation = {
 				id: uuid(),
-				position: { lat: '' , lng: '' },
+				position: { lat: '', lng: '' },
 				// date: new Date('2021-10-01 15:50:00'),
 				// person: personA.id,
 				description: ``,
@@ -193,12 +220,15 @@ export default {
 		},
 
 		changePerson($event, location) {
-			this.$store.commit('setup/setLocationPerson', { location, person: $event.target.value });
+			this.$store.commit('setup/setLocationPerson', {
+				location,
+				person: $event.target.value,
+			});
 		},
 
 		previewImage(mediaSrc) {
 			inspectImage(this.$viewerApi, this.$store.state.setup, mediaSrc);
-		}
+		},
 	},
 	components: {
 		LMap,

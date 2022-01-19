@@ -18,10 +18,7 @@ export async function initFS() {
 
 	// fs.mount('/import', memory);
 
-	fs.mount(
-		'/assets',
-		new BrowserFS.FileSystem.InMemory()
-	);
+	fs.mount('/assets', new BrowserFS.FileSystem.InMemory());
 	await mkdir('/assets/Media');
 	await writeFile('/assets/Media/test.txt', 'Hello World!');
 
@@ -63,7 +60,11 @@ export async function readDir(dir) {
 	});
 }
 
-export async function readFile(file, encoding = 'utf8', flag = new FileFlag('r')) {
+export async function readFile(
+	file,
+	encoding = 'utf8',
+	flag = new FileFlag('r')
+) {
 	return new Promise((resolve, reject) => {
 		fs.readFile(file, encoding, flag, (e, contents) => {
 			if (e) {
@@ -95,8 +96,7 @@ export async function ensureDirectory(fname) {
 	for (const path of paths) {
 		dir += '/' + path;
 
-		if (!fs.existsSync(dir))
-			fs.mkdirSync(dir);
+		if (!fs.existsSync(dir)) fs.mkdirSync(dir);
 	}
 }
 

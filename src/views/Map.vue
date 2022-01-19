@@ -2,19 +2,30 @@
 	<div class="map fixed w-full h-screen flex flex-col">
 		<Header small locked>
 			<template v-slot:actions>
-				<form class="flex gap-2 px-2 items-center" @submit.prevent="loadFile">
-					<input type="file" ref="vizFile" @change="onVizFileChanged">
+				<form
+					class="flex gap-2 px-2 items-center"
+					@submit.prevent="loadFile"
+				>
+					<input
+						type="file"
+						ref="vizFile"
+						@change="onVizFileChanged"
+					/>
 
 					<button
 						class="py-1 px-4 rounded-md text-gray-700 bg-gray-200 hover:text-blue-900 disabled:opacity-50 disabled:cursor-default"
 						:class="{ 'hover:bg-blue-200': visFileSelected }"
-						type="submit" 
+						type="submit"
 						:disabled="!visFileSelected"
 					>
 						Laden
 					</button>
 
-					<a href="#" class="block py-1 px-4 rounded-md text-gray-700 bg-gray-200 hover:bg-blue-200 hover:text-blue-900" @click.prevent="edit">
+					<a
+						href="#"
+						class="block py-1 px-4 rounded-md text-gray-700 bg-gray-200 hover:bg-blue-200 hover:text-blue-900"
+						@click.prevent="edit"
+					>
 						Bearbeiten ➝
 					</a>
 				</form>
@@ -39,9 +50,7 @@
 				/>
 			</template>
 
-			<template v-slot:load>
-				
-			</template>
+			<template v-slot:load> </template>
 		</Map>
 	</div>
 </template>
@@ -60,7 +69,7 @@ export default {
 	},
 	data() {
 		return {
-			visFileSelected: false
+			visFileSelected: false,
 		};
 	},
 	mounted() {
@@ -135,7 +144,7 @@ export default {
 	watch: {
 		eventsObj() {
 			this.selectEvent(this.events.length > 0 ? this.events[0].id : null);
-		}
-	}
+		},
+	},
 };
 </script>

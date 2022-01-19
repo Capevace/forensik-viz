@@ -5,7 +5,7 @@
 		</h2>
 
 		<div class="flex flex-wrap items-stretch gap-3">
-			<Person 
+			<Person
 				v-for="person in peopleList"
 				:key="person.id"
 				:person="person"
@@ -30,7 +30,7 @@ export default {
 		},
 		peopleList() {
 			return Object.values(this.people);
-		}
+		},
 	},
 
 	methods: {
@@ -43,10 +43,10 @@ export default {
 			};
 
 			this.$store.commit('setup/updatePerson', person);
-		}
+		},
 	},
 	components: {
-		Person
-	}
+		Person,
+	},
 };
 </script>

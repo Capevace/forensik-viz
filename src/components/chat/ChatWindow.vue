@@ -23,13 +23,26 @@
 				<div class="flex items-center gap-2">
 					<img
 						class="h-4 w-4 rounded-full"
-						:src="receiver.avatarUrl || `https://avatars.dicebear.com/api/bottts/${encodeURIComponent(receiver.name)}.svg`"
+						:src="
+							receiver.avatarUrl ||
+							`https://avatars.dicebear.com/api/bottts/${encodeURIComponent(
+								receiver.name
+							)}.svg`
+						"
 					/>
 					{{ receiver.name }}
 				</div>
 				<div class="flex items-center gap-2">
 					{{ sender.name }}
-					<img class="h-4 w-4 rounded-full" :src="sender.avatarUrl || `https://avatars.dicebear.com/api/bottts/${encodeURIComponent(sender.name)}.svg`" />
+					<img
+						class="h-4 w-4 rounded-full"
+						:src="
+							sender.avatarUrl ||
+							`https://avatars.dicebear.com/api/bottts/${encodeURIComponent(
+								sender.name
+							)}.svg`
+						"
+					/>
 				</div>
 			</div>
 			<Chat
@@ -54,13 +67,19 @@
 				v-for="chat in chatList"
 				:key="chat.id"
 				:color="chatColor(chat.type)"
-				:count="filterMessagesForEvent(chat.messages, selectedEvent).length"
+				:count="
+					filterMessagesForEvent(chat.messages, selectedEvent).length
+				"
 				:active="selectedChat.id === chat.id"
 				@click="selectChat(chat)"
-				:style="`max-width: ${100/chatList.length}%`"
+				:style="`max-width: ${100 / chatList.length}%`"
 			>
-				<div class="flex flex-col text-left flex-shrink-1 truncate overflow-ellipsis overflow-hidden">
-					<div class="truncate">{{ toPerson(chat.receiver).name }}</div>
+				<div
+					class="flex flex-col text-left flex-shrink-1 truncate overflow-ellipsis overflow-hidden"
+				>
+					<div class="truncate">
+						{{ toPerson(chat.receiver).name }}
+					</div>
 					<div :class="`text-xs text-${selectedColor}-600`">
 						{{ chatName(chat.type) }}
 					</div>
@@ -107,30 +126,30 @@ export default {
 	},
 	computed: {
 		chatList() {
-			return this.chats.map(chatId => this.$store.state.setup.chats[chatId]);
+			return this.chats.map(
+				(chatId) => this.$store.state.setup.chats[chatId]
+			);
 		},
 		selectedEvent() {
-			return this.$store.state.setup.events[this.$store.state.map.selectedEventId];
+			return this.$store.state.setup.events[
+				this.$store.state.map.selectedEventId
+			];
 		},
 		messages() {
 			if (!this.selectedChat) return null;
 
 			const messages = filterMessagesForEvent(
-				this.selectedChat.messages, 
+				this.selectedChat.messages,
 				this.selectedEvent
 			);
 
 			return messages;
 		},
 		sender() {
-			return this.$store.state.setup.people[
-				this.selectedChat.sender
-			];
+			return this.$store.state.setup.people[this.selectedChat.sender];
 		},
 		receiver() {
-			return this.$store.state.setup.people[
-				this.selectedChat.receiver
-			];
+			return this.$store.state.setup.people[this.selectedChat.receiver];
 		},
 		selectedColor() {
 			return this.chatColor(
@@ -145,7 +164,10 @@ export default {
 	methods: {
 		filterMessagesForEvent,
 		toPerson(id) {
-			return this.$store.state.setup.people[id] || this.$store.state.setup.people[id];
+			return (
+				this.$store.state.setup.people[id] ||
+				this.$store.state.setup.people[id]
+			);
 		},
 		selectChat(chat) {
 			this.selectedChat = chat;
@@ -179,8 +201,9 @@ export default {
 			if (!this.selectedChat) return;
 
 			this.selectedChat =
-				this.chatList.find((chat) => chat.id === this.selectedChat.id) ||
-				this.chatList[0];
+				this.chatList.find(
+					(chat) => chat.id === this.selectedChat.id
+				) || this.chatList[0];
 		},
 	},
 };
