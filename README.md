@@ -47,3 +47,13 @@ Im `docs/` Ordner, damit es dann mit GitHub Pages als "Dokumentation" gehostet w
 ## Screenshots
 
 ![](resources/screenshot-map.png)
+
+![](resources/screenshot-image.png)
+
+![](resources/screenshot-events-2.png)
+
+![](resources/screenshot-people.png)
+
+![](resources/screenshot-import-3.png)
+
+![](resources/screenshot-import-4.png)
