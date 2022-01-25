@@ -4,7 +4,9 @@
 		style="min-width: 500px"
 	>
 		<div class="flex flex-col" v-if="selectedEvent">
-			<h1 class="text-lg font-bold">{{ selectedEvent.title }}</h1>
+			<h1 class="text-lg font-semibold text-gray-800">
+				{{ selectedEvent.title }}
+			</h1>
 			<h2 class="text-base font-medium text-gray-500">
 				{{ new Date(selectedEvent.start).toLocaleString() }}
 				<span class="text-gray-400">–</span>
@@ -29,13 +31,13 @@
 				@click="$emit('previous')"
 			>
 				<i class="el-icon-arrow-left el-icon-left" />
-				Vorheriges Event
+				{{ $t('Vorheriges Event') }}
 			</button>
 			<button
 				class="rounded-r bg-gray-500 text-gray-100 hover:bg-gray-600 active:bg-gray-700 px-2 py-2 flex-1"
 				@click="$emit('next')"
 			>
-				Nächstes Event
+				{{ $t('Nächstes Event') }}
 				<i class="el-icon-arrow-right" />
 			</button>
 		</div>

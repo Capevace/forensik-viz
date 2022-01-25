@@ -9,11 +9,11 @@
 				@click="chatHidden = !chatHidden"
 			>
 				<span v-if="chatHidden">
-					Anzeigen
+					{{ $t('Anzeigen') }}
 					<i class="el-icon-arrow-up" />
 				</span>
 				<span v-else>
-					Schließen
+					{{ $t('Schließen') }}
 					<i class="el-icon-arrow-down" />
 				</span>
 			</button>
@@ -70,7 +70,7 @@
 				:count="
 					filterMessagesForEvent(chat.messages, selectedEvent).length
 				"
-				:active="selectedChat.id === chat.id"
+				:active="selectedChat && selectedChat.id === chat.id"
 				@click="selectChat(chat)"
 				:style="`max-width: ${100 / chatList.length}%`"
 			>
@@ -187,18 +187,20 @@ export default {
 		chatName(chatType) {
 			switch (chatType) {
 				case 'whatsapp':
-					return 'WhatsApp';
+					return this.$t('WhatsApp');
 				case 'sms':
-					return 'SMS';
+					return this.$t('SMS');
 				case 'phonelog':
-					return 'Phone Calls';
+					return this.$t('Anrufe');
 			}
 		},
 	},
 	watch: {
 		chats() {
 			// If chats are updated we try to find the old selected chat id, or select the first one
-			if (!this.selectedChat) return;
+			if (!this.selectedChat) {
+				this.selectedChat = this.chatList[0];
+			}
 
 			this.selectedChat =
 				this.chatList.find(

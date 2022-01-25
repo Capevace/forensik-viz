@@ -12,7 +12,7 @@
 						}"
 						@click="tab = 'import'"
 					>
-						Importieren
+						{{ $t('Importieren') }}
 					</button>
 
 					<button
@@ -22,7 +22,7 @@
 						}"
 						@click="tab = 'people'"
 					>
-						Personen
+						{{ $t('Personen') }}
 					</button>
 
 					<button
@@ -32,7 +32,7 @@
 						}"
 						@click="tab = 'events'"
 					>
-						Events
+						{{ $t('Events') }}
 					</button>
 				</div>
 			</template>
@@ -42,7 +42,7 @@
 					@click="preview"
 					:disabled="compiling"
 				>
-					{{ compiling ? 'Komprimieren...' : 'Vorschau 👁‍' }}
+					{{ $t('Vorschau 👁‍') }}
 				</button>
 
 				<button
@@ -50,7 +50,11 @@
 					@click="exportZip"
 					:disabled="compiling"
 				>
-					{{ compiling ? 'Komprimieren...' : 'Download ZIP &nbsp;⬇' }}
+					{{
+						compiling
+							? $t('Komprimieren...')
+							: $t('Download ZIP &nbsp;⬇')
+					}}
 				</button>
 			</template>
 		</Header>
@@ -59,7 +63,15 @@
 			<PeopleEditor v-if="tab === 'people'" />
 			<EventsEditor v-show="tab === 'events'" />
 			<DataImporter v-show="tab === 'import'" />
+			<Settings v-show="tab === 'settings'" />
 		</main>
+
+		<button
+			class="absolute bottom-0 right-0 m-5 opacity-30 hover:opacity-100"
+			@click="tab = 'settings'"
+		>
+			⚙️
+		</button>
 	</div>
 </template>
 
@@ -69,6 +81,8 @@ import PeopleEditor from '@/components/editor/people/PeopleEditor';
 import EventsEditor from '@/components/editor/events/EventsEditor';
 import DataImporter from '@/components/editor/importer/DataImporter';
 
+import Settings from '@/components/settings/Settings';
+
 export default {
 	name: 'Editor',
 	components: {
@@ -76,6 +90,7 @@ export default {
 		PeopleEditor,
 		EventsEditor,
 		DataImporter,
+		Settings,
 	},
 	data() {
 		return {

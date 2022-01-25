@@ -1,8 +1,9 @@
 <template>
 	<section class="max-w-4xl mx-auto">
 		<h2 class="text-2xl font-medium mb-8">
-			<span class="block">Personen ({{ peopleList.length }})</span>
-			<span class="text-gray-400">Identitäten</span>
+			<span class="block">
+				{{ $t('Personen') }} ({{ peopleList.length }})</span>
+			<span class="text-gray-400">{{ $t('Identitäten') }}</span>
 		</h2>
 
 		<div class="flex flex-wrap items-stretch gap-10">
@@ -16,7 +17,7 @@
 				@click="addPerson"
 				style="height: 390px;"
 			>
-				Person hinzufügen
+				{{ $t('Person hinzufügen') }}
 			</button>
 		</div>
 	</section>
@@ -39,7 +40,7 @@ export default {
 		addPerson() {
 			const person = {
 				id: uuid(),
-				name: 'Unbenannte Person',
+				name: this.$t('Unbenannte Person'),
 				avatarUrl: '',
 				color: 'purple',
 			};

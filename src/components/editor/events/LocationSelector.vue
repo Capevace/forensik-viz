@@ -5,13 +5,13 @@
 				class="text-left text-sm font-medium px-3 py-2 rounded-md hover:shadow bg-purple-200 transition text-purple-900 w-full gap-2 flex flex-col mb-5"
 				@submit.prevent="addLocation"
 			>
-				<h4>Ort hinzufügen</h4>
+				<h4>{{ $t('Eigenen Ort hinzufügen') }}</h4>
 				<input
 					type="text"
 					name="description"
 					id="description"
 					class="focus:ring-purple-500 focus:border-purple-500 block flex-1 py-2 px-4 sm:text-sm border-gray-300 rounded-md"
-					placeholder="Beschreibung"
+					:placeholder="$t('Beschreibung')"
 					v-model="newLocation.description"
 					required
 				/>
@@ -41,7 +41,7 @@
 						class="hover:bg-purple-300 px-2 py-1 rounded-md"
 						type="submit"
 					>
-						Hinzufügen
+						{{ $t('Hinzufügen') }}
 					</button>
 				</div>
 			</form>
@@ -118,7 +118,7 @@
 				/>
 			</LMap>
 			<img
-				v-if="viewedLocation.mediaSrc"
+				v-if="viewedLocation && viewedLocation.mediaSrc"
 				class="rounded cursor-pointer"
 				:src="$store.state.setup.files[viewedLocation.mediaSrc]"
 				@click="previewImage(viewedLocation.mediaSrc)"
@@ -162,10 +162,10 @@ export default {
 		return {
 			newLocation: {
 				id: uuid(),
-				position: { lat: 53.228093, lng: 10.373144 },
+				position: { lat: '', lng: '' },
 				// date: new Date('2021-10-01 15:50:00'),
 				// person: personA.id,
-				description: `Haus`,
+				description: ``,
 			},
 			viewedLocation:
 				vm.locations && vm.locations.length > 0

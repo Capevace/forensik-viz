@@ -40,7 +40,7 @@
 					for="name"
 					class="block text-sm font-medium text-gray-700"
 				>
-					Name
+					{{ $t('Name') }}
 				</label>
 				<div class="mt-1 relative rounded-md shadow-sm">
 					<input
@@ -59,7 +59,7 @@
 					for="color"
 					class="block text-sm font-medium text-gray-700"
 				>
-					Color
+					{{ $t('Farbe') }}
 				</label>
 				<div class="mt-1 relative rounded-md shadow-sm">
 					<select
@@ -68,9 +68,9 @@
 						id="color"
 						class="focus:ring-blue-600 focus:border-blue-600 block w-full py-2 px-4 bg-gray-100 border-gray-300 rounded-md"
 					>
-						<option value="purple">Purple</option>
-						<option value="green">Green</option>
-						<option value="blue">Blue</option>
+						<option value="purple">{{ $t('Lila') }}</option>
+						<option value="green">{{ $t('Grün') }}</option>
+						<option value="blue">{{ $t('Blau') }}</option>
 					</select>
 				</div>
 			</div>
@@ -80,7 +80,7 @@
 					for="id-field"
 					class="block text-sm font-medium text-gray-700"
 				>
-					ID
+					{{ $t('ID') }}
 				</label>
 				<div class="mt-1 relative rounded-md shadow-sm">
 					<input

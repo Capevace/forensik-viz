@@ -1,7 +1,7 @@
 <template>
 	<div class="flex gap-10 mb-10">
 		<div class="w-1/2 flex flex-col gap-2">
-			<h2 v-if="chats.length === 0">Keine Chats importiert</h2>
+			<h2 v-if="chats.length === 0">{{ $t('Keine Chats importiert') }}</h2>
 			<button
 				v-for="chat in chats"
 				:key="chat.id"

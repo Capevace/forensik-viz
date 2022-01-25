@@ -18,7 +18,7 @@
 						type="submit"
 						:disabled="!visFileSelected"
 					>
-						Laden
+						{{ $t('Laden') }}
 					</button>
 
 					<a
@@ -26,7 +26,7 @@
 						class="block py-1 px-4 rounded-md text-gray-700 bg-gray-200 hover:bg-blue-200 hover:text-blue-900"
 						@click.prevent="edit"
 					>
-						Bearbeiten ➝
+						{{ $t('Bearbeiten ➝') }}
 					</a>
 				</form>
 			</template>

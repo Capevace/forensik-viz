@@ -2,7 +2,7 @@
 	<div class="mb-10">
 		<div>
 			<label for="title" class="block text-sm font-medium text-gray-700">
-				Titel
+				{{ $t('Titel') }}
 			</label>
 			<div class="mt-1 relative rounded-md shadow-sm mb-3">
 				<input
@@ -21,7 +21,7 @@
 						for="time-start"
 						class="block text-sm font-medium text-gray-700"
 					>
-						Start-Zeit
+						{{ $t('Start-Zeit') }}
 					</label>
 					<div class="mt-1 relative rounded-md shadow-sm flex mb-3">
 						<Datetime
@@ -38,7 +38,7 @@
 						for="time-start"
 						class="block text-sm font-medium text-gray-700"
 					>
-						Ende-Zeit
+						{{ $t('Ende-Zeit') }}
 					</label>
 					<div class="mt-1 relative rounded-md shadow-sm flex mb-3">
 						<Datetime
