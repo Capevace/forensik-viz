@@ -11,7 +11,7 @@
 			</button>
 
 			<button
-				class="font-regular block h-full rounded-md bg-blue-100 px-2 py-2 text-base hover:bg-blue-200"
+				class="block h-full rounded-md bg-blue-100 px-2 py-2 text-base hover:bg-blue-200"
 				@click="addEvent"
 			>
 				{{ $t('Event hinzufügen') }}
