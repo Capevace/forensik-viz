@@ -4,12 +4,12 @@
 			<label for="title" class="block text-sm font-medium text-gray-700">
 				{{ $t('Titel') }}
 			</label>
-			<div class="mt-1 relative rounded-md shadow-sm mb-3">
+			<div class="relative mt-1 mb-3 rounded-md shadow-sm">
 				<input
 					type="text"
 					name="title"
 					id="title"
-					class="focus:ring-blue-600 focus:border-blue-600 block w-full py-2 px-4 sm:text-sm border-gray-300 rounded-md"
+					class="block w-full rounded-md border-gray-300 py-2 px-4 focus:border-blue-600 focus:ring-blue-600 sm:text-sm"
 					placeholder="Zeuge betritt Geschäft"
 					v-model="event.title"
 				/>
@@ -23,7 +23,7 @@
 					>
 						{{ $t('Start-Zeit') }}
 					</label>
-					<div class="mt-1 relative rounded-md shadow-sm flex mb-3">
+					<div class="relative mt-1 mb-3 flex rounded-md shadow-sm">
 						<Datetime
 							v-model="startDate"
 							:phrases="{ ok: 'OK', cancel: 'Abbrechen' }"
@@ -40,7 +40,7 @@
 					>
 						{{ $t('Ende-Zeit') }}
 					</label>
-					<div class="mt-1 relative rounded-md shadow-sm flex mb-3">
+					<div class="relative mt-1 mb-3 flex rounded-md shadow-sm">
 						<Datetime
 							v-model="endDate"
 							:min-datetime="startDate"

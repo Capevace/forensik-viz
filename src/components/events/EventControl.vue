@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="bg-gray-200 rounded-lg px-3 py-3 flex flex-col gap-3 w-full max-w-md shadow-md"
+		class="flex w-full max-w-md flex-col gap-3 rounded-lg bg-gray-200 px-3 py-3 shadow-md"
 		style="min-width: 500px"
 	>
 		<div class="flex flex-col" v-if="selectedEvent">
@@ -25,16 +25,16 @@
 			ref="timeline"
 			@select="onEventSelect"
 		/>
-		<div class="w-full flex">
+		<div class="flex w-full">
 			<button
-				class="rounded-l bg-gray-500 text-gray-100 hover:bg-gray-600 active:bg-gray-700 px-2 py-2 flex-1"
+				class="flex-1 rounded-l bg-gray-500 px-2 py-2 text-gray-100 hover:bg-gray-600 active:bg-gray-700"
 				@click="$emit('previous')"
 			>
 				<i class="el-icon-arrow-left el-icon-left" />
 				{{ $t('Vorheriges Event') }}
 			</button>
 			<button
-				class="rounded-r bg-gray-500 text-gray-100 hover:bg-gray-600 active:bg-gray-700 px-2 py-2 flex-1"
+				class="flex-1 rounded-r bg-gray-500 px-2 py-2 text-gray-100 hover:bg-gray-600 active:bg-gray-700"
 				@click="$emit('next')"
 			>
 				{{ $t('Nächstes Event') }}
@@ -117,10 +117,10 @@ export default {
 }
 
 .vis-item {
-	@apply bg-blue-100 text-blue-900 border-blue-600 opacity-70;
+	@apply border-blue-600 bg-blue-100 text-blue-900 opacity-70;
 }
 
 .vis-item.vis-selected {
-	@apply bg-blue-500 text-white border-blue-600 opacity-100;
+	@apply border-blue-600 bg-blue-500 text-white opacity-100;
 }
 </style>

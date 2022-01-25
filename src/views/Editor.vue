@@ -3,10 +3,10 @@
 		<Header>
 			<template v-slot:nav>
 				<div
-					class="flex justify-between bg-gray-200 rounded-md shadow-sm flex-1 max-w-2xl self-center"
+					class="flex max-w-2xl flex-1 justify-between self-center rounded-md bg-gray-200 shadow-sm"
 				>
 					<button
-						class="flex-1 py-1 text-gray-700 px-10 rounded-l-md"
+						class="flex-1 rounded-l-md py-1 px-10 text-gray-700"
 						:class="{
 							'bg-blue-200 text-blue-900': tab === 'import',
 						}"
@@ -16,7 +16,7 @@
 					</button>
 
 					<button
-						class="flex-1 py-1 text-gray-700 px-10"
+						class="flex-1 py-1 px-10 text-gray-700"
 						:class="{
 							'bg-blue-200 text-blue-900': tab === 'people',
 						}"
@@ -26,7 +26,7 @@
 					</button>
 
 					<button
-						class="flex-1 py-1 rounded-r-md text-gray-700 px-14"
+						class="flex-1 rounded-r-md py-1 px-14 text-gray-700"
 						:class="{
 							'bg-blue-200 text-blue-900': tab === 'events',
 						}"
@@ -38,7 +38,7 @@
 			</template>
 			<template v-slot:actions>
 				<button
-					class="py-1 px-4 rounded-md text-gray-700 bg-gray-200 hover:bg-blue-200 hover:text-blue-900"
+					class="rounded-md bg-gray-200 py-1 px-4 text-gray-700 hover:bg-blue-200 hover:text-blue-900"
 					@click="preview"
 					:disabled="compiling"
 				>
@@ -46,7 +46,7 @@
 				</button>
 
 				<button
-					class="py-1 px-4 rounded-md text-gray-700 bg-gray-200 hover:bg-blue-200 hover:text-blue-900"
+					class="rounded-md bg-gray-200 py-1 px-4 text-gray-700 hover:bg-blue-200 hover:text-blue-900"
 					@click="exportZip"
 					:disabled="compiling"
 				>

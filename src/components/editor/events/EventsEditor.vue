@@ -1,9 +1,9 @@
 <template>
-	<section class="max-w-4xl mx-auto mb-10 text-gray-800">
+	<section class="mx-auto mb-10 max-w-4xl text-gray-800">
 		<!-- <pre class="text-xs">{{ JSON.stringify(timelineEvents, null, 2) }}</pre> -->
 
-		<h2 class="text-2xl font-medium mb-8 flex justify-between items-center">
-			<button class="font-medium text-left" @click="selectNextEvent">
+		<h2 class="mb-8 flex items-center justify-between text-2xl font-medium">
+			<button class="text-left font-medium" @click="selectNextEvent">
 				<span class="block"
 					>{{ $t('Events') }} ({{ timelineEvents.length }})</span
 				>
@@ -11,7 +11,7 @@
 			</button>
 
 			<button
-				class="block bg-blue-100 hover:bg-blue-200 text-base font-regular rounded-md h-full px-2 py-2"
+				class="font-regular block h-full rounded-md bg-blue-100 px-2 py-2 text-base hover:bg-blue-200"
 				@click="addEvent"
 			>
 				{{ $t('Event hinzufügen') }}
@@ -19,7 +19,7 @@
 		</h2>
 
 		<div
-			class="bg-white rounded"
+			class="rounded bg-white"
 			:class="{ 'has-selected': !!selectedEvent }"
 		>
 			<Timeline
@@ -43,7 +43,7 @@
 
 		<article v-if="selectedEvent">
 			<div
-				class="flex w-full justify-between items-center mb-8 bg-white border border-gray-300 border-t-0 rounded-b px-4 py-3"
+				class="mb-8 flex w-full items-center justify-between rounded-b border border-t-0 border-gray-300 bg-white px-4 py-3"
 			>
 				<h3 class="text-lg font-medium">
 					<span class="block leading-tight">{{
@@ -52,13 +52,13 @@
 				</h3>
 				<div class="flex items-center gap-2 text-gray-500">
 					<button
-						class="hover:bg-blue-200 px-2 py-1 rounded-md hover:text-gray-800"
+						class="rounded-md px-2 py-1 hover:bg-blue-200 hover:text-gray-800"
 						@click="duplicateEvent"
 					>
 						{{ $t('Event duplizieren') }}
 					</button>
 					<button
-						class="hover:bg-red-200 px-2 py-1 rounded-md hover:text-gray-800"
+						class="rounded-md px-2 py-1 hover:bg-red-200 hover:text-gray-800"
 						@click="deleteEvent"
 					>
 						{{ $t('Event löschen') }}
@@ -67,7 +67,7 @@
 			</div>
 			<MetaEditor v-model="selectedEvent" />
 
-			<h4 class="text-lg font-medium mb-3">{{ $t('Chats') }}</h4>
+			<h4 class="mb-3 text-lg font-medium">{{ $t('Chats') }}</h4>
 			<ChatSelector
 				v-model="selectedEvent"
 				:chats="chats"
@@ -75,7 +75,7 @@
 				:filter-end="selectedEvent.end"
 			/>
 
-			<h4 class="text-lg font-medium mb-3">
+			<h4 class="mb-3 text-lg font-medium">
 				{{ $t('Orte (Exif & GPS-Daten)') }}
 			</h4>
 			<LocationSelector :event="selectedEvent" :locations="locations" />
@@ -189,7 +189,7 @@ export default {
 }
 
 .vdatetime-input {
-	@apply w-full focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 px-4 sm:text-sm border-gray-300 rounded-md;
+	@apply block w-full rounded-md border-gray-300 py-2 px-4 focus:border-blue-600 focus:ring-blue-600 sm:text-sm;
 }
 
 .vis-timeline {
@@ -201,7 +201,7 @@ export default {
 }
 
 .vis-item.vis-selected {
-	@apply bg-blue-500 text-blue-100 border-blue-600;
+	@apply border-blue-600 bg-blue-500 text-blue-100;
 }
 
 .vis-time-axis .vis-text {

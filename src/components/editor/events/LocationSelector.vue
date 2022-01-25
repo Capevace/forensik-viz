@@ -1,8 +1,8 @@
 <template>
 	<div class="flex gap-10">
-		<div class="w-1/2 flex flex-col gap-2">
+		<div class="flex w-1/2 flex-col gap-2">
 			<form
-				class="text-left text-sm font-medium px-3 py-2 rounded-md hover:shadow bg-purple-200 transition text-purple-900 w-full gap-2 flex flex-col mb-5"
+				class="mb-5 flex w-full flex-col gap-2 rounded-md bg-purple-200 px-3 py-2 text-left text-sm font-medium text-purple-900 transition hover:shadow"
 				@submit.prevent="addLocation"
 			>
 				<h4>{{ $t('Eigenen Ort hinzufügen') }}</h4>
@@ -10,7 +10,7 @@
 					type="text"
 					name="description"
 					id="description"
-					class="focus:ring-purple-500 focus:border-purple-500 block flex-1 py-2 px-4 sm:text-sm border-gray-300 rounded-md"
+					class="block flex-1 rounded-md border-gray-300 py-2 px-4 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
 					:placeholder="$t('Beschreibung')"
 					v-model="newLocation.description"
 					required
@@ -20,7 +20,7 @@
 					type="text"
 					name="lat"
 					id="lat"
-					class="focus:ring-purple-500 focus:border-purple-500 block flex-1 py-2 px-4 sm:text-sm border-gray-300 rounded-md"
+					class="block flex-1 rounded-md border-gray-300 py-2 px-4 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
 					placeholder="Latitude (53.228093)"
 					v-model="newLocation.position.lat"
 					required
@@ -30,15 +30,15 @@
 					type="text"
 					name="long"
 					id="long"
-					class="focus:ring-purple-500 focus:border-purple-500 block flex-1 py-2 px-4 sm:text-sm border-gray-300 rounded-md"
+					class="block flex-1 rounded-md border-gray-300 py-2 px-4 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
 					placeholder="Longitude (11.238493)"
 					v-model="newLocation.position.lng"
 					required
 				/>
 
-				<div class="flex-1 flex justify-end">
+				<div class="flex flex-1 justify-end">
 					<button
-						class="hover:bg-purple-300 px-2 py-1 rounded-md"
+						class="rounded-md px-2 py-1 hover:bg-purple-300"
 						type="submit"
 					>
 						{{ $t('Hinzufügen') }}
@@ -49,7 +49,7 @@
 			<button
 				v-for="location in locations"
 				:key="location.id"
-				class="text-left text-sm font-medium px-3 flex gap-2 py-2 rounded-md hover:shadow bg-purple-200 hover:bg-purple-300 transition text-purple-900 w-full"
+				class="flex w-full gap-2 rounded-md bg-purple-200 px-3 py-2 text-left text-sm font-medium text-purple-900 transition hover:bg-purple-300 hover:shadow"
 				:class="{
 					'bg-purple-300':
 						viewedLocation && viewedLocation.id === location.id,
@@ -66,7 +66,7 @@
 
 				<div class="flex-1">
 					<div
-						class="flex-1 text-left mb-1 flex justify-between items-center"
+						class="mb-1 flex flex-1 items-center justify-between text-left"
 					>
 						<span>{{ location.description }}</span>
 						<span v-if="location.mediaSrc">🌅</span>
@@ -106,7 +106,7 @@
 				style="height: 300px"
 				:zoom="15"
 				:center="viewedLocation.position"
-				class="rounded-md shadow-md mb-10"
+				class="mb-10 rounded-md shadow-md"
 			>
 				<LTileLayer
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -119,7 +119,7 @@
 			</LMap>
 			<img
 				v-if="viewedLocation && viewedLocation.mediaSrc"
-				class="rounded cursor-pointer"
+				class="cursor-pointer rounded"
 				:src="$store.state.setup.files[viewedLocation.mediaSrc]"
 				@click="previewImage(viewedLocation.mediaSrc)"
 			/>

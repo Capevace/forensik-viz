@@ -1,7 +1,9 @@
 <template>
-	<article class="max-w-1/2 flex-1 px-4 pb-4 bg-white rounded-md shadow-md text-gray-600 border border-gray-300">
+	<article
+		class="max-w-1/2 flex-1 rounded-md border border-gray-300 bg-white px-4 pb-4 text-gray-600 shadow-md"
+	>
 		<button
-			class="p-0 pt-2 font-mono font-bold text-xl text-gray-400"
+			class="p-0 pt-2 font-mono text-xl font-bold text-gray-400"
 			@click="deletePerson(internalPerson.id)"
 		>
 			✕
@@ -15,7 +17,7 @@
 							internalPerson.name
 						)}.svg`
 					"
-					class="mx-auto rounded-full w-16 h-16 mb-4"
+					class="mx-auto mb-4 h-16 w-16 rounded-full"
 				/>
 				<div class="opacity-60 hover:opacity-100">
 					<input
@@ -42,12 +44,12 @@
 				>
 					{{ $t('Name') }}
 				</label>
-				<div class="mt-1 relative rounded-md shadow-sm">
+				<div class="relative mt-1 rounded-md shadow-sm">
 					<input
 						type="text"
 						name="name"
 						id="name"
-						class="focus:ring-blue-600 focus:border-blue-600 block w-full py-2 px-4 bg-gray-100 border-gray-300 rounded-md"
+						class="block w-full rounded-md border-gray-300 bg-gray-100 py-2 px-4 focus:border-blue-600 focus:ring-blue-600"
 						placeholder="Markus Gasleiter"
 						v-model="internalPerson.name"
 					/>
@@ -61,12 +63,12 @@
 				>
 					{{ $t('Farbe') }}
 				</label>
-				<div class="mt-1 relative rounded-md shadow-sm">
+				<div class="relative mt-1 rounded-md shadow-sm">
 					<select
 						v-model="internalPerson.color"
 						name="color"
 						id="color"
-						class="focus:ring-blue-600 focus:border-blue-600 block w-full py-2 px-4 bg-gray-100 border-gray-300 rounded-md"
+						class="block w-full rounded-md border-gray-300 bg-gray-100 py-2 px-4 focus:border-blue-600 focus:ring-blue-600"
 					>
 						<option value="purple">{{ $t('Lila') }}</option>
 						<option value="green">{{ $t('Grün') }}</option>
@@ -82,12 +84,12 @@
 				>
 					{{ $t('ID') }}
 				</label>
-				<div class="mt-1 relative rounded-md shadow-sm">
+				<div class="relative mt-1 rounded-md shadow-sm">
 					<input
 						type="text"
 						name="id-field"
 						id="id-field"
-						class="focus:ring-blue-600 focus:border-blue-600 block w-full py-2 px-4 bg-gray-100 border-gray-300 rounded-md"
+						class="block w-full rounded-md border-gray-300 bg-gray-100 py-2 px-4 focus:border-blue-600 focus:ring-blue-600"
 						placeholder="1ed7504b-35bd-41b7-b8d7-38149b8a027c"
 						v-model="internalPerson.id"
 					/>

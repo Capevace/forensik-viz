@@ -1,12 +1,12 @@
 <template>
-	<div class="max-w-4xl mx-auto">
-		<h2 class="text-2xl font-medium mb-8">
+	<div class="mx-auto max-w-4xl">
+		<h2 class="mb-8 text-2xl font-medium">
 			<span class="block">{{ $t('Einstellungen') }}</span>
 			<span class="text-gray-400">{{ $t('Optionen und Lizensen') }}</span>
 		</h2>
 
 		<section
-			class="bg-white rounded-md shadow-md border border-gray-300 px-5 py-4 mb-10"
+			class="mb-10 rounded-md border border-gray-300 bg-white px-5 py-4 shadow-md"
 		>
 			<div>
 				<label
@@ -15,12 +15,12 @@
 				>
 					{{ $t('Sprache') }}
 				</label>
-				<div class="mt-1 relative rounded-md shadow-sm">
+				<div class="relative mt-1 rounded-md shadow-sm">
 					<select
 						v-model="locale"
 						name="locale"
 						id="locale"
-						class="focus:ring-blue-600 focus:border-blue-600 block w-full py-2 px-4 bg-gray-100 border-gray-300 rounded-md"
+						class="block w-full rounded-md border-gray-300 bg-gray-100 py-2 px-4 focus:border-blue-600 focus:ring-blue-600"
 					>
 						<option value="de">{{ $t('Deutsch') }}</option>
 						<option value="en">{{ $t('English') }}</option>

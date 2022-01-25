@@ -1,11 +1,11 @@
 <template>
 	<div
-		:class="`w-full flex ${
+		:class="`flex w-full ${
 			right ? 'justify-end pl-12' : 'justify-start pr-12'
 		}`"
 	>
 		<div
-			:class="`max-w-sm flex gap-2  ${
+			:class="`flex max-w-sm gap-2  ${
 				this.right ? 'flex-row-reverse' : ''
 			}`"
 		>
@@ -19,14 +19,14 @@
 				"
 			/>
 			<div :class="classes">
-				<button v-if="message.mediaSrc" class="block mb-2 w-full">
+				<button v-if="message.mediaSrc" class="mb-2 block w-full">
 					<FSImg
 						:src="message.mediaSrc"
 						:mime="message.mimeType"
 						@click="onImageClick(message)"
 					/>
 				</button>
-				<p v-if="message.text" :class="`block text-gray-900 mb-2`">
+				<p v-if="message.text" :class="`mb-2 block text-gray-900`">
 					{{ message.text }}
 				</p>
 				<span

@@ -1,7 +1,7 @@
 <template>
 	<header
 		:class="{
-			'bg-blue-600 text-blue-100 font-bold flex items-center justify-between': true,
+			'flex items-center justify-between bg-blue-600 font-bold text-blue-100': true,
 			'h-12 px-3': !small,
 			'h-8 text-xs': small,
 		}"
@@ -12,17 +12,17 @@
 				name=""
 				:value="projectName"
 				@input="changedProjectName"
-				class="font-bold text-blue-100 bg-transparent border-none focus:bg-blue-100 focus:text-blue-900 rounded pl-2"
+				class="rounded border-none bg-transparent pl-2 font-bold text-blue-100 focus:bg-blue-100 focus:text-blue-900"
 				:class="{ 'text-sm': small, 'text-xl': !small }"
 				:disabled="locked"
 			/>
 		</h1>
 
-		<nav class="mx-auto flex justify-center items-center my-5 px-10">
+		<nav class="mx-auto my-5 flex items-center justify-center px-10">
 			<slot name="nav" />
 		</nav>
 
-		<div class="flex-1 flex justify-end items-center gap-5">
+		<div class="flex flex-1 items-center justify-end gap-5">
 			<slot name="actions" />
 		</div>
 	</header>

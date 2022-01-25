@@ -1,13 +1,15 @@
 <template>
-	<div class="flex gap-10 mb-10">
-		<div class="w-1/2 flex flex-col gap-2">
-			<h2 v-if="chats.length === 0">{{ $t('Keine Chats importiert') }}</h2>
+	<div class="mb-10 flex gap-10">
+		<div class="flex w-1/2 flex-col gap-2">
+			<h2 v-if="chats.length === 0">
+				{{ $t('Keine Chats importiert') }}
+			</h2>
 			<button
 				v-for="chat in chats"
 				:key="chat.id"
-				class="text-left flex gap-3 text-sm border-2 border-transparent font-medium px-3 py-2 rounded-md hover:shadow bg-green-200 hover:bg-green-300 transition text-green-900 w-full"
+				class="flex w-full gap-3 rounded-md border-2 border-transparent bg-green-200 px-3 py-2 text-left text-sm font-medium text-green-900 transition hover:bg-green-300 hover:shadow"
 				:class="{
-					'bg-green-300 border-green-400':
+					'border-green-400 bg-green-300':
 						viewedChat && viewedChat.id === chat.id,
 					'opacity-60': !selectedChats.includes(chat.id),
 				}"

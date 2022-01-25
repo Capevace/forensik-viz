@@ -1,9 +1,9 @@
 <template>
-	<div class="map fixed w-full h-screen flex flex-col">
+	<div class="map fixed flex h-screen w-full flex-col">
 		<Header small locked>
 			<template v-slot:actions>
 				<form
-					class="flex gap-2 px-2 items-center"
+					class="flex items-center gap-2 px-2"
 					@submit.prevent="loadFile"
 				>
 					<input
@@ -13,7 +13,7 @@
 					/>
 
 					<button
-						class="py-1 px-4 rounded-md text-gray-700 bg-gray-200 hover:text-blue-900 disabled:opacity-50 disabled:cursor-default"
+						class="rounded-md bg-gray-200 py-1 px-4 text-gray-700 hover:text-blue-900 disabled:cursor-default disabled:opacity-50"
 						:class="{ 'hover:bg-blue-200': visFileSelected }"
 						type="submit"
 						:disabled="!visFileSelected"
@@ -23,7 +23,7 @@
 
 					<a
 						href="#"
-						class="block py-1 px-4 rounded-md text-gray-700 bg-gray-200 hover:bg-blue-200 hover:text-blue-900"
+						class="block rounded-md bg-gray-200 py-1 px-4 text-gray-700 hover:bg-blue-200 hover:text-blue-900"
 						@click.prevent="edit"
 					>
 						{{ $t('Bearbeiten ➝') }}

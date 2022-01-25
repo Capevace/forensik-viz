@@ -1,18 +1,18 @@
 <template>
-	<section class="max-w-4xl mx-auto">
-		<h2 class="text-2xl font-medium mb-8">
+	<section class="mx-auto max-w-4xl">
+		<h2 class="mb-8 text-2xl font-medium">
 			<span class="block">{{ $t('Daten importieren') }}</span>
 			<span class="text-gray-400">{{ $t('Via Mobile Revelator') }}</span>
 		</h2>
 
 		<section
-			class="bg-white rounded-md shadow-md border border-gray-300 px-5 py-4 mb-10"
+			class="mb-10 rounded-md border border-gray-300 bg-white px-5 py-4 shadow-md"
 		>
-			<h3 class="font-medium mb-3">
-				<span class="text-xl block">{{
+			<h3 class="mb-3 font-medium">
+				<span class="block text-xl">{{
 					$t('ZIP-Datei auswählen')
 				}}</span>
-				<span class="text-gray-400 text-lg">{{
+				<span class="text-lg text-gray-400">{{
 					$t('Mobile Revelator Export (.zip)')
 				}}</span>
 			</h3>
@@ -22,24 +22,24 @@
 				<option v-for="dir in rootDirs" :key="dir">/{{ dir }}</option>
 			</select>
 
-			<h3 class="font-medium mb-3">
-				<span class="text-xl block">{{
+			<h3 class="mb-3 font-medium">
+				<span class="block text-xl">{{
 					$t('Dateien überprüfen')
 				}}</span>
-				<span class="text-gray-400 text-lg">{{
+				<span class="text-lg text-gray-400">{{
 					$t('Datenbank-Dateien werden automatisch erkannt')
 				}}</span>
 			</h3>
-			<h3 class="text-lg font-medium mb-4">
+			<h3 class="mb-4 text-lg font-medium">
 				Path:
 				<code class="font-mono text-gray-500">{{ rootPath }}</code>
 			</h3>
 
-			<h3 class="text-lg font-medium mb-1">{{ $t('Dateien') }}</h3>
+			<h3 class="mb-1 text-lg font-medium">{{ $t('Dateien') }}</h3>
 			<p v-if="parsedDirs.length === 0" class="text-gray-500">
 				{{ $t('Keine Dateien gefunden') }}
 			</p>
-			<table class="mb-5 text-gray-600 text-left w-full mt-3" v-else>
+			<table class="mb-5 mt-3 w-full text-left text-gray-600" v-else>
 				<thead>
 					<th class="font-normal">{{ $t('Erkannt') }}:</th>
 					<th class="font-normal">{{ $t('Dateiname') }}:</th>
@@ -68,9 +68,9 @@
 				</tbody>
 			</table>
 
-			<div class="w-full flex justify-end">
+			<div class="flex w-full justify-end">
 				<button
-					class="block bg-blue-100 hover:bg-blue-200 text-base font-regular rounded-md h-full px-2 py-2"
+					class="font-regular block h-full rounded-md bg-blue-100 px-2 py-2 text-base hover:bg-blue-200"
 					@click="loadData"
 				>
 					{{ $t('Daten auslesen') }}
@@ -78,18 +78,18 @@
 			</div>
 		</section>
 
-		<div class="px-5 mb-20">
-			<strong v-if="importMessage" class="block mb-10">
+		<div class="mb-20 px-5">
+			<strong v-if="importMessage" class="mb-10 block">
 				{{ importMessage }}
 			</strong>
 
 			<h4
-				class="text-xl font-medium text-gray-700 mb-5"
+				class="mb-5 text-xl font-medium text-gray-700"
 				v-if="activeImport"
 			>
 				{{ $t('Gefundene Chats') }}:
 			</h4>
-			<table class="mb-8 text-gray-600 text-left" v-if="activeImport">
+			<table class="mb-8 text-left text-gray-600" v-if="activeImport">
 				<thead>
 					<th>{{ $t('Typ') }}:</th>
 					<th>{{ $t('Empfänger') }}:</th>
@@ -162,7 +162,7 @@
 
 			<div class="flex justify-end">
 				<button
-					class="block bg-blue-100 hover:bg-blue-200 text-base font-regular rounded-md h-full px-2 py-2"
+					class="font-regular block h-full rounded-md bg-blue-100 px-2 py-2 text-base hover:bg-blue-200"
 					@click="importData"
 					v-if="activeImport"
 				>

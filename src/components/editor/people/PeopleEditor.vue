@@ -1,8 +1,9 @@
 <template>
-	<section class="max-w-4xl mx-auto">
-		<h2 class="text-2xl font-medium mb-8">
+	<section class="mx-auto max-w-4xl">
+		<h2 class="mb-8 text-2xl font-medium">
 			<span class="block">
-				{{ $t('Personen') }} ({{ peopleList.length }})</span>
+				{{ $t('Personen') }} ({{ peopleList.length }})</span
+			>
 			<span class="text-gray-400">{{ $t('Identitäten') }}</span>
 		</h2>
 
@@ -13,9 +14,9 @@
 				:person="person"
 			/>
 			<button
-				class="text-xl max-w-1/2 flex-1 h-full block bg-blue-200 text-blue-700 rounded-md h-full px-2 py-2 opacity-60 hover:opacity-100 font-medium"
+				class="block h-full h-full max-w-1/2 flex-1 rounded-md bg-blue-200 px-2 py-2 text-xl font-medium text-blue-700 opacity-60 hover:opacity-100"
 				@click="addPerson"
-				style="height: 390px;"
+				style="height: 390px"
 			>
 				{{ $t('Person hinzufügen') }}
 			</button>

@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="flex flex-col w-full bg-gray-100 bg-opacity-80 rounded-lg overflow-hidden"
+		class="flex w-full flex-col overflow-hidden rounded-lg bg-gray-100 bg-opacity-80"
 		style="max-height: 70vh"
 	>
 		<template v-if="selectedChat">
@@ -18,7 +18,7 @@
 				</span>
 			</button>
 			<div
-				:class="`flex justify-between items-center px-2 py-1 text-xs bg-${selectedColor}-200 text-${selectedColor}-800`"
+				:class="`flex items-center justify-between px-2 py-1 text-xs bg-${selectedColor}-200 text-${selectedColor}-800`"
 			>
 				<div class="flex items-center gap-2">
 					<img
@@ -46,7 +46,7 @@
 				</div>
 			</div>
 			<Chat
-				class="w-full transition-all p-2"
+				class="w-full p-2 transition-all"
 				:style="
 					chatHidden
 						? {
@@ -62,7 +62,7 @@
 				:color="selectedColor"
 			/>
 		</template>
-		<nav class="w-full flex justify-around">
+		<nav class="flex w-full justify-around">
 			<TabButton
 				v-for="chat in chatList"
 				:key="chat.id"
@@ -75,7 +75,7 @@
 				:style="`max-width: ${100 / chatList.length}%`"
 			>
 				<div
-					class="flex flex-col text-left flex-shrink-1 truncate overflow-ellipsis overflow-hidden"
+					class="flex-shrink-1 flex flex-col overflow-hidden truncate overflow-ellipsis text-left"
 				>
 					<div class="truncate">
 						{{ toPerson(chat.receiver).name }}
