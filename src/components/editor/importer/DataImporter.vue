@@ -1,62 +1,69 @@
 <template>
 	<section class="max-w-4xl mx-auto">
-		<h2 class="text-2xl font-medium mb-3">Daten importieren</h2>
+		<h2 class="text-2xl font-medium mb-8">
+			<span class="block">Daten importieren</span>
+			<span class="text-gray-400">Via Mobile Revelator</span>
+		</h2>
 
-		<input type="file" @change="changed" />
-		<select v-model="rootPath" class="mb-10">
-			<option>/</option>
-			<option v-for="dir in rootDirs" :key="dir">/{{ dir }}</option>
-		</select>
+		<section class="bg-white rounded-md shadow-md border border-gray-300 px-5 py-4 mb-10">
+			<input type="file" @change="changed" />
+			<select v-model="rootPath" class="mb-8">
+				<option>/</option>
+				<option v-for="dir in rootDirs" :key="dir">/{{ dir }}</option>
+			</select>
 
-		<h3 class="text-xl font-medium mb-4">Dateien</h3>
-		<h4 class="text-lg font-medium text-gray-700 mb-2">
-			Path:
-			<code class="font-mono text-gray-600">{{ rootPath }}</code>
-		</h4>
+			<h3 class="text-xl font-medium mb-4">
+				Path:
+				<code class="font-mono text-gray-500">{{ rootPath }}</code>
+			</h3>
 
-		<h4 class="text-lg font-medium text-gray-700 mb-1">Files:</h4>
-		<table class="mb-3 text-gray-600 text-left w-full">
-			<thead>
-				<th>Erkannt:</th>
-				<th>Dateiname:</th>
-				<th>Importieren als:</th>
-			</thead>
-			<tbody class="font-mono">
-				<tr v-for="dir in parsedDirs" :key="dir.dir">
-					<td>
-						{{ dir.type !== 'none' ? '✅' : '❓' }}
-					</td>
-					<td :class="{ 'opacity-60': dir.type === 'none' }">
-						{{ dir.dir }}
-					</td>
-					<td>
-						<select v-model="dir.type" @change="$forceUpdate()">
-							<option
-								v-for="type in typeOptions"
-								:key="type.value"
-								:value="type.value"
-							>
-								{{ type.label }}
-							</option>
-						</select>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+			<h3 class="text-xl font-medium mb-1">Dateien</h3>
+			<p v-if="parsedDirs.length === 0" class="text-gray-500">Keine Dateien gefunden</p>
+			<table class="mb-5 text-gray-600 text-left w-full mt-3" v-else>
+				<thead >
+					<th class="font-normal">Erkannt:</th>
+					<th class="font-normal">Dateiname:</th>
+					<th class="font-normal">Importieren als:</th>
+				</thead>
+				<tbody class="font-mono">
+					<tr v-for="dir in parsedDirs" :key="dir.dir">
+						<td>
+							{{ dir.type !== 'none' ? '✅' : '❓' }}
+						</td>
+						<td :class="{ 'opacity-60': dir.type === 'none' }">
+							{{ dir.dir }}
+						</td>
+						<td>
+							<select v-model="dir.type" @change="$forceUpdate()">
+								<option
+									v-for="type in typeOptions"
+									:key="type.value"
+									:value="type.value"
+								>
+									{{ type.label }}
+								</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
-		<button
-			class="block bg-blue-100 rounded-md h-full px-2 py-2 self-end mb-10"
-			@click="loadData"
-		>
-			Daten auslesen
-		</button>
+			<div class="w-full flex justify-end">
+				<button
+					class="block bg-blue-100 rounded-md h-full px-2 py-2 self-end"
+					@click="loadData"
+				>
+					Daten auslesen
+				</button>
+			</div>
+		</section>
 
 		<strong v-if="importMessage" class="block mb-10">{{
 			importMessage
 		}}</strong>
 
-		<h4 class="text-xl font-medium text-gray-700 mb-1" v-if="activeImport">
-			Chats:
+		<h4 class="text-xl font-medium text-gray-700 mb-5" v-if="activeImport">
+			Gefundene Chats:
 		</h4>
 		<table class="mb-3 text-gray-600 text-left" v-if="activeImport">
 			<thead>

@@ -113,4 +113,12 @@ export default {
 .vis-timeline {
 	border-radius: 5px;
 }
+
+.vis-item {
+	@apply bg-blue-100 text-blue-900 border-blue-600 opacity-70;
+}
+
+.vis-item.vis-selected {
+	@apply bg-blue-500 text-white border-blue-600 opacity-100;
+}
 </style>

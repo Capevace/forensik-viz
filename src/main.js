@@ -4,6 +4,7 @@ import router from './router';
 import store from './store';
 import 'element-ui/lib/theme-chalk/index.css';
 import './assets/tailwind.css';
+import '@fontsource/fira-sans';
 
 import 'viewerjs/dist/viewer.css';
 import VueViewer from 'v-viewer';

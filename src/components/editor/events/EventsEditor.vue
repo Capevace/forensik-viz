@@ -2,9 +2,10 @@
 	<section class="max-w-4xl mx-auto mb-10 text-gray-800">
 		<!-- <pre class="text-xs">{{ JSON.stringify(timelineEvents, null, 2) }}</pre> -->
 
-		<h2 class="text-2xl font-medium mb-3 flex justify-between items-center">
-			<button class="font-medium" @click="selectNextEvent">
-				Events ({{ timelineEvents.length }})
+		<h2 class="text-2xl font-medium mb-5 flex justify-between items-center">
+			<button class="font-medium text-left" @click="selectNextEvent">
+				<span class="block">Events ({{ timelineEvents.length }})</span>
+				<span class="text-gray-400">Timeline</span>
 			</button>
 
 			<button
@@ -15,8 +16,10 @@
 			</button>
 		</h2>
 
-		<div class="mb-10">
+		<div class="bg-white rounded" :class="{ 'has-selected': !!selectedEvent }">
 			<Timeline
+				class="border-gray-400"
+				
 				:items="timelineEvents"
 				:options="{
 					editable: false,
@@ -35,19 +38,19 @@
 		</div>
 
 		<article v-if="selectedEvent">
-			<div class="flex w-full justify-between items-center">
-				<h3 class="text-lg font-medium mb-3">
-					Event: {{ selectedEvent.title }}
+			<div class="flex w-full justify-between items-center mb-8 bg-white border border-gray-300 border-t-0 rounded-b px-4 py-3">
+				<h3 class="text-lg font-medium ">
+					<span class="block  leading-tight">{{ selectedEvent.title }}</span>
 				</h3>
-				<div class="flex items-center gap-2">
+				<div class="flex items-center gap-2 text-gray-500 ">
 					<button
-						class="hover:bg-blue-200 px-2 py-1 rounded-md"
+						class="hover:bg-blue-200 px-2 py-1 rounded-md hover:text-gray-800"
 						@click="duplicateEvent"
 					>
 						Event duplizieren
 					</button>
 					<button
-						class="hover:bg-red-200 px-2 py-1 rounded-md"
+						class="hover:bg-red-200 px-2 py-1 rounded-md hover:text-gray-800"
 						@click="deleteEvent"
 					>
 						Event löschen
@@ -175,5 +178,17 @@ export default {
 
 .vdatetime-input {
 	@apply w-full focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 px-4 sm:text-sm border-gray-300 rounded-md;
+}
+
+.vis-timeline {
+	@apply rounded border-gray-300;
+}
+
+.has-selected .vis-timeline {
+	@apply rounded-b-none;
+}
+
+.vis-item.vis-selected {
+	@apply bg-blue-500 text-blue-100 border-blue-600;
 }
 </style>

@@ -1,12 +1,12 @@
 <template>
-	<article class="max-w-xs px-3 py-3 bg-white rounded-md shadow-md">
+	<article class="max-w-1/2 flex-1 px-4 pb-4 bg-white rounded-md shadow-md text-gray-600 border border-gray-300">
 		<button
-			class="p-0 font-mono font-bold text-xs text-gray-400"
+			class="p-0 pt-2 font-mono font-bold text-xl text-gray-400"
 			@click="deletePerson(internalPerson.id)"
 		>
-			X
+			✕
 		</button>
-		<form class="flex flex-col gap-2">
+		<form class="flex flex-col gap-2 pt-1">
 			<div class="mb-3">
 				<img
 					:src="
@@ -15,22 +15,24 @@
 							internalPerson.name
 						)}.svg`
 					"
-					class="mx-auto rounded-full w-16 h-16 mb-2"
+					class="mx-auto rounded-full w-16 h-16 mb-4"
 				/>
-				<input
-					type="file"
-					name="avatar"
-					@change="fileChanged($event, internalPerson)"
-					class="mb-2"
-				/>
-				<input
-					type="text"
-					v-model="internalPerson.avatarUrl"
-					class="w-full"
-					:placeholder="`https://avatars.dicebear.com/api/bottts/${encodeURIComponent(
-						internalPerson.name
-					)}.svg`"
-				/>
+				<div class="opacity-60 hover:opacity-100">
+					<input
+						type="file"
+						name="avatar"
+						@change="fileChanged($event, internalPerson)"
+						class="mb-2 min-w-full"
+					/>
+					<input
+						type="text"
+						v-model="internalPerson.avatarUrl"
+						class="w-full opacity-60 hover:opacity-60 focus:opacity-100"
+						:placeholder="`https://avatars.dicebear.com/api/bottts/${encodeURIComponent(
+							internalPerson.name
+						)}.svg`"
+					/>
+				</div>
 			</div>
 
 			<div>
@@ -45,7 +47,7 @@
 						type="text"
 						name="name"
 						id="name"
-						class="focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 px-4 sm:text-sm bg-gray-100 border-gray-300 rounded-md"
+						class="focus:ring-blue-600 focus:border-blue-600 block w-full py-2 px-4 bg-gray-100 border-gray-300 rounded-md"
 						placeholder="Markus Gasleiter"
 						v-model="internalPerson.name"
 					/>
@@ -64,7 +66,7 @@
 						v-model="internalPerson.color"
 						name="color"
 						id="color"
-						class="focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 px-4 sm:text-sm bg-gray-100 border-gray-300 rounded-md"
+						class="focus:ring-blue-600 focus:border-blue-600 block w-full py-2 px-4 bg-gray-100 border-gray-300 rounded-md"
 					>
 						<option value="purple">Purple</option>
 						<option value="green">Green</option>
@@ -85,7 +87,7 @@
 						type="text"
 						name="id-field"
 						id="id-field"
-						class="focus:ring-indigo-500 focus:border-indigo-500 block w-full py-2 px-4 sm:text-sm bg-gray-100 border-gray-300 rounded-md"
+						class="focus:ring-blue-600 focus:border-blue-600 block w-full py-2 px-4 bg-gray-100 border-gray-300 rounded-md"
 						placeholder="1ed7504b-35bd-41b7-b8d7-38149b8a027c"
 						v-model="internalPerson.id"
 					/>

@@ -127,4 +127,8 @@ export default {
 	color: #aaa;
 	text-shadow: #555;
 }
+
+.leaflet-container {
+	@apply font-sans;
+}
 </style>

@@ -55,7 +55,7 @@
 			</template>
 		</Header>
 
-		<main class="pt-5">
+		<main class="pt-7 pb-20">
 			<PeopleEditor v-if="tab === 'people'" />
 			<EventsEditor v-show="tab === 'events'" />
 			<DataImporter v-show="tab === 'import'" />
