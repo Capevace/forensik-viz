@@ -1,6 +1,6 @@
 <div align="center">
 	<a href="https://mateffy.me/mission-control-project">
-		<img src="resources/FileIcon.png">
+		<img src="resources/demo-1.gif">
 	</a>
 	<h1>Forensik Viz</h1>
 	<p>
