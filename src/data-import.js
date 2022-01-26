@@ -14,8 +14,7 @@ export async function getSQL() {
 		sql = await window.initSqlJs({
 			// Required to load the wasm binary asynchronously. Of course, you can host it wherever you want
 			// You can omit locateFile completely when running in node
-			locateFile: (file) =>
-				`https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/${file}`,
+			locateFile: (file) => `/js/${file}`,
 		});
 	}
 
@@ -46,7 +45,7 @@ export async function addPeopleMeta(buffer, state) {
 	return state;
 }
 
-export async function parseMsgStore(buffer) {
+export async function parseMsgStore(buffer, rootPath) {
 	const SQL = await getSQL();
 	const db = new SQL.Database(buffer);
 
@@ -99,7 +98,7 @@ export async function parseMsgStore(buffer) {
 							const file = await readFile(
 								message.mediaSrc.replace(
 									'Media/',
-									'/import/Export/files/media/0/WhatsApp/Media/'
+									`${rootPath}/files/media/0/WhatsApp/Media/`
 								),
 								null
 							);
