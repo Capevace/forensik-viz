@@ -124,7 +124,7 @@ export default {
 			};
 
 			this.$store.commit('setup/updateEvent', event);
-			this.selectedEvent = event;
+			this.selectEvent({ items: [event.id] });
 		},
 
 		deleteEvent() {
@@ -138,7 +138,13 @@ export default {
 
 		selectEvent({ items }) {
 			if (items.length > 0) {
-				this.selectedEvent = this.events[items[0]];
+				const event = this.events[items[0]];
+				this.selectedEvent = event;
+
+				requestAnimationFrame(() => {
+					this.$refs.timeline.focus(event.id);
+					this.$refs.timeline.setSelection(event.id);
+				});
 			} else {
 				this.selectedEvent = null;
 			}

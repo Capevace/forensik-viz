@@ -119,6 +119,10 @@ export default {
 			this.$store.commit('map/selectEvent', eventId);
 		},
 		next() {
+			if (!this.selectedEventId && this.events.length > 0) {
+				this.selectEvent(this.events[0].id);
+			}
+
 			let index = this.events.findIndex(
 				(e) => e.id === this.selectedEventId
 			);
@@ -130,6 +134,10 @@ export default {
 			this.selectEvent(this.events[index].id);
 		},
 		previous() {
+			if (!this.selectedEventId && this.events.length > 0) {
+				this.selectEvent(this.events[0].id);
+			}
+
 			let index = this.events.findIndex(
 				(e) => e.id === this.selectedEventId
 			);

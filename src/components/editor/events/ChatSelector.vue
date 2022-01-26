@@ -1,7 +1,7 @@
 <template>
 	<div class="mb-10 flex gap-10">
 		<div class="flex w-1/2 flex-col gap-2">
-			<h2 v-if="chats.length === 0">
+			<h2 v-if="chats.length === 0" class="text-gray-400">
 				{{ $t('Keine Chats importiert') }}
 			</h2>
 			<button

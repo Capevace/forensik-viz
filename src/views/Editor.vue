@@ -66,12 +66,19 @@
 			<Settings v-show="tab === 'settings'" />
 		</main>
 
-		<button
-			class="absolute bottom-0 right-0 m-5 opacity-30 hover:opacity-100"
-			@click="tab = 'settings'"
+		<footer
+			class="fixed bottom-0 right-0 m-5 flex items-center gap-5 text-gray-300"
 		>
-			⚙️
-		</button>
+			<p class="text-xs font-light">
+				Forensik Viz – Von Inken, Armin und Lukas
+			</p>
+			<button
+				class="opacity-30 hover:opacity-100"
+				@click="tab = 'settings'"
+			>
+				⚙️
+			</button>
+		</footer>
 	</div>
 </template>
 
