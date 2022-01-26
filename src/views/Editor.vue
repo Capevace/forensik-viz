@@ -67,7 +67,7 @@
 		</main>
 
 		<footer
-			class="fixed bottom-0 right-0 m-5 flex items-center gap-5 text-gray-300"
+			class="fixed bottom-0 right-0 -z-1 m-5 flex items-center gap-5 text-gray-300"
 		>
 			<p class="text-xs font-light">
 				Forensik Viz – Von Inken, Armin und Lukas

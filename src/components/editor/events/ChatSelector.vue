@@ -7,9 +7,9 @@
 			<button
 				v-for="chat in chats"
 				:key="chat.id"
-				class="flex w-full gap-3 rounded-md border-2 border-transparent bg-green-200 px-3 py-2 text-left text-sm font-medium text-green-900 transition hover:bg-green-300 hover:shadow"
+				class="flex w-full items-center gap-3 rounded-md border-2 border-transparent bg-green-200 px-3 py-2 text-left text-sm font-medium text-green-900 shadow transition hover:bg-green-300 hover:shadow-md"
 				:class="{
-					'border-green-400 bg-green-300':
+					'border-green-500 bg-green-300':
 						viewedChat && viewedChat.id === chat.id,
 					'opacity-60': !selectedChats.includes(chat.id),
 				}"
@@ -21,9 +21,20 @@
 					:checked="selectedChats.includes(chat.id)"
 					@change="selectChat($event, chat)"
 				/>
+				<img
+					class="h-8 w-8 flex-shrink-0 rounded-full shadow"
+					:src="toSender(chat.sender).avatarUrl"
+					alt=""
+				/>
 				<div>
-					<h4>{{ toSender(chat.receiver).name }}</h4>
-					<h5 class="text-sm text-green-700">{{ chat.type }}</h5>
+					<h4>
+						<span>{{ toSender(chat.sender).name }}</span>
+						<span class="mx-1.5 opacity-60">{{ $t('an') }}</span>
+						<span>{{ toSender(chat.receiver).name }}</span>
+					</h4>
+					<h5 class="text-sm text-green-700">
+						{{ chat.type }}
+					</h5>
 				</div>
 			</button>
 		</div>

@@ -68,6 +68,7 @@ export default {
 	'Start-Zeit': 'Start-Time',
 	'Ende-Zeit': 'End-Time',
 	Beschreibung: 'Description',
+	an: 'to',
 
 	// Settings
 	Einstellungen: 'Settings',
