@@ -295,7 +295,10 @@ export default {
 
 				this.importMessage = null;
 
-				const msgStoreData = await parseMsgStore(msgStore);
+				const msgStoreData = await parseMsgStore(
+					msgStore,
+					`/import${this.rootPath}`
+				);
 
 				if (mrMessages) {
 					const dataWithMeta = await addPeopleMeta(

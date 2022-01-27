@@ -49,10 +49,12 @@
 			<button
 				v-for="location in locations"
 				:key="location.id"
-				class="flex w-full gap-2 rounded-md bg-purple-200 px-3 py-2 text-left text-sm font-medium text-purple-900 transition hover:bg-purple-300 hover:shadow"
+				class="flex w-full gap-2 rounded-md border-2 border-transparent bg-purple-200 px-3 py-2 text-left text-sm font-medium shadow transition hover:bg-purple-300 hover:shadow-md"
 				:class="{
-					'bg-purple-300':
+					'border-purple-500 bg-purple-300 text-purple-900':
 						viewedLocation && viewedLocation.id === location.id,
+					'text-purple-900':
+						!viewedLocation || viewedLocation.id !== location.id,
 					'opacity-60': !event.locations.includes(location.id),
 				}"
 				@click="viewLocation(location)"
