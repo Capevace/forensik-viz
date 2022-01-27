@@ -24,9 +24,11 @@ async function main() {
 
 	Vue.config.productionTip = false;
 
+	const locale = window.localStorage.getItem('locale') || 'de';
+
 	// Create VueI18n instance with options
 	const i18n = new VueI18n({
-		locale: 'de',
+		locale: locale,
 		messages: { en: enLang },
 		fallbackLocale: 'de',
 		formatFallbackMessages: true,

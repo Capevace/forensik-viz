@@ -6,7 +6,7 @@
 		</h2>
 
 		<section
-			class="mb-10 rounded-md border border-gray-300 bg-white px-5 py-4 shadow-md"
+			class="mb-10 rounded-md border border-gray-300 bg-white px-5 py-4 shadow-md relative"
 		>
 			<h3 class="mb-3 font-medium">
 				<span class="block text-xl">{{
@@ -76,9 +76,37 @@
 					{{ $t('Daten auslesen') }}
 				</button>
 			</div>
+
+			<div
+				class="absolute top-0 bottom-0 left-0 right-0 bg-blue-100 bg-opacity-90 transition-all flex gap-10 flex-col justify-center items-center text-blue-900 text-2xl px-16 py-10"
+				:class="{
+					'opacity-0 pointer-events-none':
+						loadingState.type !== 'loading',
+				}"
+			>
+				{{ loadingState.message }}
+
+				<div
+					v-if="loadingState.progress"
+					class="h-2 bg-blue-300 rounded-full relative w-full overflow-hidden"
+				>
+					<div
+						class="absolute inset-0 bg-blue-600 transition-all"
+						:style="`width: ${loadingState.progress * 100}%`"
+					></div>
+				</div>
+			</div>
 		</section>
 
 		<div class="mb-20 px-5">
+			<strong
+				v-if="loadingState.type === 'idle' && loadingState.message"
+				class="mb-10 block text-red-600"
+			>
+				<!-- Error MEssage -->
+				{{ loadingState.message }}
+			</strong>
+
 			<strong v-if="importMessage" class="mb-10 block">
 				{{ importMessage }}
 			</strong>
@@ -203,12 +231,34 @@ export default {
 			counter: 0,
 			activeImport: null,
 			importMessage: null,
+
+			loadingState: { type: 'idle' } // { type: 'loading', message: 'Test', progress: 0.5 }, //
 		};
 	},
 	methods: {
+		startLoading(message, progress) {
+			this.loadingState = {
+				type: 'loading',
+				message: message || this.$t('Lädt...'),
+				progress
+			};
+		},
+		stopLoading(error = null) {
+			this.loadingState = { type: 'idle', message: error };
+		},
+
 		async changed(e) {
 			if (e.target.files.length !== 0) {
-				await mountZipFile(e.target.files[0]);
+				this.startLoading(this.$t('ZIP-Datei wird gelesen...'), 0.0);
+				await mountZipFile(e.target.files[0], '/import', (event) => {
+					if (
+						event.lengthComputable &&
+						this.loadingState.type === 'loading'
+					) {
+						this.loadingState.progress = event.loaded / event.total;
+					}
+				});
+				this.stopLoading();
 			}
 
 			this.rootDirs = getDirs('/');
@@ -216,98 +266,125 @@ export default {
 		},
 
 		async loadData() {
-			let msgStore = null;
-			let mrMessages = null;
+			try {
+				this.startLoading(this.$t('Chats, Identitäten und Medien werden gesucht...'));
 
-			await Promise.all(
-				this.parsedDirs.map(async (dir) => {
-					switch (dir.type) {
-						case 'wa-msgstore':
-							msgStore = await readFile(
-								`/import${this.rootPath}/${dir.dir}`,
-								null
-							);
-							break;
-						case 'mr-messages':
-							mrMessages = await readFile(
-								`/import${this.rootPath}/${dir.dir}`,
-								null
-							);
-							break;
-					}
-				})
-			);
+				let msgStore = null;
+				let mrMessages = null;
 
-			this.importMessage = null;
+				const rootPath = this.rootPath === '/' ? '' : this.rootPath;
 
-			const msgStoreData = await parseMsgStore(msgStore);
-
-			if (mrMessages) {
-				const dataWithMeta = await addPeopleMeta(
-					mrMessages,
-					msgStoreData
+				await Promise.all(
+					this.parsedDirs.map(async (dir) => {
+						switch (dir.type) {
+							case 'wa-msgstore':
+								msgStore = await readFile(
+									`/import${rootPath}/${dir.dir}`,
+									null
+								);
+								break;
+							case 'mr-messages':
+								mrMessages = await readFile(
+									`/import${rootPath}/${dir.dir}`,
+									null
+								);
+								break;
+						}
+					})
 				);
-				this.activeImport = dataWithMeta;
-				// this.$store.commit('setup/update', { chats, people });
-			} else {
-				this.activeImport = msgStoreData;
-				// this.$store.commit('setup/update', { chats: msgStoreData.chats, people: msgStoreData.people });
+
+				this.importMessage = null;
+
+				const msgStoreData = await parseMsgStore(msgStore);
+
+				if (mrMessages) {
+					const dataWithMeta = await addPeopleMeta(
+						mrMessages,
+						msgStoreData
+					);
+					this.activeImport = dataWithMeta;
+					// this.$store.commit('setup/update', { chats, people });
+				} else {
+					this.activeImport = msgStoreData;
+					// this.$store.commit('setup/update', { chats: msgStoreData.chats, people: msgStoreData.people });
+				}
+
+				const chatsCount = Object.values(
+					this.activeImport.chats
+				).length;
+				const peopleCount = Object.values(
+					this.activeImport.people
+				).length;
+
+				this.importMessage = this.$t(
+					'Es wurden {chats} Chats und {people} Personen gefunden.',
+					{ chats: chatsCount, people: peopleCount }
+				);
+
+				this.stopLoading();
+			} catch (e) {
+				console.log(e);
+				this.stopLoading(e.message);
 			}
-
-			const chatsCount = Object.values(this.activeImport.chats).length;
-			const peopleCount = Object.values(this.activeImport.people).length;
-
-			this.importMessage = this.$t(
-				'Es wurden {chats} Chats und {people} Personen gefunden.',
-				{ chats: chatsCount, people: peopleCount }
-			);
 		},
 
 		async importData() {
-			if (!this.activeImport) return;
+			try {
+				if (!this.activeImport) return;
 
-			let chats = {};
-			let peopleCount = 0;
+				this.startLoading(this.$t('Daten werden importiert...'));
 
-			for (const chat of Object.values(this.activeImport.chats)) {
-				if (chat.enabled) {
-					chats[chat.id] = chat;
+				let chats = {};
+				let people = {};
 
-					const sender =
-						this.activeImport.people[chat.sender] ||
-						this.$store.state.setup.people[chat.sender];
-					const receiver =
-						this.activeImport.people[chat.receiver] ||
-						this.$store.state.setup.people[chat.receiver];
+				for (const chat of Object.values(this.activeImport.chats)) {
+					if (chat.enabled) {
+						chats[chat.id] = chat;
 
-					if (sender) {
-						this.$store.commit('setup/updatePerson', sender);
-						peopleCount++;
-					}
+						const sender =
+							this.activeImport.people[chat.sender] ||
+							this.$store.state.setup.people[chat.sender];
+						const receiver =
+							this.activeImport.people[chat.receiver] ||
+							this.$store.state.setup.people[chat.receiver];
 
-					if (receiver) {
-						this.$store.commit('setup/updatePerson', receiver);
-						peopleCount++;
+						if (sender) {
+							people[sender.id] = sender;
+
+							this.$store.commit('setup/updatePerson', sender);
+						}
+
+						if (receiver) {
+							people[receiver.id] = receiver;
+
+							this.$store.commit('setup/updatePerson', receiver);
+						}
 					}
 				}
+
+				const chatsCount = Object.values(chats).length;
+				const peopleCount = Object.values(people).length;
+
+				this.importMessage = this.$t(
+					'Es wurden {chats} Chats und {people} Personen importiert.',
+					{ chats: chatsCount, people: peopleCount }
+				);
+
+				this.$store.commit('setup/addChats', chats);
+				this.$store.commit('setup/addFiles', this.activeImport.files);
+				this.$store.commit('setup/addExif', this.activeImport.exif);
+				this.$store.commit(
+					'setup/addLocations',
+					this.activeImport.locations
+				);
+
+				this.activeImport = null;
+
+				this.stopLoading();
+			} catch (e) {
+				console.error(e);
+				this.stopLoading(e.message);
 			}
-
-			const chatsCount = Object.values(chats).length;
-
-			this.importMessage = this.$t(
-				'Es wurden {chats} Chats und {people} Personen importiert.',
-				{ chats: chatsCount, people: peopleCount }
-			);
-
-			this.$store.commit('setup/addChats', chats);
-			this.$store.commit('setup/addFiles', this.activeImport.files);
-			this.$store.commit('setup/addExif', this.activeImport.exif);
-			this.$store.commit(
-				'setup/addLocations',
-				this.activeImport.locations
-			);
-
-			this.activeImport = null;
 		},
 	},
 	computed: {

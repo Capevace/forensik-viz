@@ -53,6 +53,10 @@ export default {
 		'{chats} chats and {people} people were found.',
 	'Es wurden {chats} Chats und {people} Personen importiert.':
 		'{chats} chats and {people} people were imported.',
+	'Lädt...': 'Loading...',
+	'ZIP-Datei wird gelesen...': 'Reading ZIP file...',
+	'Daten werden importiert...': 'Importing data...',
+	'Chats, Identitäten und Medien werden gesucht...': 'Searching for chats, identities und media...',
 
 	// Events
 	'Keine Chats importiert': 'No chats were imported',

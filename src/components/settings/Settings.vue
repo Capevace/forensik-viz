@@ -40,6 +40,8 @@ export default {
 	watch: {
 		locale() {
 			this.$root.$i18n.locale = this.locale;
+
+			window.localStorage.setItem('locale', this.locale);
 		},
 	},
 };

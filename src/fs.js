@@ -26,7 +26,7 @@ export async function initFS() {
 	window.BrowserFS = BrowserFS;
 }
 
-export async function mountZipFile(zipFile, basePath = '/import') {
+export async function mountZipFile(zipFile, basePath = '/import', onProgress = () => {} ) {
 	return new Promise((resolve, reject) => {
 		if (fs.existsSync(basePath)) {
 			fs.umount(basePath);
@@ -43,6 +43,7 @@ export async function mountZipFile(zipFile, basePath = '/import') {
 
 			resolve();
 		};
+		reader.onprogress = onProgress;
 		reader.onerror = reject;
 		reader.readAsArrayBuffer(zipFile);
 	});
