@@ -10,7 +10,7 @@
 			}`"
 		>
 			<img
-				class="h-6 w-6 rounded-full"
+				class="h-6 w-6 rounded-full drop-shadow"
 				:src="
 					sender.avatarUrl ||
 					`https://avatars.dicebear.com/api/bottts/${encodeURIComponent(

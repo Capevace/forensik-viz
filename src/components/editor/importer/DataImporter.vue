@@ -272,20 +272,20 @@ export default {
 				let msgStore = null;
 				let mrMessages = null;
 
-				const rootPath = this.rootPath === '/' ? '' : this.rootPath;
+				const rootPath = `/import${this.rootPath === '/' ? '' : this.rootPath}`;
 
 				await Promise.all(
 					this.parsedDirs.map(async (dir) => {
 						switch (dir.type) {
 							case 'wa-msgstore':
 								msgStore = await readFile(
-									`/import${rootPath}/${dir.dir}`,
+									`${rootPath}/${dir.dir}`,
 									null
 								);
 								break;
 							case 'mr-messages':
 								mrMessages = await readFile(
-									`/import${rootPath}/${dir.dir}`,
+									`${rootPath}/${dir.dir}`,
 									null
 								);
 								break;
@@ -297,7 +297,7 @@ export default {
 
 				const msgStoreData = await parseMsgStore(
 					msgStore,
-					`/import${this.rootPath}`
+					rootPath
 				);
 
 				if (mrMessages) {

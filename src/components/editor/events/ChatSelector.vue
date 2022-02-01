@@ -22,9 +22,13 @@
 					@change="selectChat($event, chat)"
 				/>
 				<img
-					class="h-8 w-8 flex-shrink-0 rounded-full shadow"
-					:src="toSender(chat.sender).avatarUrl"
-					alt=""
+					class="h-8 w-8 flex-shrink-0 rounded-full drop-shadow"
+					:src="
+						toSender(chat.sender).avatarUrl ||
+						`https://avatars.dicebear.com/api/bottts/${encodeURIComponent(
+							toSender(chat.sender).name
+						)}.svg`
+					"
 				/>
 				<div>
 					<h4>

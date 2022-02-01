@@ -6,6 +6,7 @@ export default {
 	'Bearbeiten ➝': 'Edit ➝',
 	'Vorheriges Event': 'Previous event',
 	'Nächstes Event': 'Next event',
+	'Keine Nachrichten in diesem Zeitraum': 'No messages during this time span',
 
 	//
 	Importieren: 'Import',
