@@ -3,7 +3,6 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import 'element-ui/lib/theme-chalk/index.css';
-import './assets/tailwind.css';
 import '@fontsource/fira-sans';
 
 import 'viewerjs/dist/viewer.css';
@@ -14,6 +13,9 @@ import VueI18n from 'vue-i18n';
 import enLang from '@/lang/en';
 
 import { initFS } from './fs';
+
+import './assets/tailwind.css';
+import './assets/custom.css';
 
 async function main() {
 	await initFS();

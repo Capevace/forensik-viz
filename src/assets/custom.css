@@ -1,0 +1,15 @@
+.vis-timeline {
+	@apply rounded border-gray-300;
+}
+
+.has-selected .vis-timeline {
+	@apply rounded-b-none;
+}
+
+.vis-item.vis-selected {
+	@apply border-blue-600 bg-blue-500 text-blue-100;
+}
+
+.vis-time-axis .vis-text {
+	@apply text-gray-400;
+}

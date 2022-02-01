@@ -219,6 +219,7 @@ export default {
 				.map((event) => ({
 					...event,
 					content: event.title,
+					className: 'custom-vis'
 				}));
 		},
 	},

@@ -113,14 +113,18 @@ export default {
 }
 
 .vis-timeline {
-	border-radius: 5px;
+	@apply rounded border-gray-300;
 }
 
-.vis-item {
-	@apply border-blue-600 bg-blue-100 text-blue-900 opacity-70;
+.has-selected .vis-timeline {
+	@apply rounded-b-none;
 }
 
 .vis-item.vis-selected {
-	@apply border-blue-600 bg-blue-500 text-white opacity-100;
+	@apply border-blue-600 bg-blue-500 text-blue-100;
+}
+
+.vis-time-axis .vis-text {
+	@apply text-gray-400;
 }
 </style>
