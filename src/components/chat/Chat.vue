@@ -3,7 +3,10 @@
 		<div class="text-center text-xs font-medium text-gray-900 opacity-40">
 			{{ safeFirstDate.toLocaleString() }}
 		</div>
-		<div v-if="rebasedMessages.length === 0" class="text-gray-600 text-center">
+		<div
+			v-if="rebasedMessages.length === 0"
+			class="text-center text-gray-600"
+		>
 			{{ $t('Keine Nachrichten in diesem Zeitraum') }}
 		</div>
 		<Bubble

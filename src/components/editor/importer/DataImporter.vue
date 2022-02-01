@@ -6,7 +6,7 @@
 		</h2>
 
 		<section
-			class="mb-10 rounded-md border border-gray-300 bg-white px-5 py-4 shadow-md relative"
+			class="relative mb-10 rounded-md border border-gray-300 bg-white px-5 py-4 shadow-md"
 		>
 			<h3 class="mb-3 font-medium">
 				<span class="block text-xl">{{
@@ -78,9 +78,9 @@
 			</div>
 
 			<div
-				class="absolute top-0 bottom-0 left-0 right-0 bg-blue-100 bg-opacity-90 transition-all flex gap-10 flex-col justify-center items-center text-blue-900 text-2xl px-16 py-10"
+				class="absolute top-0 bottom-0 left-0 right-0 flex flex-col items-center justify-center gap-10 bg-blue-100 bg-opacity-90 px-16 py-10 text-2xl text-blue-900 transition-all"
 				:class="{
-					'opacity-0 pointer-events-none':
+					'pointer-events-none opacity-0':
 						loadingState.type !== 'loading',
 				}"
 			>
@@ -88,7 +88,7 @@
 
 				<div
 					v-if="loadingState.progress"
-					class="h-2 bg-blue-300 rounded-full relative w-full overflow-hidden"
+					class="relative h-2 w-full overflow-hidden rounded-full bg-blue-300"
 				>
 					<div
 						class="absolute inset-0 bg-blue-600 transition-all"
@@ -232,7 +232,7 @@ export default {
 			activeImport: null,
 			importMessage: null,
 
-			loadingState: { type: 'idle' } // { type: 'loading', message: 'Test', progress: 0.5 }, //
+			loadingState: { type: 'idle' }, // { type: 'loading', message: 'Test', progress: 0.5 }, //
 		};
 	},
 	methods: {
@@ -240,7 +240,7 @@ export default {
 			this.loadingState = {
 				type: 'loading',
 				message: message || this.$t('Lädt...'),
-				progress
+				progress,
 			};
 		},
 		stopLoading(error = null) {
@@ -267,12 +267,16 @@ export default {
 
 		async loadData() {
 			try {
-				this.startLoading(this.$t('Chats, Identitäten und Medien werden gesucht...'));
+				this.startLoading(
+					this.$t('Chats, Identitäten und Medien werden gesucht...')
+				);
 
 				let msgStore = null;
 				let mrMessages = null;
 
-				const rootPath = `/import${this.rootPath === '/' ? '' : this.rootPath}`;
+				const rootPath = `/import${
+					this.rootPath === '/' ? '' : this.rootPath
+				}`;
 
 				await Promise.all(
 					this.parsedDirs.map(async (dir) => {
@@ -295,10 +299,7 @@ export default {
 
 				this.importMessage = null;
 
-				const msgStoreData = await parseMsgStore(
-					msgStore,
-					rootPath
-				);
+				const msgStoreData = await parseMsgStore(msgStore, rootPath);
 
 				if (mrMessages) {
 					const dataWithMeta = await addPeopleMeta(

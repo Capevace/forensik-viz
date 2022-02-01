@@ -26,7 +26,11 @@ export async function initFS() {
 	window.BrowserFS = BrowserFS;
 }
 
-export async function mountZipFile(zipFile, basePath = '/import', onProgress = () => {} ) {
+export async function mountZipFile(
+	zipFile,
+	basePath = '/import',
+	onProgress = () => {}
+) {
 	return new Promise((resolve, reject) => {
 		if (fs.existsSync(basePath)) {
 			fs.umount(basePath);
